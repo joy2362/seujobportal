@@ -47,12 +47,12 @@
                     </v-form>
                     </v-card-text>
                     <v-card-actions>
-                        <v-btn  text small to="/reg">Forget password?</v-btn>
+                        <v-btn  text small to="/forget">Forget password?</v-btn>
                         <v-spacer></v-spacer>
                         <v-btn  text small to="/reg">Sign up</v-btn>
                     </v-card-actions>
                     <v-card-actions>
-                        <v-btn color="primary" outlined @click="login">Login</v-btn>
+                        <v-btn color="primary" outlined :loading="loading" @click="login">Login</v-btn>
                     </v-card-actions>
                 </v-card>
                 </v-col>
@@ -80,10 +80,7 @@
                 email:'',
                 password:'',
                 value: 'password',
-                form:{
-                    email:'',
-                    password:''
-                }
+                loading:false,
             }
         },
         computed:{
@@ -103,6 +100,7 @@
         },
         methods:{
             login(){
+                this.loading=true;
                 this.$v.$touch()
                 if (this.$v.$invalid) {
                     Toast.fire({
@@ -110,10 +108,12 @@
                         title: 'Form Not Filled Correctly'
                     })
                 } else {
-                  this.form.email=this.email;
-                  this.form.password=this.password;
-                    axios.post('/api/auth/login',this.form)
+                    const formData = new FormData();
+                    formData.append('email', this.email);
+                    formData.append('password', this.password);
+                    axios.post('/api/auth/login',formData)
                         .then(res =>{
+                            this.loading=false
                             Toast.fire({
                                 icon: 'success',
                                 title: 'Signed in successfully'
@@ -122,6 +122,7 @@
                             this.$router.push({name:'home'});
                         })
                         .catch(error=>{
+                            this.loading=false
                             if (error){
                                 Toast.fire({
                                     icon: 'error',

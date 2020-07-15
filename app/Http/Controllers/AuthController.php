@@ -117,4 +117,5 @@ class AuthController extends Controller
         $user->save();
         return $this->me($request);
     }
+
 }

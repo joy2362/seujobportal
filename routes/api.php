@@ -27,8 +27,17 @@ Route::group([
 
     Route::post('login', 'AuthController@me');
     Route::post('teacher/signup', 'AuthController@teacherreg');
+    Route::post('forget', 'AuthController@forget');
 
 });
 
+Route::group([
 
+    'middleware' => 'api',
+    'prefix' => 'password'
+], function () {
+    Route::post('create', 'PasswordResetController@create');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
+});
 
