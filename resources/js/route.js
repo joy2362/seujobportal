@@ -5,15 +5,18 @@ let reset = require('./components/auth/reset').default;
 let registation = require('./components/auth/registation').default;
 let facultyreg = require('./components/auth/facultyreg').default;
 let alumnireg = require('./components/auth/alumnireg').default;
+let studentreg = require('./components/auth/studentreg').default;
 let logout = require('./components/auth/logout').default;
 
 //home route
 let index = require('./components/index').default;
+
 export const routes = [
     { path: '/', component: login  , name:'login'},
     { path: '/home', component: index  , name:'home'},
     { path: '/reg', component: registation, name: 'registation' },
     { path: '/faculty/registion', component: facultyreg, name: 'facultyreg' },
+    { path: '/student/registion', component: studentreg, name: 'studentreg' },
     { path: '/alumni/registion', component: alumnireg, name: 'alumnireg' },
     { path: '/logout', component: logout, name: 'logout' },
     { path: '/forget', component: forget, name: 'forget' },

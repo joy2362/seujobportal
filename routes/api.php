@@ -14,10 +14,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group([
 
     'middleware' => 'api',
@@ -27,6 +23,8 @@ Route::group([
 
     Route::post('login', 'AuthController@me');
     Route::post('teacher/signup', 'AuthController@teacherreg');
+    Route::post('alumni/signup', 'AuthController@alumnireg');
+    Route::post('student/signup', 'AuthController@studentreg');
     Route::post('forget', 'AuthController@forget');
 
 });
@@ -40,4 +38,3 @@ Route::group([
     Route::get('find/{token}', 'PasswordResetController@find');
     Route::post('reset', 'PasswordResetController@reset');
 });
-

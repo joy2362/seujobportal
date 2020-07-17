@@ -11,7 +11,9 @@
                     md="4"
                     cols="12"
                 >
-                    <v-card>
+                    <v-card
+                        :loading="loading"
+                    >
                         <v-toolbar
                             flat
                             dark
@@ -30,7 +32,6 @@
                                     @input="$v.name.$touch()"
                                     @blur="$v.name.$touch()"
                                 ></v-text-field>
-                                <small class="text-danger" v-if="errorName">{{errorName}}</small>
                                 <v-text-field
                                     v-model="email"
                                     :error-messages="emailErrors"
@@ -39,7 +40,6 @@
                                     @input="$v.email.$touch()"
                                     @blur="$v.email.$touch()"
                                 ></v-text-field>
-                                <small class="text-danger" v-if="errorEmail">{{errorEmail}}</small>
                                 <v-text-field
                                     type="password"
                                     v-model="password"
@@ -49,7 +49,6 @@
                                     @input="$v.password.$touch()"
                                     @blur="$v.password.$touch()"
                                 ></v-text-field>
-                                <small class="text-danger" v-if="errorPass">{{errorPass}}</small>
                                 <v-text-field
                                     type="password"
                                     v-model="repeatpassword"
@@ -60,25 +59,27 @@
                                     @blur="$v.repeatpassword.$touch()"
                                 ></v-text-field>
                                <v-file-input
+                                   :error-messages="imageErrors"
                                    v-model="image"
                                    accept="image/*"
                                    label="Profile Image"
                                    prepend-icon="mdi-camera"
+                                   @input="$v.image.$touch()"
+                                   @blur="$v.image.$touch()"
                                    >
                                </v-file-input>
-                                <small class="text-danger" v-if="errorImage">{{errorImage}}</small>
                             </v-form>
                         </v-card-text>
-
-                        <v-card-text class="text-center">
-                            <p >Already have account?
-                                <v-btn small text to="/">Login</v-btn>
-                            </p>
-                        </v-card-text>
+                            <v-card-text class="text-center">
+                                <p >Already have account?
+                                    <v-btn small text to="/">Login</v-btn>
+                                    Or
+                                    <v-btn small text to="/reg">Back</v-btn>
+                                </p>
+                            </v-card-text>
                         <v-card-actions>
-                            <v-btn color="primary" outlined @click="reg">Sign Up</v-btn>
+                            <v-btn color="primary" :loading="loading" outlined @click="reg">Sign Up</v-btn>
                         </v-card-actions>
-
                     </v-card>
                 </v-col>
             </v-row>
@@ -88,6 +89,7 @@
 
 <script>
     import { required, email ,sameAs,minLength   } from 'vuelidate/lib/validators'
+    import User from "../../helper/User";
     export default {
         name: "facultyreg",
         validations: {
@@ -104,12 +106,7 @@
                 name:'',
                 repeatpassword:'',
                 image:null,
-                errorEmail:'',
-                errorPass:'',
-                errorName:'',
-                errorImage:'',
-
-
+                loading:false,
             }
         },
         computed:{
@@ -151,8 +148,10 @@
         },
         methods:{
             reg(){
+                this.loading=true;
                 this.$v.$touch()
                 if (this.$v.$invalid) {
+                    this.loading=false;
                     Toast.fire({
                         icon: 'error',
                         title: 'Form Not Filled Correctly'
@@ -166,33 +165,25 @@
                     formData.append('password', this.password);
 
                     axios.post('/api/auth/teacher/signup',formData)
-                        .then(data =>{
-                            console.log(data)
+                        .then(res =>{
+                            this.loading=false
+                            Toast.fire({
+                                icon: 'success',
+                                title: 'Registation Complete'
+                            })
+                            this.$router.push('/');
                         })
 
                     .catch(error => {
-                            if (error.response.data.errors.email){
-                                this.errorEmail=error.response.data.errors.email[0];
-                            }else{
-                                this.errorEmail="";
-                            }
-                            if(error.response.data.errors.password){
-                                this.errorPass=error.response.data.errors.password[0];
-                            }else{
-                                this.errorPass="";
-                            }
-                            if(error.response.data.errors.name){
-                                this.errorName=error.response.data.errors.name[0];
-                            }else{
-                                this.errorName="";
-                            }
-                            if(error.response.data.errors.image){
-                                this.errorImage=error.response.data.errors.image[0];
-                            }else{
-                                this.errorImage="";
-                            }
-                        } )
-
+                        this.loading=false;
+                        if (error.response.data.message){
+                            Swal.fire(
+                                'Sorry!',
+                                error.response.data.message,
+                                'error'
+                            )
+                        }
+                    } )
                 }
             }
         },

@@ -8,12 +8,11 @@
         name: "logout",
         created() {
             User.logout();
-
             Toast.fire({
                 icon: 'success',
-                title: 'Signed up successfully'
+                title: 'Logout successfully'
             })
-            this.$router.push({name:'home'});
+            this.$router.push({name:'login'});
         },
     }
 </script>

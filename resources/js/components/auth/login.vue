@@ -11,7 +11,9 @@
                 md="4"
                 cols="12"
                 >
-                <v-card>
+                <v-card
+                    :loading="loading"
+                >
                     <v-toolbar
                         flat
                         dark
@@ -20,7 +22,6 @@
                         <v-toolbar-title class="text-uppercase ">Login</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text>
-
 
                     <v-form>
                         <v-text-field
@@ -103,6 +104,7 @@
                 this.loading=true;
                 this.$v.$touch()
                 if (this.$v.$invalid) {
+                    this.loading=false;
                     Toast.fire({
                         icon: 'error',
                         title: 'Form Not Filled Correctly'

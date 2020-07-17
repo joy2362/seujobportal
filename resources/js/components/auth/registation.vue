@@ -22,20 +22,18 @@
                         <v-card-text class="text-center">
                             <v-btn
                                 small
-                                flat
                                 text
                                 to="/faculty/registion"
                             >Facuty</v-btn>
                             <v-btn
                                 small
-                                flat
                                 text
                                 to="/alumni/registion"
                             >Alumni</v-btn>
                             <v-btn
                                 small
-                                flat
                                 text
+                                to="/student/registion"
                             >Student</v-btn>
                         </v-card-text>
                         <v-card-text class="text-center">
@@ -53,7 +51,6 @@
 <script>
     export default {
         name: "registation",
-
     }
 </script>
 

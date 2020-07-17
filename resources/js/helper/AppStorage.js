@@ -2,22 +2,46 @@ class AppStorage {
     storeToken(token){
         localStorage.setItem('token',token);
     }
-    storeUser(user){
-        localStorage.setItem('user',user);
+    storeName(user){
+        localStorage.setItem('name',user);
     }
-    store(token,user){
-        this.storeToken(token);
-        this.storeUser(user);
+    storeEmail(email){
+        localStorage.setItem('email',email);
+    }
+    storeProfile_pic(profile_pic){
+        localStorage.setItem('profile_pic',profile_pic);
+    }
+    storePermission(permission){
+        localStorage.setItem('permission',permission);
+    }
+    store(access_token,name,email,profile_pic,permission){
+        this.storeToken(access_token);
+        this.storeName(name);
+        this.storeEmail(email);
+        this.storeProfile_pic(profile_pic);
+        this.storePermission(permission);
     }
     clear(){
         localStorage.removeItem('token');
-        localStorage.removeItem('user');
+        localStorage.removeItem('name');
+        localStorage.removeItem('email');
+        localStorage.removeItem('profile_pic');
+        localStorage.removeItem('permission');
     }
     getToken(){
         localStorage.getItem('token');
     }
-    getUser(){
-        localStorage.getItem('user');
+    getName(){
+        localStorage.getItem('name');
+    }
+    getEmail(){
+        localStorage.getItem('email');
+    }
+    getProfile_pic(){
+        localStorage.getItem('profile_pic');
+    }
+    getPermission(){
+        localStorage.getItem('permission');
     }
 
 }

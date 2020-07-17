@@ -3,12 +3,15 @@
 namespace App;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Admin extends Authenticatable implements JWTSubject
 {
+    use Notifiable;
+
     protected $fillable = [
-        'name', 'email', 'password','pro_pic'
+        'name', 'email', 'password','pro_pic' ,'user_type'
     ];
 
     /**
@@ -17,7 +20,7 @@ class Admin extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'user_type'
     ];
 
     /**
@@ -48,4 +51,5 @@ class Admin extends Authenticatable implements JWTSubject
     {
         return [];
     }
+
 }

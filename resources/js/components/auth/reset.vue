@@ -11,7 +11,9 @@
                     md="4"
                     cols="12"
                 >
-                    <v-card>
+                    <v-card
+                        :loading="loading"
+                    >
                         <v-toolbar
                             flat
                             dark
@@ -117,6 +119,7 @@
                 this.loading=true;
                 this.$v.$touch()
                 if (this.$v.$invalid) {
+                    this.loading=false;
                     Toast.fire({
                         icon: 'error',
                         title: 'Enter the email First'

@@ -4,10 +4,13 @@ import AppStorage from "./AppStorage";
 
     class User {
         responseafterlogin(res){
-            const access_token = res.data.access_token
-            const username = res.data.name
-            if (Token.isValid(access_token , username)){
-                AppStorage.store(access_token,username)
+            const access_token = res.data.access_token;
+            const name = res.data.name;
+            const email = res.data.email;
+            const profile_pic = res.data.profile_pic;
+            const permission = res.data.permission;
+            if (Token.isValid(access_token , name , email ,profile_pic , permission)){
+                AppStorage.store(access_token,name,email,profile_pic,permission)
             }
         }
 
@@ -22,15 +25,52 @@ import AppStorage from "./AppStorage";
             return this.hasToken()
         }
 
+        isAdmin(){
+            const permission = localStorage.getItem('permission')
+            if(permission == "1"){
+                return true
+            }else{
+                return false
+            }
+        }
+
+        isFaculty(){
+            const permission = localStorage.getItem('permission')
+            if(permission == "2"){
+                return true
+            }else{
+                return false
+            }
+        }
+
         logout() {
             AppStorage.clear();
         }
 
         name(){
             if (this.loggedIn()){
-                return localStorage.getItem('user')
+                return localStorage.getItem('name')
             }
         }
+
+        email(){
+            if (this.loggedIn()){
+                return localStorage.getItem('email')
+            }
+        }
+
+        picture(){
+            if (this.loggedIn()){
+                return localStorage.getItem('profile_pic')
+            }
+        }
+
+        permission(){
+            if (this.loggedIn()){
+                return localStorage.getItem('permission')
+            }
+        }
+
         token(){
             if (this.loggedIn()){
                 localStorage.getItem('token');
