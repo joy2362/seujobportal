@@ -38,3 +38,12 @@ Route::group([
     Route::get('find/{token}', 'PasswordResetController@find');
     Route::post('reset', 'PasswordResetController@reset');
 });
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'admin'
+
+], function ($router) {
+
+    Route::post('verify', 'Admin\AdminController@verify');
+});

@@ -21,12 +21,11 @@ class AppStorage {
         this.storeProfile_pic(profile_pic);
         this.storePermission(permission);
     }
+    storeAdmin(access){
+        localStorage.setItem('adminAccess',access);
+    }
     clear(){
-        localStorage.removeItem('token');
-        localStorage.removeItem('name');
-        localStorage.removeItem('email');
-        localStorage.removeItem('profile_pic');
-        localStorage.removeItem('permission');
+        localStorage.clear()
     }
     getToken(){
         localStorage.getItem('token');

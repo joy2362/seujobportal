@@ -45,7 +45,7 @@
                             <v-list-item
                             v-for="(item, index) in items"
                             :key="index"
-                        to='/'
+                                to='/'
                             >
                             <v-list-item-title>{{ item.title }}</v-list-item-title>
                             </v-list-item>
@@ -190,8 +190,8 @@
                     <v-img
                   src="/asset/img/services/Design-Drawing-min.jpg"
                   lazy-src="/asset/img/services/Design-Drawing-min.jpg"
-                   height="250"
-                    width="250"
+                  height="250"
+                  width="250"
                     ></v-img>
                 <v-card-text>
                     <h1 class="h5">Design & Drawing</h1>

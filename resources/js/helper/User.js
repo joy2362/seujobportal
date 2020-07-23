@@ -3,6 +3,12 @@ import AppStorage from "./AppStorage";
 
 
     class User {
+        responseafteradminverify(){
+            const access = true;
+            AppStorage.storeAdmin(access);
+        }
+
+
         responseafterlogin(res){
             const access_token = res.data.access_token;
             const name = res.data.name;
