@@ -4,7 +4,7 @@
         flat
     >
         <v-toolbar-title class="text-uppercase red--text">
-            <span  class="font-weight-light">SouthEast <span class="font-weight-black">University</span></span>
+            <span  class="font-weight-light">SouthEast<span class="font-weight-black">University</span></span>
         </v-toolbar-title>
         <v-spacer></v-spacer>
         <v-toolbar-items class="hidden-sm-and-down">

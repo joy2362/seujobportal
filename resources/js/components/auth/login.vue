@@ -121,7 +121,8 @@
                                 title: 'Signed in successfully'
                             })
                             User.responseafterlogin(res);
-                            this.$router.push({name:'home'});
+
+                                this.$router.push({name:'home'});
                         })
                         .catch(error=>{
                             this.loading=false

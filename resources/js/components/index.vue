@@ -72,7 +72,7 @@
                 class="text-center"
                 cols="12"
             >
-                <span  class="font-weight-light h1 red--text">Browse <span class="font-weight-black">Top Sectors</span></span>
+                <span  class="font-weight-light h1 red--text  text-uppercase">Browse <span class="font-weight-black">Top Sectors</span></span>
             </v-col>
         </v-row>
         <v-row class="mt-8">
@@ -329,7 +329,7 @@
                     class="text-center"
                     cols="12"
                 >
-                    <span  class="font-weight-light h1 red--text">RECENT  <span class="font-weight-black">JOBS</span></span>
+                    <span  class="font-weight-light h1 red--text  text-uppercase">RECENT  <span class="font-weight-black">JOBS</span></span>
                 </v-col>
             </v-row>
             <v-row  class="mt-10">
@@ -663,7 +663,7 @@
                     class="text-center"
                     cols="12"
                 >
-                    <span  class="font-weight-light h1 red--text">Featured  <span class="font-weight-black">Jobs</span></span>
+                    <span  class="font-weight-light h1 red--text  text-uppercase">Featured  <span class="font-weight-black ">Jobs</span></span>
                 </v-col>
             </v-row>
             <v-row  class="mt-10">
@@ -1127,7 +1127,7 @@
                 </v-col>
             </v-row>
         </v-container>
-        <bottom-footer></bottom-footer>
+        <bottom-footer ></bottom-footer>
     </v-app>
 </template>
 <script>

@@ -58,6 +58,9 @@
         if (! User.isAdmin()){
             this.$router.push({name:'home'});
         }
+            if (User.hasadminaccess()) {
+                this.$router.push({name: 'adminhome'});
+            }
 
     },
     validations: {

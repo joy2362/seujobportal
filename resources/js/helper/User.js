@@ -7,7 +7,14 @@ import AppStorage from "./AppStorage";
             const access = true;
             AppStorage.storeAdmin(access);
         }
-
+        hasadminaccess(){
+            const access = localStorage.getItem('adminAccess');
+            if(access){
+                return true
+            }else {
+                return false
+            }
+        }
 
         responseafterlogin(res){
             const access_token = res.data.access_token;

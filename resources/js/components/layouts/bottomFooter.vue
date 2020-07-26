@@ -2,7 +2,6 @@
     <!--footer-->
     <div class="sitefooter">
         <v-footer
-
         >
             <v-row class="blue-grey darken-2 ">
                 <v-container>
