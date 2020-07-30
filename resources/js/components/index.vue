@@ -26,7 +26,6 @@
                                     <v-text-field
                                         flat
                                         dark
-                                        v-model="keyword"
                                         label="Keyword"
                                         required
                                     ></v-text-field>
@@ -38,7 +37,6 @@
                                 >
                                     <v-select
                                         dark
-                                        v-model="select"
                                         :items="items"
                                         label="Location"
                                         required
@@ -72,7 +70,7 @@
                 class="text-center"
                 cols="12"
             >
-                <span  class="font-weight-light h1 red--text  text-uppercase">Browse <span class="font-weight-black">Top Sectors</span></span>
+                <span  class="font-weight-light h1 red--text  text-uppercase">Popolar <span class="font-weight-black">Categories</span></span>
             </v-col>
         </v-row>
         <v-row class="mt-8">
@@ -81,6 +79,8 @@
                 cols="12"
                 class="fill-height"
                 align="center"
+                v-for="item in category"
+                :key="item.id"
             >
                 <v-hover
                     v-slot:default="{ hover }"
@@ -90,214 +90,19 @@
                         :elevation="hover ? 16 : 2"
                         flat
                         class="pt-3"
+
                     >
-                        <v-img
-                            src="/asset/img/others/graphic-designer.png"
-                            lazy-src="/asset/img/others/graphic-designer.png"
-                            height="100"
-                            width="100"
-                        ></v-img>
                         <v-card-text>
-                            <h1 class="h5">Web Designer</h1>
-                            <p class="subtitle-1">512</p>
+                            <v-btn
+                                text
+                                small
+                                to="/"
+                            >
+                                {{item.name}}
+                            </v-btn>
+                            <p class="subtitle-1"> <v-chip >{{item.total_job}}</v-chip> Available position</p>
                         </v-card-text>
                     </v-card>
-                </v-hover>
-            </v-col>
-            <v-col
-                md="3"
-                cols="12"
-                class="fill-height"
-                align="center"
-            >
-                <v-hover
-                    v-slot:default="{ hover }"
-                    close-delay="200"
-                >
-                    <v-card
-                        :elevation="hover ? 16 : 2"
-                        flat
-                        class="pt-3"
-                    >
-                        <v-img
-                            src="/asset/img/others/graphic-designer.png"
-                            lazy-src="/asset/img/others/graphic-designer.png"
-                            height="100"
-                            width="100"
-                        ></v-img>
-                        <v-card-text>
-                            <h1 class="h5">Web Designer</h1>
-                            <p class="subtitle-1">512</p>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-col>
-            <v-col
-                md="3"
-                cols="12"
-                class="fill-height"
-                align="center"
-            >
-                <v-hover
-                    v-slot:default="{ hover }"
-                    close-delay="200"
-                >
-                    <v-card
-                        :elevation="hover ? 16 : 2"
-                        flat
-                        class="pt-3"
-                    >
-                        <v-img
-                            src="/asset/img/others/graphic-designer.png"
-                            lazy-src="/asset/img/others/graphic-designer.png"
-                            height="100"
-                            width="100"
-                        ></v-img>
-                        <v-card-text>
-                            <h1 class="h5">Web Designer</h1>
-                            <p class="subtitle-1">512</p>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-col>
-            <v-col
-                md="3"
-                cols="12"
-                class="fill-height"
-                align="center"
-            >
-                <v-hover
-                    v-slot:default="{ hover }"
-                    close-delay="200"
-                >
-                    <v-card
-                        :elevation="hover ? 16 : 2"
-                        flat
-                        class="pt-3"
-                    >
-                        <v-img
-                            src="/asset/img/others/graphic-designer.png"
-                            lazy-src="/asset/img/others/graphic-designer.png"
-                            height="100"
-                            width="100"
-                        ></v-img>
-                        <v-card-text>
-                            <h1 class="h5">Web Designer</h1>
-                            <p class="subtitle-1">512</p>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-col>
-            <v-col
-                md="3"
-                cols="12"
-                class="fill-height"
-                align="center"
-            >
-                <v-hover
-                    v-slot:default="{ hover }"
-                    close-delay="200"
-                >
-                    <v-card
-                        :elevation="hover ? 16 : 2"
-                        flat
-                        class="pt-3"
-                    >
-                        <v-img
-                            src="/asset/img/others/graphic-designer.png"
-                            lazy-src="/asset/img/others/graphic-designer.png"
-                            height="100"
-                            width="100"
-                        ></v-img>
-                        <v-card-text>
-                            <h1 class="h5">Web Designer</h1>
-                            <p class="subtitle-1">512</p>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-col>
-            <v-col
-                md="3"
-                cols="12"
-                class="fill-height"
-                align="center"
-            >
-                <v-hover
-                    v-slot:default="{ hover }"
-                    close-delay="200"
-                >
-                    <v-card
-                        :elevation="hover ? 16 : 2"
-                        flat
-                        class="pt-3"
-                    >
-                        <v-img
-                            src="/asset/img/others/graphic-designer.png"
-                            lazy-src="/asset/img/others/graphic-designer.png"
-                            height="100"
-                            width="100"
-                        ></v-img>
-                        <v-card-text>
-                            <h1 class="h5">Web Designer</h1>
-                            <p class="subtitle-1">512</p>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-col>
-            <v-col
-                md="3"
-                cols="12"
-                class="fill-height"
-                align="center"
-            >
-                <v-hover
-                    v-slot:default="{ hover }"
-                    close-delay="200"
-                >
-                    <v-card
-                        :elevation="hover ? 16 : 2"
-                        flat
-                        class="pt-3"
-                    >
-                        <v-img
-                            src="/asset/img/others/graphic-designer.png"
-                            lazy-src="/asset/img/others/graphic-designer.png"
-                            height="100"
-                            width="100"
-                        ></v-img>
-                        <v-card-text>
-                            <h1 class="h5">Web Designer</h1>
-                            <p class="subtitle-1">512</p>
-                        </v-card-text>
-                    </v-card>
-                </v-hover>
-            </v-col>
-            <v-col
-                md="3"
-                cols="12"
-                class="fill-height"
-                align="center"
-            >
-                <v-hover
-                    v-slot:default="{ hover }"
-                    close-delay="200"
-                >
-                <v-card
-                    :elevation="hover ? 16 : 2"
-                    flat
-                    class="pt-3"
-                >
-                    <v-img
-                        src="/asset/img/others/graphic-designer.png"
-                        lazy-src="/asset/img/others/graphic-designer.png"
-                        height="100"
-                        width="100"
-                    ></v-img>
-                    <v-card-text>
-                        <h1 class="h5">Web Designer</h1>
-                        <p class="subtitle-1">512</p>
-                    </v-card-text>
-                </v-card>
                 </v-hover>
             </v-col>
         </v-row>
@@ -335,6 +140,7 @@
             <v-row  class="mt-10">
                 <v-col
                 cols="12"
+                md="6"
                 >
                     <v-card
                         outlined
@@ -388,6 +194,7 @@
                     </v-card>
                 </v-col>
                 <v-col
+                    md="6"
                     cols="12"
                 >
                     <v-card
@@ -443,6 +250,7 @@
                 </v-col>
                 <v-col
                     cols="12"
+                    md="6"
                 >
                     <v-card
                         outlined
@@ -495,6 +303,7 @@
                 </v-col>
                 <v-col
                     cols="12"
+                    md="6"
                 >
                     <v-card
                         outlined
@@ -669,6 +478,7 @@
             <v-row  class="mt-10">
                 <v-col
                     cols="12"
+                    md="6"
                 >
                     <v-card
                         outlined
@@ -723,6 +533,7 @@
                 </v-col>
                 <v-col
                     cols="12"
+                    md="6"
                 >
                     <v-card
                         outlined
@@ -777,6 +588,7 @@
                 </v-col>
                 <v-col
                     cols="12"
+                    md="6"
                 >
                     <v-card
                         outlined
@@ -829,6 +641,7 @@
                 </v-col>
                 <v-col
                     cols="12"
+                    md="6"
                 >
                     <v-card
                         outlined
@@ -895,217 +708,403 @@
             </v-row>
             <v-row  class="mt-10">
                 <v-col
-                    cols="12"
+                    md="6"
+                    col="12"
                 >
-                    <v-card
-                        outlined
+                    <v-row
+                        align="center"
+                        justify="center"
                     >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
+                        <v-col
+                            class="text-center"
+                            cols="12"
+                        >
+                            <span  class=" h4 blue-grey--text">Outside  Dhaka</span>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
                             >
-                                <v-img
-                                    src="asset/img/others/job/job-list3.png"
-                                >
-                                </v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content
+                                <v-list-item three-line>
+
+                                    <v-list-item-content
+                                    >
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
+
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
                             >
-                                <v-list-item-title class=" mb-1">
-                                    <v-btn
-                                        text
-                                        to="/"
-                                        class="headline"
-                                    >
-                                        Customer Service Master Class
-                                    </v-btn>
+                                <v-list-item three-line>
 
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                >
-                                    <v-chip
-                                        class="ma-2"
+                                    <v-list-item-content
                                     >
-                                        Creative Agency
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-map-marker</v-icon>
-                                        Dhaka, Bangladesh
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-timetable</v-icon>
-                                        01/09/2020
-                                    </v-chip>
-                                </v-list-item-subtitle>
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
 
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
+                            >
+                                <v-list-item three-line>
+
+                                    <v-list-item-content
+                                    >
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
+
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
+                            >
+                                <v-list-item three-line>
+
+                                    <v-list-item-content
+                                    >
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
+
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                    </v-row>
                 </v-col>
                 <v-col
-                    cols="12"
+                    md="6"
+                    col="12"
                 >
-                    <v-card
-                        outlined
+                    <v-row
+                        align="center"
+                        justify="center"
                     >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
+                        <v-col
+                            class="text-center"
+                            cols="12"
+                        >
+                            <span  class=" h4 blue-grey--text">Inside  Dhaka</span>
+                        </v-col>
+                    </v-row>
+                    <v-row>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
                             >
-                                <v-img
-                                    src="asset/img/others/job/job-list3.png"
-                                >
-                                </v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content
+                                <v-list-item three-line>
+
+                                    <v-list-item-content
+                                    >
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
+
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
                             >
-                                <v-list-item-title class=" mb-1">
-                                    <v-btn
-                                        text
-                                        to="/"
-                                        class="headline"
-                                    >
-                                        Customer Service Master Class
-                                    </v-btn>
+                                <v-list-item three-line>
 
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                >
-                                    <v-chip
-                                        class="ma-2"
+                                    <v-list-item-content
                                     >
-                                        Creative Agency
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-map-marker</v-icon>
-                                        Dhaka, Bangladesh
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-timetable</v-icon>
-                                        01/09/2020
-                                    </v-chip>
-                                </v-list-item-subtitle>
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
 
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
+                            >
+                                <v-list-item three-line>
+
+                                    <v-list-item-content
+                                    >
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
+
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                        <v-col
+                            cols="12"
+                        >
+                            <v-card
+                                outlined
+                            >
+                                <v-list-item three-line>
+
+                                    <v-list-item-content
+                                    >
+                                        <v-list-item-title class=" mb-1">
+                                            <v-btn
+                                                text
+                                                to="/"
+                                                class="headline"
+                                            >
+                                                Customer Service Master Class
+                                            </v-btn>
+
+                                        </v-list-item-title>
+                                        <v-list-item-subtitle
+                                        >
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                Creative Agency
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-map-marker</v-icon>
+                                                Dhaka, Bangladesh
+                                            </v-chip>
+                                            <v-chip
+                                                class="ma-2"
+                                            >
+                                                <v-icon left>mdi-timetable</v-icon>
+                                                01/09/2020
+                                            </v-chip>
+                                        </v-list-item-subtitle>
+
+                                    </v-list-item-content>
+                                </v-list-item>
+                            </v-card>
+                        </v-col>
+                    </v-row>
                 </v-col>
-                <v-col
-                    cols="12"
-                >
-                    <v-card
-                        outlined
-                    >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
-                            >
-                                <v-img
-                                    src="asset/img/others/job/job-list3.png"
-                                >
-                                </v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content
-                            >
-                                <v-list-item-title class=" mb-1">
-                                    <v-btn
-                                        text
-                                        to="/"
-                                        class="headline"
-                                    >
-                                        Customer Service Master Class
-                                    </v-btn>
 
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                >
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        Creative Agency
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-map-marker</v-icon>
-                                        Dhaka, Bangladesh
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-timetable</v-icon>
-                                        01/09/2020
-                                    </v-chip>
-                                </v-list-item-subtitle>
 
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-                </v-col>
-                <v-col
-                    cols="12"
-                >
-                    <v-card
-                        outlined
-                    >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
-                            >
-                                <v-img
-                                    src="asset/img/others/job/job-list3.png"
-                                >
-                                </v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content
-                            >
-                                <v-list-item-title class=" mb-1">
-                                    <v-btn
-                                        text
-                                        to="/"
-                                        class="headline"
-                                    >
-                                        Customer Service Master Class
-                                    </v-btn>
-
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                >
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        Creative Agency
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-map-marker</v-icon>
-                                        Dhaka, Bangladesh
-                                    </v-chip>
-                                    <v-chip
-                                    class="ma-2"
-                                >
-                                    <v-icon left>mdi-timetable</v-icon>
-                                    01/09/2020
-                                </v-chip>
-                                </v-list-item-subtitle>
-
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-                </v-col>
             </v-row>
             <v-row
                 align="center"
@@ -1143,6 +1142,7 @@ export default {
         if (!User.isverifiedAccount()){
             this.$router.push({name:'emailverify'});
         }
+        this.fatchcategory();
     },
     data(){
         return {
@@ -1157,6 +1157,16 @@ export default {
                 'Item 3',
                 'Item 4',
             ],
+            category:[],
+        }
+    },
+    methods:{
+        fatchcategory(){
+            axios.get('/api/admin/category/index')
+                .then(res =>{
+                    this.category=res.data;
+                    console.log(this.category)
+                })
         }
     },
     components:{
