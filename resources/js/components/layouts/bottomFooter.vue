@@ -5,14 +5,19 @@
         >
             <v-row class="blue-grey darken-2 ">
                 <v-container>
-                    <v-row class="grey--text text--lighten-4 ">
+                    <v-row class="grey--text text--lighten-4 font-weight-thin">
                         <v-col
                             md="4"
                             cols="12"
                         >
                             <h1 class="h4">ABOUT US</h1>
-                            <h1 class="body-2 footerabout">
-                                Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged.                            </h1>
+                            <v-toolbar-title class="text-uppercase red--text mt-5 mb-5 h1" >
+                                <span  class="font-weight-light">SouthEast<span class="font-weight-black">University</span></span>
+                            </v-toolbar-title>
+                            <h1 class="body-2 ">
+                                The Vision of Southeast University is:
+                                To Obtain Global Recognition as a World Class University.
+                            </h1>
                         </v-col>
                         <v-col
                             md="2"
@@ -33,9 +38,12 @@
                             cols="12"
                         >
                             <h1 class="h4">CONTACT US</h1>
-                            <h1 class="body-2"><v-icon dark>mdi-map-marker</v-icon> Address: 144/1A Matikata, Dhaka Cantonment Dhaka, Bangladesh 1206.</h1>
-                            <h1 class="body-2"><v-icon dark>mdi-headset</v-icon> Phone: 01751-464765</h1>
-                            <h1 class="body-2"><v-icon dark>mdi-gmail</v-icon> Email: unitedengineering201@gmail.com</h1>
+                            <h1 class="body-2"><v-icon class="cyan--text">mdi-map-marker-outline</v-icon> Permanent Campus:
+                                251/A and 252
+                                Tejgaon Industrial Area
+                                Dhaka-1208</h1>
+                            <h1 class="body-2"><v-icon class="cyan--text">mdi-phone</v-icon> For Inquiry: 55034125</h1>
+                            <h1 class="body-2"><v-icon class="cyan--text">mdi-email-outline</v-icon> Email: admission@seu.ac.bd</h1>
 
                         </v-col>
                         <v-col
@@ -77,7 +85,4 @@
     }
 </script>
 <style scoped>
-    .footerabout {
-        text-align: justify;
-    }
 </style>
