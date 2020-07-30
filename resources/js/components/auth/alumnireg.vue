@@ -66,7 +66,9 @@
                                 ></v-file-input>
                                 <v-select
                                     v-model="selectedfiled"
-                                    :items="fields"
+                                    item-text="name"
+                                    item-value="id"
+                                    :items="category"
                                     chips
                                     label="Interest Fields"
                                     multiple
@@ -110,9 +112,24 @@
     import User from "../../helper/User";
     export default {
         name: "alumnireg",
+        created() {
+            if (User.loggedIn()){
+                this.$router.push({name:'home'});
+            }
+            this.fatchdata();
+        },
         validations: {
             email: { required ,email },
-            password: { required,minLength: minLength(6)  },
+            password: { required,minLength: minLength(6),
+                strongPassword(password) {
+                    return (
+                        /[a-z]/.test(password) && // checks for a-z
+                        /[0-9]/.test(password) && // checks for 0-9
+                        /\W|_/.test(password)  // checks for special char
+
+                    );
+                }
+            },
             name:{required,minLength:minLength(5)},
             repeatpassword:{required,minLength: minLength(6), sameAsPassword: sameAs("password")},
             image:{required},
@@ -129,7 +146,7 @@
                 image:null,
                 selectedfiled: [],
                 cv:null,
-                fields: ['It', 'bank', 'hospital', 'web'],
+                category: [],
             }
         },
         computed:{
@@ -144,6 +161,7 @@
                 const errors = []
                 if (!this.$v.password.$dirty) return errors
                 !this.$v.password.minLength && errors.push('Password Must Be At least 6 digit')
+                !this.$v.password.strongPassword && errors.push(' passwords need to have a letter, a number, a special character, and be more than 6 characters long.')
                 !this.$v.password.required && errors.push('Password is required')
                 return errors
             },
@@ -182,6 +200,12 @@
             }
         },
         methods:{
+            fatchdata(){
+                axios.get('/api/admin/category/index')
+                .then(res =>{
+                    this.category=res.data;
+                })
+            },
             reg(){
                 this.$v.$touch()
                 if (this.$v.$invalid) {

@@ -2,16 +2,17 @@
 
 namespace App;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Alumnni extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable  ,SoftDeletes;
 
     protected $fillable = [
-        'name', 'email', 'password','pro_pic' ,'user_type','cv'
+        'name', 'email', 'password','pro_pic' ,'user_type','activation_token','active'
     ];
 
     /**
@@ -20,7 +21,7 @@ class Alumnni extends Authenticatable implements JWTSubject
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'user_type'
+        'password', 'remember_token', 'user_type','activation_token'
     ];
 
     /**

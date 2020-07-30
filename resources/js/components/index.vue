@@ -1140,7 +1140,9 @@ export default {
         if (! User.loggedIn()){
             this.$router.push({name:'login'});
         }
-
+        if (!User.isverifiedAccount()){
+            this.$router.push({name:'emailverify'});
+        }
     },
     data(){
         return {

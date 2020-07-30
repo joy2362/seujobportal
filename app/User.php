@@ -3,16 +3,18 @@
 namespace App;
 
 use Tymon\JWTAuth\Contracts\JWTSubject;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
-class User extends Authenticatable implements JWTSubject , MustVerifyEmail
+class User extends Authenticatable implements JWTSubject
 {
-    use Notifiable;
+    use Notifiable ,SoftDeletes;
+
+    protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'name', 'email', 'password','pro_pic' ,'user_type'
+        'name', 'email', 'password','pro_pic' ,'user_type','activation_token','active'
     ];
 
     /**
@@ -21,7 +23,7 @@ class User extends Authenticatable implements JWTSubject , MustVerifyEmail
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'user_type'
+        'password', 'remember_token', 'user_type','activation_token'
     ];
 
     /**

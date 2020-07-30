@@ -49,8 +49,15 @@
 </template>
 
 <script>
+    import User from "../../helper/User";
+
     export default {
         name: "registation",
+        created() {
+            if (User.loggedIn()){
+                this.$router.push({name:'home'});
+            }
+        },
     }
 </script>
 

@@ -1,106 +1,6 @@
 <template>
     <v-app>
-        <v-container >
-            <v-toolbar  flat >
-                <v-toolbar-items >
-                    <v-app-bar-nav-icon  @click="sideMenu = !sideMenu"></v-app-bar-nav-icon>
-                </v-toolbar-items>
-                <v-toolbar-title class="text-uppercase red--text">
-                    <span  class="font-weight-light">Admin<span class="font-weight-black">Panel</span></span>
-                </v-toolbar-title>
-                <v-spacer></v-spacer>
-                <v-toolbar-items >
-                    <v-menu  offset-y>
-                        <template v-slot:activator="{ on, attrs }">
-                            <v-avatar
-                                size="52"
-                                v-bind="attrs"
-                                v-on="on"
-                            >
-                                <v-img
-                                    :src="'/'+user.image"
-                                >
-                                </v-img>
-                            </v-avatar>
-                        </template>
-                        <v-list>
-                            <v-list-item
-                                to="/"
-                            >
-                                <v-list-item-title>
-                                    <v-icon>
-                                        mdi-account
-                                    </v-icon>
-                                    Profile
-                                </v-list-item-title>
-                            </v-list-item>
-                            <v-list-item
-                                to="/"
-                            >
-                                <v-list-item-title>
-                                    <v-icon>
-                                        mdi-tune
-                                    </v-icon>
-                                    Setting</v-list-item-title>
-                            </v-list-item>
-                            <v-list-item
-                                to="/logout"
-                            >
-                                <v-list-item-title>
-                                <v-icon>mdi-exit-to-app</v-icon>
-                                    Logout
-                                </v-list-item-title>
-                            </v-list-item>
-                        </v-list>
-                    </v-menu>
-
-                </v-toolbar-items>
-            </v-toolbar>
-            <v-navigation-drawer
-                v-model="sideMenu"
-                app
-                temporary
-            >
-                <v-list nav>
-                    <v-list-item two-line :class=" 'px-0'">
-                        <v-list-item-avatar>
-                            <v-img
-                                :src="'/'+user.image"
-                            >
-                            </v-img>
-                        </v-list-item-avatar>
-
-                        <v-list-item-content>
-                            <v-list-item-title>{{user.name}}</v-list-item-title>
-                            <v-list-item-subtitle >Logged In</v-list-item-subtitle>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                        <v-list-item
-                            to="/"
-                        >
-                            <v-list-item-icon>
-                                <v-icon>mdi-view-dashboard</v-icon>
-                            </v-list-item-icon>
-
-                            <v-list-item-content>
-                                <v-list-item-title>Dashboard</v-list-item-title>
-                            </v-list-item-content>
-                        </v-list-item>
-                    <v-list-item to='/'>
-                        <v-list-item-content >
-                            <v-list-item-title dark>About</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item to='/'>
-                        <v-list-item-content>
-                            <v-list-item-title dark>Contact</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list>
-
-            </v-navigation-drawer>
-        </v-container>
+        <Navbars></Navbars>
         <!--this end  navigration-->
        <v-container>
            <v-row>
@@ -289,24 +189,15 @@
            </v-row>
        </v-container>
         <v-footer>
-            <v-row>
-                <v-col
-                    class="grey darken-4 py-4 text-center white--text"
-                    cols="12"
-                >
-                    Copyright &copy;{{ new Date().getFullYear() }} | Southeast University | All rights reserved | Developed with
-                    <v-icon color="red">mdi-heart</v-icon> by <v-btn text dark href="#" target="_blank">
-                    Joy2362
-                </v-btn>
-                </v-col>
-            </v-row>
+            <BottomFooter></BottomFooter>
         </v-footer>
     </v-app>
 </template>
 
 <script>
     import User from "../../helper/User";
-
+    import Navbars from "./navigationBar"
+    import BottomFooter from "./BottomFooter"
     export default {
         name: "home",
         created() {
@@ -322,12 +213,7 @@
         },
         data(){
             return{
-                user:{
-                    name:User.name(),
-                    email:User.email(),
-                    image:User.picture(),
-                },
-                sideMenu:false,
+
                 recentApplicationsearch: '',
                 recentStudentsearch: '',
                 recentAlumnisearch: '',
@@ -422,6 +308,9 @@
                     },
                 ],
             }
+        },
+        components:{
+            Navbars,BottomFooter
         },
     }
 </script>

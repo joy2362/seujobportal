@@ -22,8 +22,9 @@ import AppStorage from "./AppStorage";
             const email = res.data.email;
             const profile_pic = res.data.profile_pic;
             const permission = res.data.permission;
-            if (Token.isValid(access_token , name , email ,profile_pic , permission)){
-                AppStorage.store(access_token,name,email,profile_pic,permission)
+            const emailVerify=res.data.emailVerify;
+            if (Token.isValid(access_token)){
+                AppStorage.store(access_token,name,email,profile_pic,permission,emailVerify)
             }
         }
 
@@ -89,7 +90,14 @@ import AppStorage from "./AppStorage";
                 localStorage.getItem('token');
             }
         }
-
+        isverifiedAccount(){
+            const emailVerify = localStorage.getItem('emailVerify')
+            if (emailVerify === "0" || emailVerify === "false" ){
+                return false;
+            }else{
+                return true;
+            }
+        }
         id(){
             if (this.loggedIn()){
                 const payload = Token.payload(localStorage.getItem('token'))

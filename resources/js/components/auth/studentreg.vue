@@ -33,7 +33,7 @@
                                 <v-text-field
                                     v-model="email"
                                     :error-messages="emailErrors"
-                                    label="E-mail"
+                                    label="University E-mail"
                                     prepend-icon="mdi-email"
                                     @input="$v.email.$touch()"
                                     @blur="$v.email.$touch()"
@@ -66,7 +66,9 @@
                                 ></v-file-input>
                                 <v-select
                                     v-model="selectedfiled"
-                                    :items="fields"
+                                    item-text="name"
+                                    item-value="id"
+                                    :items="category"
                                     chips
                                     label="Interest Fields"
                                     multiple
@@ -109,9 +111,24 @@
     import User from "../../helper/User";
     export default {
         name: "studentreg",
+        created() {
+            if (User.loggedIn()){
+                this.$router.push({name:'home'});
+            }
+            this.fatchdata();
+        },
         validations: {
-            email: { required ,email },
-            password: { required,minLength: minLength(6)  },
+            email: { required ,email  },
+            password: { required,minLength: minLength(6),
+                strongPassword(password) {
+                    return (
+                        /[a-z]/.test(password) && // checks for a-z
+                        /[0-9]/.test(password) && // checks for 0-9
+                        /\W|_/.test(password)  // checks for special char
+
+                    );
+                }
+            },
             name:{required,minLength:minLength(5)},
             repeatpassword:{required,minLength: minLength(6), sameAsPassword: sameAs("password")},
             image:{required},
@@ -128,7 +145,7 @@
                 image:null,
                 selectedfiled: [],
                 cv:null,
-                fields: ['It', 'bank', 'hospital', 'web'],
+                category: [],
                 loading:false,
             }
         },
@@ -136,14 +153,15 @@
             emailErrors () {
                 const errors = []
                 if (!this.$v.email.$dirty) return errors
-                !this.$v.email.email && errors.push('Must be valid e-mail')
+                !this.$v.email.email && errors.push('Must be Your University Email')
                 !this.$v.email.required && errors.push('E-mail is required')
                 return errors
             },
             passwordErrors () {
                 const errors = []
                 if (!this.$v.password.$dirty) return errors
-                !this.$v.password.minLength && errors.push('Password Must Be At least 6 digit')
+                !this.$v.password.minLength && errors.push('Password Must Be 6 characters long')
+                !this.$v.password.strongPassword && errors.push(' passwords need to have a letter, a number, a special character, and be more than 6 characters long.')
                 !this.$v.password.required && errors.push('Password is required')
                 return errors
             },
@@ -182,6 +200,12 @@
             }
         },
         methods:{
+            fatchdata(){
+                axios.get('/api/admin/category/index')
+                    .then(res =>{
+                        this.category=res.data;
+                    })
+            },
             reg(){
                 this.loading=true;
                 this.$v.$touch()
@@ -214,7 +238,13 @@
                         })
                         .catch(error => {
                             this.loading=false;
-                            if (error.response.data.message){
+                            if (error.response.data.errors.email){
+                                Swal.fire(
+                                    'Sorry!',
+                                    error.response.data.errors.email[0],
+                                    'error'
+                                )
+                            }else{
                                 Swal.fire(
                                     'Sorry!',
                                     error.response.data.message,

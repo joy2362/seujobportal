@@ -15,7 +15,6 @@ class AdminSeeder extends Seeder
     {
         Admin::create([
             'name' => 'Abdullah Zahid',
-            'user_type' => '1',
             'pro_pic' => 'asset/img/admin/joy2362.jpg',
             'email' => 'abdullahzahidjoy@gmail.com',
             'email_verified_at'=>'2020-02-27 13:46:39',

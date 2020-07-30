@@ -7,6 +7,7 @@ use App\Alumnni;
 use App\Faculty;
 use App\interestSectionAlumni;
 use App\interestSectionStudent;
+use App\Notifications\Emailverification;
 use App\User;
 use http\Env\Response;
 use Illuminate\Support\Facades\Hash;
@@ -84,6 +85,7 @@ class AuthController extends Controller
             'email' => auth('faculty')->user()->email,
             'permission' => auth('faculty')->user()->user_type,
             'profile_pic' => auth('faculty')->user()->pro_pic,
+            'emailVerify'=>auth('faculty')->user()->active,
             'expires_in' =>  auth('faculty')->factory()->getTTL() * 60
         ]);
     }
@@ -96,6 +98,7 @@ class AuthController extends Controller
             'email' => auth('api')->user()->email,
             'permission' => auth('api')->user()->user_type,
             'profile_pic' => auth('api')->user()->pro_pic,
+            'emailVerify'=>auth('api')->user()->active,
             'expires_in' =>  auth('api')->factory()->getTTL() * 60
         ]);
     }
@@ -118,6 +121,7 @@ class AuthController extends Controller
             'token_type' => 'bearer',
             'name' => auth('alumni')->user()->name,
             'email' => auth('alumni')->user()->email,
+            'emailVerify'=>auth('alumni')->user()->active,
             'permission' => auth('alumni')->user()->user_type,
             'profile_pic' => auth('alumni')->user()->pro_pic,
             'expires_in' =>  auth('alumni')->factory()->getTTL() * 60
@@ -130,20 +134,24 @@ class AuthController extends Controller
             return response()->json(['message' => 'Email already taken'] ,404);
         }
 
+        $img = $request->file('image');
         $ext = $request->file('image')->extension();
         $name=Str::random(10).".".$ext;
-        $img=Image::make($request->image)->resize(250,250);
         $upload='asset/img/faculty';
         $img_name=$upload.'/'.$name;
-        $img->save($img_name);
+        Image::make($request->image)->resize(250,250);
+        $img->move($upload,$name);
 
         $user=new Faculty;
         $user->name =$request->name;
-        $user->user_type = "2";
         $user->email=$request->email;
         $user->password=Hash::make($request->password);
         $user->pro_pic = $img_name;
+        $user->activation_token = Str::random(60);
         $user->save();
+        $user->notify(
+            new Emailverification($user)
+        );
         return response()->json(['message'=>'Registation Complete']);
     }
 
@@ -155,12 +163,13 @@ class AuthController extends Controller
 
         $number=count($request->interestfield);
 
+        $img = $request->file('image');
         $ext = $request->file('image')->extension();
         $name=Str::random(10).".".$ext;
-        $img=Image::make($request->image)->resize(250,250);
-        $upload='asset/img/alumni';
+        $upload='asset/img/faculty';
         $img_name=$upload.'/'.$name;
-        $img->save($img_name);
+        Image::make($request->image)->resize(250,250);
+        $img->move($upload,$name);
 
         $cv = $request->file('cv');
         $cvext=$request->file('cv')->extension();
@@ -171,11 +180,11 @@ class AuthController extends Controller
 
         $user=new Alumnni;
         $user->name =$request->name;
-        $user->user_type = "3";
         $user->email=$request->email;
         $user->password=Hash::make($request->password);
         $user->pro_pic = $img_name;
         $user->cv =  $cvsource;
+        $user->activation_token = Str::random(60);
         $user->save();
         $userid=$user->id;
 
@@ -186,20 +195,27 @@ class AuthController extends Controller
             $section->section=$request->interestfield[$i];
             $section->save();
         }
+        $user->notify(
+            new Emailverification($user)
+        );
         return response()->json(['message'=>'Registation Complete']);
     }
 
     public function studentreg(Request $request){
+        $validatedData = $request->validate([
+            'email' => 'required|ends_with:@seu.edu.bd',
+        ]);
         if($this->EmailCheck($request->email)){
             return response()->json(['message' => 'Email already taken'] ,404);
         }
         $number=count($request->interestfield);
+        $img = $request->file('image');
         $ext = $request->file('image')->extension();
         $name=Str::random(10).".".$ext;
-        $img=Image::make($request->image)->resize(250,250);
-        $upload='asset/img/student';
+        $upload='asset/img/faculty';
         $img_name=$upload.'/'.$name;
-        $img->save($img_name);
+        Image::make($request->image)->resize(250,250);
+        $img->move($upload,$name);
 
         $cv = $request->file('cv');
         $cvext=$request->file('cv')->extension();
@@ -210,11 +226,11 @@ class AuthController extends Controller
 
         $user = User::create([
             'name' => $request->name,
-            'user_type' => '4',
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'pro_pic' => $img_name,
             'cv' => $cvsource,
+            'activation_token' => Str::random(60),
         ]);
         $userid=$user->id;
 
@@ -224,6 +240,9 @@ class AuthController extends Controller
             $section->section=$request->interestfield[$i];
             $section->save();
         }
+        $user->notify(
+            new Emailverification($user)
+        );
 
         return response()->json(['message'=>'Registation Complete']);
     }

@@ -16,13 +16,16 @@ class CreateFacultiesTable extends Migration
         Schema::create('faculties', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('user_type');
+            $table->string('user_type')->default(2);
             $table->string('email')->unique();
             $table->string('pro_pic');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->string('activation_token');
+            $table->boolean('active')->default(false);
+            $table->softDeletes();
         });
     }
 

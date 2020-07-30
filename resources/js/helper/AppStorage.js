@@ -14,12 +14,16 @@ class AppStorage {
     storePermission(permission){
         localStorage.setItem('permission',permission);
     }
-    store(access_token,name,email,profile_pic,permission){
+    storeemailVerify(emailVerify){
+        localStorage.setItem('emailVerify',emailVerify);
+    }
+    store(access_token,name,email,profile_pic,permission,emailVerify){
         this.storeToken(access_token);
         this.storeName(name);
         this.storeEmail(email);
         this.storeProfile_pic(profile_pic);
         this.storePermission(permission);
+        this.storeemailVerify(emailVerify);
     }
     storeAdmin(access){
         localStorage.setItem('adminAccess',access);
@@ -42,6 +46,7 @@ class AppStorage {
     getPermission(){
         localStorage.getItem('permission');
     }
+
 
 }
 
