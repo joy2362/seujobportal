@@ -1,0 +1,126 @@
+<template>
+    <div>
+        <v-container >
+            <v-toolbar  flat >
+                <v-toolbar-items >
+                    <v-app-bar-nav-icon  @click="sideMenu = !sideMenu"></v-app-bar-nav-icon>
+                </v-toolbar-items>
+                <v-toolbar-title class="text-uppercase red--text">
+                    <span  class="font-weight-light">Admin<span class="font-weight-black">Panel</span></span>
+                </v-toolbar-title>
+                <v-spacer></v-spacer>
+                <v-toolbar-items >
+                    <v-menu  offset-y>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-avatar
+                                size="52"
+                                v-bind="attrs"
+                                v-on="on"
+                            >
+                                <v-img
+                                    :src="'/'+user.image"
+                                >
+                                </v-img>
+                            </v-avatar>
+                        </template>
+                        <v-list>
+                            <v-list-item
+                                to="/"
+                            >
+                                <v-list-item-title>
+                                    <v-icon>
+                                        mdi-account
+                                    </v-icon>
+                                    Profile
+                                </v-list-item-title>
+                            </v-list-item>
+                            <v-list-item
+                                to="/"
+                            >
+                                <v-list-item-title>
+                                    <v-icon>
+                                        mdi-tune
+                                    </v-icon>
+                                    Setting</v-list-item-title>
+                            </v-list-item>
+                            <v-list-item
+                                to="/logout"
+                            >
+                                <v-list-item-title>
+                                    <v-icon>mdi-exit-to-app</v-icon>
+                                    Logout
+                                </v-list-item-title>
+                            </v-list-item>
+                        </v-list>
+                    </v-menu>
+
+                </v-toolbar-items>
+            </v-toolbar>
+            <v-navigation-drawer
+                v-model="sideMenu"
+                app
+                temporary
+            >
+                <v-list nav>
+                    <v-list-item two-line :class=" 'px-0'">
+                        <v-list-item-avatar>
+                            <v-img
+                                :src="'/'+user.image"
+                            >
+                            </v-img>
+                        </v-list-item-avatar>
+
+                        <v-list-item-content>
+                            <v-list-item-title>{{user.name}}</v-list-item-title>
+                            <v-list-item-subtitle >Logged In</v-list-item-subtitle>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-divider></v-divider>
+                    <v-list-item
+                        to="/admin/home"
+                    >
+                        <v-list-item-icon>
+                            <v-icon>mdi-view-dashboard</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Dashboard</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item
+                        to='/admin/category'
+                    >
+                        <v-list-item-icon>
+                            <v-icon>mdi-reorder-horizontal</v-icon>
+                        </v-list-item-icon>
+                        <v-list-item-content>
+                            <v-list-item-title>Category</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list>
+
+            </v-navigation-drawer>
+        </v-container>
+    </div>
+</template>
+
+<script>
+    import User from "../../helper/User";
+
+    export default {
+        name: "navigationBar",
+        data(){
+            return{
+                user:{
+                    name:User.name(),
+                    email:User.email(),
+                    image:User.picture(),
+                },
+                sideMenu:false,
+            }
+        }
+    }
+</script>
+
+<style scoped>
+
+</style>
