@@ -149,9 +149,14 @@ class AuthController extends Controller
         $user->pro_pic = $img_name;
         $user->activation_token = Str::random(60);
         $user->save();
-        $user->notify(
-            new Emailverification($user)
-        );
+        try {
+            $user->notify(new Emailverification($user));
+        } catch (Exception $e) {
+            return response()->json(['message'=>'Email not valid Complete'],404);
+        }
+//        $user->notify(
+//            new Emailverification($user)
+//        );
         return response()->json(['message'=>'Registation Complete']);
     }
 

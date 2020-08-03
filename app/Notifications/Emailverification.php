@@ -39,6 +39,7 @@ class Emailverification extends Notification
     {
         $url = url('/email/'.$notifiable->activation_token);
         return (new MailMessage)
+            ->subject('Email Verification')
             ->line('Please click the button below to verify your email address.')
             ->action('Verify Email Address:', url($url))
             ->line('If you did not create an account, no further action is required.');
