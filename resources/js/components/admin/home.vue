@@ -308,6 +308,8 @@
                     },
                 ],
             }
+
+
         },
         components:{
             Navbars,BottomFooter

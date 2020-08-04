@@ -9,10 +9,13 @@ let studentreg = require('./components/auth/studentreg').default;
 let logout = require('./components/auth/logout').default;
 let emailverify = require('./components/auth/resendEmailverificatin').default;
 let confirmemail = require('./components/auth/checkEmail').default;
+
 //admin route
 let adminauth = require('./components/admin/index').default;
 let adminhome = require('./components/admin/home').default;
 let category = require('./components/admin/category/Category').default;
+let newjob = require('./components/admin/job/add').default;
+
 //home route
 let index = require('./components/index').default;
 
@@ -28,6 +31,7 @@ export const routes = [
     { path: '/reset/:token', component: reset, name: 'reset' },
     { path: '/admin/auth', component: adminauth, name: 'adminauth' },
     { path: '/admin/home', component: adminhome, name: 'adminhome' },
+    { path: '/admin/job/add', component: newjob, name: 'newjob' },
     { path: '/admin/category', component: category, name: 'Addcategory' },
     { path: '/email/verify/resend', component: emailverify, name: 'emailverify' },
     { path: '/email/:token', component: confirmemail, name: 'confirmemail' },
