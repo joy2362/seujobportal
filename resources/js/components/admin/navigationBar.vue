@@ -97,8 +97,30 @@
                             <v-list-item-title>Category</v-list-item-title>
                         </v-list-item-content>
                     </v-list-item>
-                </v-list>
+                    <v-list-group
+                        prepend-icon="mdi-briefcase"
+                    >
+                        <template v-slot:activator>
+                            <v-list-item-title>Job Post</v-list-item-title>
+                        </template>
+                        <v-list-item
+                            to='/admin/job/add'
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>Add new</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
 
+                        <v-list-item
+                            to='/admin/category'
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>Category</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                    </v-list-group>
+                </v-list>
             </v-navigation-drawer>
         </v-container>
     </div>

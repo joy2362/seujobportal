@@ -13,6 +13,7 @@ import User from './helper/User'
 window.Notification = Notification;
 window.Swal = Swal;
 window.user=User;
+
 const Toast = Swal.mixin({
     toast: true,
     position: 'top-end',
@@ -35,8 +36,6 @@ const router = new VueRouter({
     routes,
     mode: 'history',
 });
-
-
 const app = new Vue({
     el: '#app',
     vuetify: Vuetify,

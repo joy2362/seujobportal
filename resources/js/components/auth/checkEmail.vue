@@ -8,7 +8,6 @@
             this.token = this.$route.params.token;
             axios.get('/api/email/verify/'+this.token)
                 .then(res =>{
-                    console.log(res);
                     Swal.fire(
                         'Success!',
                         res.data.msg,

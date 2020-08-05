@@ -51,9 +51,10 @@ Route::group([
 ], function ($router) {
 
     Route::post('verify', 'Admin\AdminController@verify');
-    Route::post('category/add', 'jobHandler\CategoryController@store');
-    Route::post('category/update', 'jobHandler\CategoryController@update');
-    Route::get('category/index', 'jobHandler\CategoryController@index');
-    Route::get('category/destroy/{id}', 'jobHandler\CategoryController@destroy');
+    Route::post('category/add', 'admin\category\categoryController@store');
+    Route::post('job/add', 'admin\job\JobController@store');
+    Route::post('category/update', 'admin\category\categoryController@update');
+    Route::get('category/index', 'admin\category\categoryController@index');
+    Route::get('category/destroy/{id}', 'admin\category\categoryController@destroy');
 
 });

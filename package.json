@@ -28,6 +28,7 @@
     },
     "dependencies": {
         "sweetalert2": "^9.15.3",
+        "tiptap-vuetify": "^2.24.0",
         "vue-router": "^3.3.4",
         "vue-typewriter": "^2.2.1",
         "vuelidate": "^0.7.5",

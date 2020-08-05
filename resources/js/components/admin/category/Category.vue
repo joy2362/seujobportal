@@ -115,7 +115,7 @@
 <script>
     import User from "../../../helper/User";
     import TopNav from "../navigationBar"
-    import {required, minLength, email, sameAs} from 'vuelidate/lib/validators'
+    import {required, minLength} from 'vuelidate/lib/validators'
     import BottomFooter from "../BottomFooter"
     export default {
         name: "addCategory",
