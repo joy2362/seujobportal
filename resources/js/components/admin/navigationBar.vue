@@ -112,10 +112,10 @@
                         </v-list-item>
 
                         <v-list-item
-                            to='/admin/category'
+                            to='/admin/job/all'
                         >
                             <v-list-item-content>
-                                <v-list-item-title>Category</v-list-item-title>
+                                <v-list-item-title>All Job</v-list-item-title>
                             </v-list-item-content>
                         </v-list-item>
 

@@ -18,7 +18,8 @@ class JobController extends Controller
      */
     public function index()
     {
-        //
+        return response()->json(JobPost::all());
+
     }
 
     /**
@@ -59,7 +60,7 @@ class JobController extends Controller
         $job->vacency=$request->vacency;
         $job->save();
         $category=Category::where('id',$request->category)->first();
-        $category->total_job+=$request->vacency;
+        $category->total_job += $request->vacency;
         $category->save();
        return response()->json(['msg'=>'Job Post Added successfully']);
     }
@@ -95,6 +96,12 @@ class JobController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $job=JobPost::where('id',$id)->first();
+        $category=Category::where('id',$job->category)->first();
+        $category->total_job -= $job->vacency;
+        $category->save();
+        unlink($job->image);
+        JobPost::where('id',$id)->delete();
+        return response()->json(['msg'=>'Job Post Delete Successfully']);
     }
 }

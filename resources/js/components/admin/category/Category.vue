@@ -8,7 +8,7 @@
             >
                 <v-card class="red white--text" >
                     <v-card-title class="mb-3">
-                        <span class="mr-5">Recent Application</span>
+                        <span class="mr-5">Category</span>
                         <v-dialog v-model="dialog"  max-width="600px">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-btn
