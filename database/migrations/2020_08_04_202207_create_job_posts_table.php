@@ -15,14 +15,14 @@ class CreateJobPostsTable extends Migration
     {
         Schema::create('job_posts', function (Blueprint $table) {
             $table->id();
-            $table->text('title');
+            $table->text('name');
             $table->text('JobType');
             $table->text('location');
             $table->text('company');
             $table->text('address');
             $table->integer('experience');
             $table->integer('category');
-            $table->integer('offday');
+            $table->string('offday');
             $table->integer('salary');
             $table->longText('jobDetails');
             $table->longText('requerments');
@@ -32,7 +32,8 @@ class CreateJobPostsTable extends Migration
             $table->text('lastdate');
             $table->text('dutyStart');
             $table->text('dutyEnd');
-            $table->text('vacency');
+            $table->integer('vacency');
+            $table->boolean('verify')->default(0);
             $table->timestamps();
         });
     }

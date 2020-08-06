@@ -55,8 +55,11 @@ Route::group([
     Route::post('job/add', 'admin\job\JobController@store');
     Route::post('category/update', 'admin\category\categoryController@update');
     Route::get('category/index', 'admin\category\categoryController@index');
-    Route::get('job/index', 'admin\job\JobController@index');
     Route::get('category/destroy/{id}', 'admin\category\categoryController@destroy');
+    Route::get('job/index', 'admin\job\JobController@index');
     Route::get('job/destroy/{id}', 'admin\job\JobController@destroy');
+    Route::get('job/fatch/{id}', 'admin\job\JobController@fatch');
+    Route::get('job/show/{id}', 'admin\job\JobController@show');
+    Route::post('job/update/{id}', 'admin\job\JobController@update');
 
 });

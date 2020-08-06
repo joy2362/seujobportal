@@ -94,7 +94,14 @@
                 axios.get('/api/admin/job/index')
                     .then(res =>{
                         this.jobs=res.data;
+                        console.log(this.jobs);
                     })
+            },
+            JobEdit(item){
+                this.$router.push('/edit/job/'+ item.id);
+            },
+            JobShow(item){
+                this.$router.push('/show/job/'+ item.id);
             },
             deleteJob(item){
                 Swal.fire({

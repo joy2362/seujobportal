@@ -33,10 +33,10 @@
                                     md="6"
                                 >
                                     <v-text-field
-                                        v-model="title"
-                                        :error-messages="titleErrors"
-                                        @input="$v.title.$touch()"
-                                        @blur="$v.title.$touch()"
+                                        v-model="name"
+                                        :error-messages="nameErrors"
+                                        @input="$v.name.$touch()"
+                                        @blur="$v.name.$touch()"
                                         label="Title"
                                     ></v-text-field>
                                 </v-col>
@@ -234,8 +234,6 @@
                                 >
                                     <v-select
                                         v-model="selectedOffday"
-                                        item-text="name"
-                                        item-value="id"
                                         :items="offdays"
                                         label="Off day"
                                         :error-messages="selectedOffdayErrors"
@@ -391,7 +389,7 @@
             this.fatchallcategory();
         },
         validations: {
-            title:{required,minLength:minLength(5)},
+            name:{required,minLength:minLength(5)},
             selectedJobType:{required},
             selectedLocation:{required},
             experience:{required,integer},
@@ -413,7 +411,7 @@
         data(){
             return {
                 loading: false,
-                title:'',
+                name:'',
                 selectedJobType:'',
                 selectedLocation:'',
                 company:'',
@@ -461,35 +459,7 @@
 
                 ],
                 offdays:[
-                    {
-                        id:'1',
-                        name:'Friday'
-                    },
-                    {
-                        id:'2',
-                        name:'Saturday'
-                    },
-                    {
-                        id:'3',
-                        name:'Sunday'
-                    },
-                    {
-                        id:'4',
-                        name:'Monday'
-                    },
-                    {
-                        id:'5',
-                        name:'Tuesday'
-                    },
-                    {
-                        id:'6',
-                        name:'Wednesday'
-                    },
-                    {
-                        id:'7',
-                        name:'Thursday'
-                    },
-
+                    'Friday', 'Saturday', 'Sunday','Monday','Tuesday','Wednesday', 'Thursday'
                 ],
                 extensions: [
                     History,
@@ -515,11 +485,11 @@
             }
         },
         computed:{
-            titleErrors(){
+            nameErrors(){
                 const errors = []
-                if (!this.$v.title.$dirty) return errors
-                !this.$v.title.minLength && errors.push('Title Must Be At least 5 character')
-                !this.$v.title.required && errors.push('Title required')
+                if (!this.$v.name.$dirty) return errors
+                !this.$v.name.minLength && errors.push('Title Must Be At least 5 character')
+                !this.$v.name.required && errors.push('Title required')
                 return errors
             },
             companyErrors(){
@@ -648,7 +618,7 @@
                      })
                  }else{
                      const formData = new FormData();
-                     formData.append('title', this.title);
+                     formData.append('name', this.name);
                      formData.append('JobType', this.selectedJobType);
                      formData.append('location', this.selectedLocation);
                      formData.append('company', this.company);

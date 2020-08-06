@@ -16,6 +16,8 @@ let adminhome = require('./components/admin/home').default;
 let category = require('./components/admin/category/Category').default;
 let newjob = require('./components/admin/job/add').default;
 let alljob = require('./components/admin/job/index').default;
+let editjob = require('./components/admin/job/edit').default;
+let showjob = require('./components/admin/job/view').default;
 
 //home route
 let index = require('./components/index').default;
@@ -37,4 +39,6 @@ export const routes = [
     { path: '/admin/category', component: category, name: 'Addcategory' },
     { path: '/email/verify/resend', component: emailverify, name: 'emailverify' },
     { path: '/email/:token', component: confirmemail, name: 'confirmemail' },
+    { path: '/edit/job/:id', component: editjob, name: 'editjob' },
+    { path: '/show/job/:id', component: showjob, name: 'showjob' },
 ]
