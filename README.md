@@ -1,7 +1,7 @@
 
 ## About SeuJobPortal
 
-SeuJobPortal is a web based which is only for Southeast university.This is a final year project.In this project There is Four 4 type of user 
+SeuJobPortal is a web based which is only for Southeast university.This is a final year project.In this project There is 4 type of user 
 - Teacher 
 - Alumni
 - Student 
