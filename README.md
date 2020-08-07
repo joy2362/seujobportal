@@ -8,3 +8,4 @@ SeuJobPortal is a web based which is only for Southeast university.This is a fin
 - Admin
 
 This project is made with laravel and vue.js and use vuetify for component design.
+More Details will be added in future.
