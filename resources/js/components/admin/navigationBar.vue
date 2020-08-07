@@ -120,6 +120,29 @@
                         </v-list-item>
 
                     </v-list-group>
+                     <v-list-group
+                        prepend-icon="mdi-calendar-plus"
+                    >
+                        <template v-slot:activator>
+                            <v-list-item-title> Event </v-list-item-title>
+                        </template>
+                        <v-list-item
+                            to='/admin/event/add'
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>Add new</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item
+                            to='/admin/event/all'
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>All Event</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                    </v-list-group>
                 </v-list>
             </v-navigation-drawer>
         </v-container>

@@ -159,7 +159,6 @@
                                                 :max="dutyEnd"
                                                 format="24hr"
                                                 v-model="dutyStart"
-                                                no-title
                                                 @input="dutyStartMenu = false"
                                             >
                                             </v-time-picker>
@@ -194,8 +193,8 @@
                                                 :min="dutyStart"
                                                 format="24hr"
                                                 v-model="dutyEnd"
-                                                no-title
                                                 @input="dutyEndMenu = false"
+
                                             >
                                             </v-time-picker>
                                         </v-menu>
@@ -263,7 +262,7 @@
                                     >
                                         <v-text-field
                                             v-model="vacency"
-                                            label="Vacency"
+                                            label="Vacancy"
                                             :error-messages="vacencyErrors"
                                             @input="$v.vacency.$touch()"
                                             @blur="$v.vacency.$touch()"
@@ -272,7 +271,7 @@
                                     <v-col
                                         cols="12"
                                     >
-                                        <div>
+
                                             <tiptap-vuetify
                                                 v-model="jobDetails"
                                                 :extensions="extensions"
@@ -281,12 +280,12 @@
                                                 @input="$v.jobDetails.$touch()"
                                                 @blur="$v.jobDetails.$touch()"
                                             />
-                                        </div>
+
                                     </v-col>
                                     <v-col
                                         cols="12"
                                     >
-                                        <div>
+
                                             <tiptap-vuetify
                                                 v-model="requerments"
                                                 :extensions="extensions"
@@ -295,12 +294,12 @@
                                                 @input="$v.requerments.$touch()"
                                                 @blur="$v.requerments.$touch()"
                                             />
-                                        </div>
+
                                     </v-col>
                                     <v-col
                                         cols="12"
                                     >
-                                        <div>
+
                                             <tiptap-vuetify
                                                 v-model="qualification"
                                                 :extensions="extensions"
@@ -309,12 +308,12 @@
                                                 @input="$v.qualification.$touch()"
                                                 @blur="$v.qualification.$touch()"
                                             />
-                                        </div>
+
                                     </v-col>
                                     <v-col
                                         cols="12"
                                     >
-                                        <div>
+
                                             <tiptap-vuetify
                                                 v-model="benefit"
                                                 :extensions="extensions"
@@ -323,7 +322,6 @@
                                                 @input="$v.benefit.$touch()"
                                                 @blur="$v.benefit.$touch()"
                                             />
-                                        </div>
                                     </v-col>
                                 </v-row>
                             </v-form>

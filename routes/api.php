@@ -51,15 +51,22 @@ Route::group([
 ], function ($router) {
 
     Route::post('verify', 'Admin\AdminController@verify');
+
     Route::post('category/add', 'Admin\category\CategoryController@store');
-    Route::post('job/add', 'Admin\job\Jobcontroller@store');
     Route::post('category/update', 'Admin\category\CategoryController@update');
     Route::get('category/index', 'Admin\category\CategoryController@index');
     Route::get('category/destroy/{id}', 'Admin\category\CategoryController@destroy');
+
+    Route::post('job/add', 'Admin\job\Jobcontroller@store');
     Route::get('job/index', 'Admin\job\Jobcontroller@index');
     Route::get('job/destroy/{id}', 'Admin\job\Jobcontroller@destroy');
     Route::get('job/fatch/{id}', 'Admin\job\Jobcontroller@fatch');
     Route::get('job/show/{id}', 'Admin\job\Jobcontroller@show');
     Route::post('job/update/{id}', 'Admin\job\Jobcontroller@update');
 
+    Route::get('event/destroy/{id}', 'Admin\event\EventController@destroy');
+    Route::post('event/update/{id}', 'Admin\event\EventController@update');
+    Route::get('event/show/{id}', 'Admin\event\EventController@show');
+    Route::get('event/index', 'Admin\event\EventController@index');
+    Route::post('event/add', 'Admin\event\EventController@store');
 });

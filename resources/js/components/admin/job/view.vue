@@ -1,7 +1,5 @@
 <template>
     <v-app>
-
-
     <TopNav></TopNav>
     <v-container>
     <v-card>
@@ -52,7 +50,7 @@
                         <h4 class="body-1">Salary:- {{job.salary}} BDT</h4>
                     </v-col>
                     <v-col cols="12" md="3">
-                        <h4 class="body-1">Vacency:- {{job.vacency}}</h4>
+                        <h4 class="body-1">Vacancy:- {{job.vacency}}</h4>
                     </v-col>
                     <v-col class="mt-5" cols="12" >
                         <span>Job Details</span>

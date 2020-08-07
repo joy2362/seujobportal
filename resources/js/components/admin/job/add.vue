@@ -160,7 +160,6 @@
                                             :max="dutyEnd"
                                             format="24hr"
                                             v-model="dutyStart"
-                                            no-title
                                             @input="dutyStartMenu = false"
                                         >
                                         </v-time-picker>
@@ -195,7 +194,6 @@
                                             :min="dutyStart"
                                             format="24hr"
                                             v-model="dutyEnd"
-                                            no-title
                                             @input="dutyEndMenu = false"
                                         >
                                         </v-time-picker>
@@ -335,9 +333,7 @@
             </v-col>
         </v-row>
     </v-container>
-    <v-footer
-
-    >
+    <v-footer>
         <BottomFooter></BottomFooter>
     </v-footer>
     <v-dialog
@@ -583,6 +579,25 @@
             },
         },
         methods:{
+            clearForm(){
+                this.name='';
+                this.selectedJobType='';
+                this.selectedLocation='';
+                this.company='';
+                this.address='';
+                this.experience='';
+                this.selectedCategory='';
+                this.selectedOffday=[];
+                this.salary="";
+                this.jobDetails=null;
+                this.requerments=null;
+                this.qualification=null;
+                this.benefit=null;
+                this.vacency='';
+                this.lastdate= null;
+                this.dutyStart=null;
+                this.dutyEnd=null;
+            },
             fatchallcategory(){
                 axios.get('/api/admin/category/index')
                     .then(res =>{
@@ -629,6 +644,7 @@
                              res.data.msg,
                              'success'
                          )
+                         this.clearForm();
                      })
                      .catch(error => {
                          this.loading = false;
