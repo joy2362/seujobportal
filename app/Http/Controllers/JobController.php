@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Category;
-use App\Http\Controllers\Controller;
 use App\JobPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;

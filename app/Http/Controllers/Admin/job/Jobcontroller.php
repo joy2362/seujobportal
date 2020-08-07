@@ -1,16 +1,16 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Job;
+namespace App\Http\Controllers\Admin\job;
 
-use App\Category;
 use App\Http\Controllers\Controller;
+use App\Category;
 use App\JobPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Image;
 use DB;
 
-class JobController extends Controller
+class Jobcontroller extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -64,7 +64,7 @@ class JobController extends Controller
         $category=Category::where('id',$request->category)->first();
         $category->total_job += $request->vacency;
         $category->save();
-       return response()->json(['msg'=>'Job Post Added successfully']);
+        return response()->json(['msg'=>'Job Post Added successfully']);
     }
 
     /**
