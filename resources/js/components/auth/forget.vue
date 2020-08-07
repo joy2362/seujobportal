@@ -11,9 +11,7 @@
                     md="4"
                     cols="12"
                 >
-                    <v-card
-                        :loading="loading"
-                    >
+                    <v-card>
                         <v-toolbar
                             flat
                             dark
@@ -39,12 +37,32 @@
                             </p>
                         </v-card-text>
                         <v-card-actions>
-                            <v-btn color="primary" :loading="loading" outlined @click="forget">Submit</v-btn>
+                            <v-btn color="primary" outlined @click="forget">Submit</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
         </v-container>
+        <v-dialog
+            v-model="loading"
+            hide-overlay
+            persistent
+            width="300"
+        >
+            <v-card
+                color="primary"
+                dark
+            >
+                <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 

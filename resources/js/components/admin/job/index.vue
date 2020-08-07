@@ -82,7 +82,7 @@
                         align: 'start',
                         value: 'id',
                     },
-                    { text: 'Title', value: 'title' },
+                    { text: 'Title', value: 'name' },
                     { text: 'Last date of Application', value: 'lastdate' },
                     { text: 'Vacency', value: 'vacency' },
                     { text: "Action", value: "controls", sortable: false }

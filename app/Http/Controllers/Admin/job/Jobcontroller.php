@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin\job;
 
 use App\Http\Controllers\Controller;
 use App\Category;
+use App\JobOffday;
 use App\JobPost;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
@@ -31,14 +32,7 @@ class Jobcontroller extends Controller
      */
     public function store(Request $request)
     {
-
-        $img = $request->file('image');
-        $ext = $request->file('image')->extension();
-        $name=Str::random(10).".".$ext;
-        $upload='asset/img/job';
-        $img_name=$upload.'/'.$name;
-        Image::make($request->image)->resize(250,250);
-        $img->move($upload,$name);
+        $number=count($request->offday);
 
         $job= new JobPost();
         $job->name=$request->name;
@@ -48,12 +42,10 @@ class Jobcontroller extends Controller
         $job->address=$request->address;
         $job->experience=$request->experience;
         $job->category=$request->category;
-        $job->offday=$request->offday;
         $job->salary=$request->salary;
         $job->jobDetails=$request->jobDetails;
         $job->requerments=$request->requerments;
         $job->qualification=$request->qualification;
-        $job->image= $img_name;
         $job->benefit=$request->benefit;
         $job->lastdate=$request->lastdate;
         $job->dutyStart=$request->dutyStart;
@@ -61,6 +53,12 @@ class Jobcontroller extends Controller
         $job->vacency=$request->vacency;
         $job->verify=1;
         $job->save();
+        for ($i=0;$i<$number;$i++){
+            $offday=new JobOffday();
+            $offday->job_id=$job->id;
+            $offday->day=$request->offday[$i];
+            $offday->save();
+        }
         $category=Category::where('id',$request->category)->first();
         $category->total_job += $request->vacency;
         $category->save();
@@ -76,11 +74,12 @@ class Jobcontroller extends Controller
     public function show($id)
     {
         $jobs = DB::table('job_posts')
-            ->join('categories', 'job_posts.id', '=', 'categories.id')
+            ->join('categories', 'job_posts.category', '=', 'categories.id')
             ->select('job_posts.*', 'categories.name as category_name')
             ->where('job_posts.id',$id)
             ->get();
-        return response()->json($jobs);
+        $offday=JobOffday::where('job_id',$id)->get();
+        return response()->json([$jobs,$offday]);
     }
     /**
      * fatch the specified resource.
@@ -91,7 +90,8 @@ class Jobcontroller extends Controller
     public function fatch($id)
     {
         $job=JobPost::where('id',$id)->first();
-        return response()->json($job);
+        $offday=JobOffday::where('job_id',$id)->get();
+        return response()->json([$job,$offday]);
     }
 
     /**
@@ -108,18 +108,6 @@ class Jobcontroller extends Controller
         $category->total_job -=  $job->vacency;
         $category->save();
 
-        if($request->image){
-            unlink($job->image);
-            $img = $request->file('image');
-            $ext = $request->file('image')->extension();
-            $name=Str::random(10).".".$ext;
-            $upload='asset/img/job';
-            $img_name=$upload.'/'.$name;
-            Image::make($request->image)->resize(250,250);
-            $img->move($upload,$name);
-            $job->image= $img_name;
-        }
-
         $job->name=$request->name;
         $job->JobType=$request->JobType;
         $job->location=$request->location;
@@ -127,12 +115,10 @@ class Jobcontroller extends Controller
         $job->address=$request->address;
         $job->experience=$request->experience;
         $job->category=$request->category;
-        $job->offday=$request->offday;
         $job->salary=$request->salary;
         $job->jobDetails=$request->jobDetails;
         $job->requerments=$request->requerments;
         $job->qualification=$request->qualification;
-
         $job->benefit=$request->benefit;
         $job->lastdate=$request->lastdate;
         $job->dutyStart=$request->dutyStart;
@@ -140,7 +126,14 @@ class Jobcontroller extends Controller
         $job->vacency=$request->vacency;
         $job->verify=1;
         $job->save();
-
+        $number=count($request->offday);
+        JobOffday::where('job_id',$job->id)->delete();
+         for ($i=0;$i<$number;$i++){
+            $offday=new JobOffday();
+            $offday->job_id=$job->id;
+            $offday->day=$request->offday[$i];
+            $offday->save();
+        }
         $category=Category::where('id',$request->category)->first();
         $category->total_job += $request->vacency;
         $category->save();
@@ -160,8 +153,8 @@ class Jobcontroller extends Controller
         $category=Category::where('id',$job->category)->first();
         $category->total_job -= $job->vacency;
         $category->save();
-        unlink($job->image);
         JobPost::where('id',$id)->delete();
+        JobOffday::where('job_id',$id)->delete();
         return response()->json(['msg'=>'Job Post Delete Successfully']);
     }
 }

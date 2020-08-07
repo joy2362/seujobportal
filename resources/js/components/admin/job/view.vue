@@ -45,13 +45,13 @@
                         <h4 class="body-1">Category:- {{job.category_name}}  </h4>
                     </v-col>
 
-                    <v-col cols="12" md="4">
-                        <h4 class="body-1">Off Day:- {{job.offday}}  </h4>
+                    <v-col cols="12" md="6">
+                        <h4 class="body-1">Off Day:- <span v-for="i in offday" :key="i.id"> {{i.day}} </span>{{job.offday}}  </h4>
                     </v-col>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                         <h4 class="body-1">Salary:- {{job.salary}} BDT</h4>
                     </v-col>
-                    <v-col cols="12" md="4">
+                    <v-col cols="12" md="3">
                         <h4 class="body-1">Vacency:- {{job.vacency}}</h4>
                     </v-col>
                     <v-col class="mt-5" cols="12" >
@@ -69,10 +69,6 @@
                     <v-col class="mt-5" cols="12" >
                         <span>Other Benifit</span>
                         <div class="tiptap-vuetify-editor__content" v-html="job.benefit"/>
-                    </v-col>
-                    <v-col class="mt-5" cols="12" md="6" >
-                        <span>Image</span>
-                        <v-img :src="'/'+job.image" height="250px" width="250px"></v-img>
                     </v-col>
                 </v-row>
             </v-container>
@@ -102,6 +98,7 @@ import { TiptapVuetify } from 'tiptap-vuetify'
         data(){
             return {
                 job:{},
+                offday:[],
             }
         },
         methods:{
@@ -109,8 +106,9 @@ import { TiptapVuetify } from 'tiptap-vuetify'
                 let id= this.$route.params.id;
                 axios.get('/api/admin/job/show/'+id)
                     .then(res =>{
-                        this.job=res.data[0];
-                    })
+                    this.job=res.data[0][0];
+                    this.offday=res.data[1];
+                })
             },
         },
         components:{

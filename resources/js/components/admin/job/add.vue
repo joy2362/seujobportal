@@ -60,6 +60,7 @@
                                     cols="12"
                                     md="3"
                                 >
+
                                     <v-select
                                         v-model="selectedLocation"
                                         item-text="name"
@@ -217,6 +218,7 @@
                                     cols="12"
                                     md="3"
                                 >
+
                                     <v-select
                                         v-model="selectedCategory"
                                         item-text="name"
@@ -233,6 +235,8 @@
                                     md="4"
                                 >
                                     <v-select
+                                        chips
+                                        multiple
                                         v-model="selectedOffday"
                                         :items="offdays"
                                         label="Off day"
@@ -321,20 +325,6 @@
                                         />
                                     </div>
                                 </v-col>
-                                <v-col
-                                    cols="12"
-                                >
-                                    <v-file-input
-                                        v-model="image"
-                                        accept="image/*"
-                                        label="Image"
-                                        prepend-icon="mdi-camera"
-                                        :error-messages="jobimageErrors"
-                                        @input="$v.image.$touch()"
-                                        @blur="$v.image.$touch()"
-                                    >
-                                    </v-file-input>
-                                </v-col>
                             </v-row>
                         </v-form>
                     </v-card-text>
@@ -401,7 +391,6 @@
             requerments:{required},
             qualification:{required},
             benefit:{required},
-            image:{required},
             lastdate:{required},
             dutyStart:{required},
             dutyEnd:{required},
@@ -418,13 +407,12 @@
                 address:'',
                 experience:'',
                 selectedCategory:'',
-                selectedOffday:"",
+                selectedOffday:[],
                 salary:"",
                 jobDetails:null,
                 requerments:null,
                 qualification:null,
                 benefit:null,
-                image:null,
                 vacency:'',
 
                 datemenu: false,
@@ -575,12 +563,6 @@
                 !this.$v.benefit.required && errors.push('Other benefit required')
                 return errors
             },
-            jobimageErrors(){
-                const errors = []
-                if (!this.$v.image.$dirty) return errors
-                !this.$v.image.required && errors.push('Image required')
-                return errors
-            },
             lastdateErrors(){
                 const errors = []
                 if (!this.$v.lastdate.$dirty) return errors
@@ -617,25 +599,28 @@
                          title: 'Form Not Filled Correctly'
                      })
                  }else{
-                     const formData = new FormData();
-                     formData.append('name', this.name);
-                     formData.append('JobType', this.selectedJobType);
+                    const formData = new FormData();
+                    formData.append('name', this.name);
+                    formData.append('JobType', this.selectedJobType);
                      formData.append('location', this.selectedLocation);
                      formData.append('company', this.company);
                      formData.append('address', this.address);
                      formData.append('experience', this.experience);
                      formData.append('category', this.selectedCategory);
-                     formData.append('offday', this.selectedOffday);
                      formData.append('salary', this.salary);
                      formData.append('jobDetails', this.jobDetails);
                      formData.append('requerments', this.requerments);
                      formData.append('qualification', this.qualification);
                      formData.append('benefit', this.benefit);
-                     formData.append('image', this.image, this.image.name);
                      formData.append('lastdate', this.lastdate);
                      formData.append('dutyStart', this.dutyStart);
                      formData.append('vacency', this.vacency);
                      formData.append('dutyEnd', this.dutyEnd);
+
+                     for (var i = 0; i < this.selectedOffday.length; i++) {
+                        formData.append('offday[]', this.selectedOffday[i]);
+                     }
+
                      axios.post('/api/admin/job/add',formData)
                      .then(res =>{
                          this.loading = false;
@@ -650,7 +635,7 @@
                          if (error.response.data.errors){
                              Toast.fire({
                                  icon: 'error',
-                                 title: 'Somthing Wrong Try Again'
+                                 title: 'Something Wrong Try Again'
                              })
                          }
                      })

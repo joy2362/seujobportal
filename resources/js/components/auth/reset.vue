@@ -11,9 +11,7 @@
                     md="4"
                     cols="12"
                 >
-                    <v-card
-                        :loading="loading"
-                    >
+                    <v-card >
                         <v-toolbar
                             flat
                             dark
@@ -49,12 +47,32 @@
                             </p>
                         </v-card-text>
                         <v-card-actions>
-                            <v-btn color="primary" outlined :loading="loading" @click="change">Save</v-btn>
+                            <v-btn color="primary" outlined @click="change">Save</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
         </v-container>
+        <v-dialog
+            v-model="loading"
+            hide-overlay
+            persistent
+            width="300"
+        >
+            <v-card
+                color="primary"
+                dark
+            >
+                <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -82,7 +100,18 @@
                 })
         },
         validations: {
-            password: { required,minLength: minLength(6)  },
+
+            password: { required,minLength: minLength(6),
+                strongPassword(password) {
+                    return (
+                        /[a-z]/.test(password) && // checks for a-z
+                        /[0-9]/.test(password) && // checks for 0-9
+                        /\W|_/.test(password)  // checks for special char
+
+                    );
+                }
+            },
+
             repeatpassword:{required,minLength: minLength(6), sameAsPassword: sameAs("password")},
         },
         data() {
@@ -101,6 +130,7 @@
                 const errors = []
                 if (!this.$v.password.$dirty) return errors
                 !this.$v.password.minLength && errors.push('Password Must Be At least 6 digit')
+                !this.$v.password.strongPassword && errors.push(' passwords need to have a letter, a number, a special character, and be more than 6 characters long.')
                 !this.$v.password.required && errors.push('Password is required')
                 return errors
             },

@@ -50,7 +50,7 @@ class CategoryController extends Controller
             'name'=>'required|unique:categories'
         ]);
         Category::where('id',$request->id)->update(['name'=>$request->name]);
-        return response()->json('success');
+        return response()->json(['msg'=>'Category Added Successfully']);
 
     }
 

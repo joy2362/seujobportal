@@ -11,9 +11,7 @@
                 md="4"
                 cols="12"
                 >
-                <v-card
-                    :loading="loading"
-                >
+                <v-card>
                     <v-toolbar
                         flat
                         dark
@@ -53,12 +51,32 @@
                         <v-btn  text small to="/reg">Sign up</v-btn>
                     </v-card-actions>
                     <v-card-actions>
-                        <v-btn color="primary" outlined :loading="loading" @click="login">Login</v-btn>
+                        <v-btn color="primary" outlined @click="login">Login</v-btn>
                     </v-card-actions>
                 </v-card>
                 </v-col>
             </v-row>
         </v-container>
+        <v-dialog
+            v-model="loading"
+            hide-overlay
+            persistent
+            width="300"
+        >
+            <v-card
+                color="primary"
+                dark
+            >
+                <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -116,10 +134,6 @@
                     axios.post('/api/auth/login',formData)
                         .then(res =>{
                             this.loading=false
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Signed in successfully'
-                            })
                             User.responseafterlogin(res);
 
                                 this.$router.push({name:'home'});

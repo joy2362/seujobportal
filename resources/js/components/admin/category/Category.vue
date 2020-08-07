@@ -100,7 +100,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="edit = false">Close</v-btn>
-                <v-btn color="blue darken-1" text @click="Update">Save</v-btn>
+                <v-btn color="blue darken-1" text @click="Update">Update</v-btn>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -217,41 +217,29 @@
                 this.editCategoryId="";
             },
             Update(){
-                Swal.fire({
-                    title: 'Are you sure?',
-                    text: "You won't be able to revert this!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#3085d6',
-                    cancelButtonColor: '#d33',
-                    confirmButtonText: 'Yes, Update it!'
-                }).then((result) => {
-                    if (result.value) {
-                        const formData = new FormData();
-                        formData.append('name', this.editCategory);
-                        formData.append('id', this.editCategoryId);
-                        axios.post('/api/admin/category/update',formData)
-                            .then(()=>{
-                                this.fatchallcategory();
-                                this.edit=false;
-                                this.clearEdit();
-                                Swal.fire(
-                                    'Deleted!',
-                                    'Category Update successfully.',
-                                    'success'
-                                )
-                            } )
-                            .catch(error => {
-                                if (error.response.data.errors){
-                                    Swal.fire(
-                                        'Sorry!',
-                                        error.response.data.errors.name[0],
-                                        'error'
-                                    )
-                                }
-                            } )
+                const formData = new FormData();
+                formData.append('name', this.editCategory);
+                formData.append('id', this.editCategoryId);
+                axios.post('/api/admin/category/update',formData)
+                .then(res=>{
+                    this.fatchallcategory();
+                    this.edit=false;
+                    this.clearEdit();
+                    Swal.fire(
+                        'Success!',
+                        res.data.msg,
+                        'success'
+                    )
+                } )
+                .catch(error => {
+                    if (error.response.data.errors){
+                        Swal.fire(
+                            'Sorry!',
+                            error.response.data.errors.name[0],
+                            'error'
+                        )
                     }
-                })
+                } )
             },
             deleteCategory(item){
                 Swal.fire({

@@ -12,7 +12,6 @@
                     cols="12"
                 >
                     <v-card
-                        :loading="loading"
                     >
                         <v-toolbar
                             flat
@@ -34,6 +33,26 @@
                 </v-col>
             </v-row>
         </v-container>
+        <v-dialog
+            v-model="loading"
+            hide-overlay
+            persistent
+            width="300"
+        >
+            <v-card
+                color="primary"
+                dark
+            >
+                <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -80,6 +99,7 @@
                 })
             },
             resendemail(){
+                this.loading=true;
                 this.email=User.email();
                 const formData = new FormData();
                 formData.append('email', this.email);

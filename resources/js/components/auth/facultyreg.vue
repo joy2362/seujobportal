@@ -11,9 +11,7 @@
                     md="4"
                     cols="12"
                 >
-                    <v-card
-                        :loading="loading"
-                    >
+                    <v-card>
                         <v-toolbar
                             flat
                             dark
@@ -58,16 +56,6 @@
                                     @input="$v.repeatpassword.$touch()"
                                     @blur="$v.repeatpassword.$touch()"
                                 ></v-text-field>
-                               <v-file-input
-                                   :error-messages="imageErrors"
-                                   v-model="image"
-                                   accept="image/*"
-                                   label="Profile Image"
-                                   prepend-icon="mdi-camera"
-                                   @input="$v.image.$touch()"
-                                   @blur="$v.image.$touch()"
-                                   >
-                               </v-file-input>
                             </v-form>
                         </v-card-text>
                             <v-card-text class="text-center">
@@ -78,12 +66,32 @@
                                 </p>
                             </v-card-text>
                         <v-card-actions>
-                            <v-btn color="primary" :loading="loading" outlined @click="reg">Sign Up</v-btn>
+                            <v-btn color="primary" outlined @click="reg">Sign Up</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-col>
             </v-row>
         </v-container>
+        <v-dialog
+            v-model="loading"
+            hide-overlay
+            persistent
+            width="300"
+        >
+            <v-card
+                color="primary"
+                dark
+            >
+                <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -108,10 +116,9 @@
 
                     );
                 }
-                },
+            },
             name:{required,minLength:minLength(5)},
             repeatpassword:{required,minLength: minLength(6), sameAsPassword: sameAs("password")},
-            image:{required},
         },
         data() {
             return {
@@ -119,7 +126,6 @@
                 password:'',
                 name:'',
                 repeatpassword:'',
-                image:null,
                 loading:false,
             }
         },
@@ -154,12 +160,6 @@
                 !this.$v.repeatpassword.required && errors.push('Repeat password is required')
                 return errors
             },
-            imageErrors(){
-                const errors = []
-                if (!this.$v.image.$dirty) return errors
-                !this.$v.image.required && errors.push('Profile image is required')
-                return errors
-            }
         },
         methods:{
             reg(){
@@ -174,7 +174,6 @@
                 } else {
 
                     const formData = new FormData();
-                    formData.append('image', this.image, this.image.name);
                     formData.append('name', this.name);
                     formData.append('email', this.email);
                     formData.append('password', this.password);
@@ -182,10 +181,11 @@
                     axios.post('/api/auth/teacher/signup',formData)
                         .then(res =>{
                             this.loading=false
-                            Toast.fire({
-                                icon: 'success',
-                                title: 'Registation Complete'
-                            })
+                            Swal.fire(
+                                'Registation Complete!',
+                                res.data.message,
+                                'success'
+                            )
                             this.$router.push('/');
                         })
 

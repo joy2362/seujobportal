@@ -134,13 +134,11 @@ class AuthController extends Controller
             return response()->json(['message' => 'Email already taken'] ,404);
         }
 
-        $img = $request->file('image');
-        $ext = $request->file('image')->extension();
-        $name=Str::random(10).".".$ext;
+        $name=Str::random(10).".png";
         $upload='asset/img/faculty';
         $img_name=$upload.'/'.$name;
-        Image::make($request->image)->resize(250,250);
-        $img->move($upload,$name);
+
+        (new \Laravolt\Avatar\Avatar)->create($request->name)->setFontSize(72)->setDimension(250, 250)->save($img_name);
 
         $user=new Faculty;
         $user->name =$request->name;
@@ -149,15 +147,11 @@ class AuthController extends Controller
         $user->pro_pic = $img_name;
         $user->activation_token = Str::random(60);
         $user->save();
-        try {
-            $user->notify(new Emailverification($user));
-        } catch (Exception $e) {
-            return response()->json(['message'=>'Email not valid Complete'],404);
-        }
-//        $user->notify(
-//            new Emailverification($user)
-//        );
-        return response()->json(['message'=>'Registation Complete']);
+
+       $user->notify(
+           new Emailverification($user)
+       );
+        return response()->json(['message'=>'An Email sent Please verify your email first !!']);
     }
 
     public function alumnireg(Request $request){
@@ -168,13 +162,11 @@ class AuthController extends Controller
 
         $number=count($request->interestfield);
 
-        $img = $request->file('image');
-        $ext = $request->file('image')->extension();
-        $name=Str::random(10).".".$ext;
-        $upload='asset/img/faculty';
+        $name=Str::random(10).".png";
+        $upload='asset/img/alumni';
         $img_name=$upload.'/'.$name;
-        Image::make($request->image)->resize(250,250);
-        $img->move($upload,$name);
+        (new \Laravolt\Avatar\Avatar)->create($request->name)->setFontSize(72)->setDimension(250, 250)->save($img_name);
+
 
         $cv = $request->file('cv');
         $cvext=$request->file('cv')->extension();
@@ -203,7 +195,7 @@ class AuthController extends Controller
         $user->notify(
             new Emailverification($user)
         );
-        return response()->json(['message'=>'Registation Complete']);
+        return response()->json(['message'=>'An Email sent Please verify your email first !!']);
     }
 
     public function studentreg(Request $request){
@@ -214,13 +206,14 @@ class AuthController extends Controller
             return response()->json(['message' => 'Email already taken'] ,404);
         }
         $number=count($request->interestfield);
-        $img = $request->file('image');
-        $ext = $request->file('image')->extension();
-        $name=Str::random(10).".".$ext;
+
+
+
+        $name=Str::random(10).".png";
         $upload='asset/img/faculty';
         $img_name=$upload.'/'.$name;
-        Image::make($request->image)->resize(250,250);
-        $img->move($upload,$name);
+        (new \Laravolt\Avatar\Avatar)->create($request->name)->setFontSize(72)->setDimension(250, 250)->save($img_name);
+
 
         $cv = $request->file('cv');
         $cvext=$request->file('cv')->extension();
@@ -249,7 +242,7 @@ class AuthController extends Controller
             new Emailverification($user)
         );
 
-        return response()->json(['message'=>'Registation Complete']);
+        return response()->json(['message'=>'An Email sent Please verify your email first !!']);
     }
 
 

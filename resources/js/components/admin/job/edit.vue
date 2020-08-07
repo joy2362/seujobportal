@@ -233,6 +233,8 @@
                                         md="4"
                                     >
                                         <v-select
+                                            chips
+                                            multiple
                                             v-model="selectedOffday"
                                             item-text="name"
                                             item-value="id"
@@ -323,17 +325,6 @@
                                             />
                                         </div>
                                     </v-col>
-                                    <v-col
-                                        cols="12"
-                                    >
-                                        <v-file-input
-                                            v-model="image"
-                                            accept="image/*"
-                                            label="Image"
-                                            prepend-icon="mdi-camera"
-                                        >
-                                        </v-file-input>
-                                    </v-col>
                                 </v-row>
                             </v-form>
                         </v-card-text>
@@ -417,13 +408,12 @@ export default {
             address:'',
             experience:'',
             selectedCategory:'',
-            selectedOffday:"",
+            selectedOffday:[],
             salary:"",
             jobDetails:null,
             requerments:null,
             qualification:null,
             benefit:null,
-            image:null,
             vacency:'',
 
             datemenu: false,
@@ -596,32 +586,39 @@ export default {
     methods:{
         fatchallcategory(){
             axios.get('/api/admin/category/index')
-                .then(res =>{
-                    this.category=res.data;
-                })
+            .then(res =>{
+                this.category=res.data;
+            })
         },
         fatchjobpost(){
             let id= this.$route.params.id;
             axios.get('/api/admin/job/fatch/'+id)
                 .then(res =>{
-                    this.name=res.data.name;
-                    this.selectedJobType=res.data.JobType;
-                    this.selectedLocation=res.data.location;
-                    this.company=res.data.company;
-                    this.address=res.data.address;
-                    this.experience=res.data.experience;
-                    this.selectedCategory=res.data.category;
-                    this.salary=res.data.salary;
-                    this.selectedOffday=res.data.offday;
-                    this.jobDetails=res.data.jobDetails;
-                    this.requerments=res.data.requerments;
-                    this.qualification=res.data.qualification;
-                    this.benefit=res.data.benefit;
-                    this.vacency=res.data.vacency;
-                    this.lastdate=res.data.lastdate;
-                    this.dutyStart=res.data.dutyStart;
-                    this.dutyEnd=res.data.dutyEnd;
-                })
+                    this.name=res.data[0].name;
+                    this.selectedJobType=res.data[0].JobType;
+                    this.selectedLocation=res.data[0].location;
+                    this.company=res.data[0].company;
+                    this.address=res.data[0].address;
+                    this.experience=res.data[0].experience;
+                    this.selectedCategory=res.data[0].category;
+                    this.salary=res.data[0].salary;
+                    this.selectedOffday=res.data[0].offday;
+                    this.jobDetails=res.data[0].jobDetails;
+                    this.requerments=res.data[0].requerments;
+                    this.qualification=res.data[0].qualification;
+                    this.benefit=res.data[0].benefit;
+                    this.vacency=res.data[0].vacency;
+                    this.lastdate=res.data[0].lastdate;
+                    this.dutyStart=res.data[0].dutyStart;
+                    this.dutyEnd=res.data[0].dutyEnd;
+
+                    let jobs=new Array();
+                    for(let i=0;i<res.data[1].length;i++){
+
+                    jobs.push(res.data[1][i].day);
+                    }
+                    this.selectedOffday=jobs;
+                    })
         },
         save(){
             this.loading=true;
@@ -641,19 +638,20 @@ export default {
                 formData.append('address', this.address);
                 formData.append('experience', this.experience);
                 formData.append('category', this.selectedCategory);
-                formData.append('offday', this.selectedOffday);
                 formData.append('salary', this.salary);
                 formData.append('jobDetails', this.jobDetails);
                 formData.append('requerments', this.requerments);
                 formData.append('qualification', this.qualification);
                 formData.append('benefit', this.benefit);
-                if(this.image != null){
-                    formData.append('image', this.image, this.image.name);
-                }
                 formData.append('lastdate', this.lastdate);
                 formData.append('dutyStart', this.dutyStart);
                 formData.append('vacency', this.vacency);
                 formData.append('dutyEnd', this.dutyEnd);
+
+                for (var i = 0; i < this.selectedOffday.length; i++) {
+                    formData.append('offday[]', this.selectedOffday[i]);
+                }
+
                 let id= this.$route.params.id;
                 axios.post('/api/admin/job/update/'+id,formData)
                     .then(res =>{

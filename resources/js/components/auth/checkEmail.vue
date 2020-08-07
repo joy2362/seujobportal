@@ -16,7 +16,6 @@
                     this.$router.push({name:'login'});
                 })
                 .catch(error=>{
-                    console.log(error);
                     Swal.fire(
                         'Sorry!',
                         error.response.data.msg,

@@ -8,8 +8,8 @@ class JobPost extends Model
 {
     protected $fillable = [
         'name','JobType','location','company','address'
-        ,'experience','category','offday','salary','jobDetails','requerments',
-        'qualification','image','benefit','lastdate','dutyStart','dutyEnd','vacency','verify'
+        ,'experience','category','salary','jobDetails','requerments',
+        'qualification','benefit','lastdate','dutyStart','dutyEnd','vacency','verify'
     ];
 
 }

@@ -22,12 +22,10 @@ class CreateJobPostsTable extends Migration
             $table->text('address');
             $table->integer('experience');
             $table->integer('category');
-            $table->string('offday');
             $table->integer('salary');
             $table->longText('jobDetails');
             $table->longText('requerments');
             $table->longText('qualification');
-            $table->text('image');
             $table->longText('benefit');
             $table->text('lastdate');
             $table->text('dutyStart');
