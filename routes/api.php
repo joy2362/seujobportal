@@ -51,15 +51,15 @@ Route::group([
 ], function ($router) {
 
     Route::post('verify', 'Admin\AdminController@verify');
-    Route::post('category/add', 'admin\category\categoryController@store');
-    Route::post('job/add', 'admin\job\JobController@store');
-    Route::post('category/update', 'admin\category\categoryController@update');
-    Route::get('category/index', 'admin\category\categoryController@index');
-    Route::get('category/destroy/{id}', 'admin\category\categoryController@destroy');
-    Route::get('job/index', 'admin\job\JobController@index');
-    Route::get('job/destroy/{id}', 'admin\job\JobController@destroy');
-    Route::get('job/fatch/{id}', 'admin\job\JobController@fatch');
-    Route::get('job/show/{id}', 'admin\job\JobController@show');
-    Route::post('job/update/{id}', 'admin\job\JobController@update');
+    Route::post('category/add', 'CategoryController@store');
+    Route::post('job/add', 'JobController@store');
+    Route::post('category/update', 'CategoryController@update');
+    Route::get('category/index', 'CategoryController@index');
+    Route::get('category/destroy/{id}', 'CategoryController@destroy');
+    Route::get('job/index', 'JobController@index');
+    Route::get('job/destroy/{id}', 'JobController@destroy');
+    Route::get('job/fatch/{id}', 'JobController@fatch');
+    Route::get('job/show/{id}', 'JobController@show');
+    Route::post('job/update/{id}', 'JobController@update');
 
 });
