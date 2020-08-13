@@ -16,3 +16,5 @@ There are several package include in this project
 - tiptap-vuetify
 - vuelidate
 - vuetify-loader
+
+This project is currently live on http://seujobportal.herokuapp.com/
