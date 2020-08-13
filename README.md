@@ -1,11 +1,17 @@
 
 ## About SeuJobPortal
 
-SeuJobPortal is a web based which is only for Southeast university.This is a final year project.In this project There is 4 type of user 
+SeuJobPortal is a job finding web application but not like every other job finding application it is only for southeast university.In this project There is 4 type of user 
 - Teacher 
 - Alumni
 - Student 
 - Admin
 
-This project is made with laravel and vue.js and use vuetify for component design.
-More Details will be added in future.
+There are several package include in this project 
+-jwt 
+-vue route
+-vuetify
+-sweetalert2
+-tiptap-vuetify
+-vuelidate
+-vuetify-loader
