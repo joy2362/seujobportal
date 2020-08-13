@@ -9,10 +9,8 @@ use App\interestSectionAlumni;
 use App\interestSectionStudent;
 use App\Notifications\Emailverification;
 use App\User;
-use http\Env\Response;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
-use Image;
 use Illuminate\Support\Str;
 
 class AuthController extends Controller
@@ -38,7 +36,7 @@ class AuthController extends Controller
         if($faculty){
             $credentials = request(['email', 'password']);
 
-            if (! $token = auth('faculty')->attempt($credentials)) {
+            if (! $token = auth('faculty')->setTTL(360)->attempt($credentials)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
 
@@ -47,7 +45,7 @@ class AuthController extends Controller
         elseif ($student){
             $credentials = request(['email', 'password']);
 
-            if (! $token = auth('api')->attempt($credentials)) {
+            if (! $token = auth('api')->setTTL(360)->attempt($credentials)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
 
@@ -56,7 +54,7 @@ class AuthController extends Controller
         elseif ($admin){
             $credentials = request(['email', 'password']);
 
-            if (! $token = auth('admin')->attempt($credentials)) {
+            if (! $token = auth('admin')->setTTL(360)->attempt($credentials)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
 
@@ -65,7 +63,7 @@ class AuthController extends Controller
         elseif ($alumni){
             $credentials = request(['email', 'password']);
 
-            if (! $token = auth('alumni')->attempt($credentials)) {
+            if (! $token = auth('alumni')->setTTL(360)->attempt($credentials)) {
                 return response()->json(['error' => 'Unauthorized'], 401);
             }
 
@@ -86,9 +84,10 @@ class AuthController extends Controller
             'permission' => auth('faculty')->user()->user_type,
             'profile_pic' => auth('faculty')->user()->pro_pic,
             'emailVerify'=>auth('faculty')->user()->active,
-            'expires_in' =>  auth('faculty')->factory()->getTTL() * 60
+            'expires_in' =>  auth('faculty')->factory()->getTTL()
         ]);
     }
+
     protected function studentrespondWithToken($token)
     {
         return response()->json([
@@ -99,9 +98,10 @@ class AuthController extends Controller
             'permission' => auth('api')->user()->user_type,
             'profile_pic' => auth('api')->user()->pro_pic,
             'emailVerify'=>auth('api')->user()->active,
-            'expires_in' =>  auth('api')->factory()->getTTL() * 60
+            'expires_in' =>  auth('api')->factory()->getTTL()
         ]);
     }
+
     protected function adminrespondWithToken($token)
     {
         return response()->json([
@@ -111,11 +111,12 @@ class AuthController extends Controller
             'email' => auth('admin')->user()->email,
             'permission' => auth('admin')->user()->user_type,
             'profile_pic' => auth('admin')->user()->pro_pic,
-            'expires_in' =>  auth('admin')->factory()->getTTL() * 60
+            'expires_in' =>  auth('admin')->factory()->getTTL(),
         ]);
     }
     protected function alumnirespondWithToken($token)
     {
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
@@ -124,7 +125,7 @@ class AuthController extends Controller
             'emailVerify'=>auth('alumni')->user()->active,
             'permission' => auth('alumni')->user()->user_type,
             'profile_pic' => auth('alumni')->user()->pro_pic,
-            'expires_in' =>  auth('alumni')->factory()->getTTL() * 60
+            'expires_in' =>  auth('alumni')->factory()->getTTL()
         ]);
     }
 
@@ -245,5 +246,18 @@ class AuthController extends Controller
         return response()->json(['message'=>'An Email sent Please verify your email first !!']);
     }
 
+    public function verify(Request $request){
+       if(Admin::where('email',$request->email)->where('user_type',$request->type)->first()){
+           return response()->json(['msg'=>'user ok'],201);
+       }elseif (Faculty::where('email',$request->email)->where('user_type',$request->type)->first()){
+           return response()->json(['msg'=>'user ok'],201);
+       }elseif (Alumnni::where('email',$request->email)->where('user_type',$request->type)->first()){
+           return response()->json(['msg'=>'user ok'],201);
+       }elseif (User::where('email',$request->email)->where('user_type',$request->type)->first()){
+           return response()->json(['msg'=>'user ok'],201);
+       }else{
+           return response()->json(['msg'=>'user not found'],404);
+       }
+    }
 
 }

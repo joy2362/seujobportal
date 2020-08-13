@@ -25,7 +25,9 @@ Route::group([
     Route::post('teacher/signup', 'AuthController@teacherreg');
     Route::post('alumni/signup', 'AuthController@alumnireg');
     Route::post('student/signup', 'AuthController@studentreg');
+    Route::post('admin/signup', 'Admin\AdminController@adminreg');
     Route::post('forget', 'AuthController@forget');
+    Route::post('check/email', 'AuthController@verify');
 
 });
 Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
@@ -69,4 +71,8 @@ Route::group([
     Route::get('event/show/{id}', 'Admin\event\EventController@show');
     Route::get('event/index', 'Admin\event\EventController@index');
     Route::post('event/add', 'Admin\event\EventController@store');
+
+    Route::post('all', 'Admin\AdminController@allAdmin');
+    Route::get('remove/{id}', 'Admin\AdminController@destroy');
+
 });

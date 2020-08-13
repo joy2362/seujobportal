@@ -138,7 +138,7 @@ return [
         'admin' => [
             'provider' => 'admin',
             'table' => 'password_resets',
-            'expire' => 60,
+            'expire' => 1,
             'throttle' => 60,
         ],
         'alumni' => [

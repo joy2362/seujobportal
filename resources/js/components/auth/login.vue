@@ -135,15 +135,14 @@
                         .then(res =>{
                             this.loading=false
                             User.responseafterlogin(res);
-
-                                this.$router.push({name:'home'});
+                            this.$router.push({name:'home'});
                         })
                         .catch(error=>{
                             this.loading=false
                             if (error){
                                 Toast.fire({
                                     icon: 'error',
-                                    title: 'Invailed Email or Password'
+                                    title: 'Invalid Email or Password'
                                 })
                             }
                         })

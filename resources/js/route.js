@@ -22,6 +22,8 @@ let newevent = require('./components/admin/event/add').default;
 let allevent = require('./components/admin/event/index').default;
 let editevent = require('./components/admin/event/edit').default;
 let showevent = require('./components/admin/event/view').default;
+let newadmin = require('./components/admin/moreAdmin/add').default;
+let alladmin = require('./components/admin/moreAdmin/view').default;
 
 
 //home route
@@ -50,4 +52,6 @@ export const routes = [
     { path: '/admin/event/all', component: allevent, name: 'allevent' },
     { path: '/edit/event/:id', component: editevent, name: 'editevent' },
     { path: '/show/event/:id', component: showevent, name: 'showevent' },
+    { path: '/admin/add', component: newadmin, name: 'newadmin' },
+    { path: '/admin/all', component: alladmin, name: 'alladmin' },
 ]

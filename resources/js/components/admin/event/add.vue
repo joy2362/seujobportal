@@ -38,6 +38,8 @@
                                         @blur="$v.name.$touch()"
                                         label="Event name"
                                     ></v-text-field>
+                                    <small class="text-danger" v-if="nameError">{{nameError}}</small>
+
                                 </v-col>
                                 <v-col
                                     cols="12"
@@ -78,74 +80,66 @@
                                         label="Address"
                                     ></v-text-field>
                                 </v-col>
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-menu
+                                <v-col cols="12"  md="6">
+                                    <v-dialog
+                                        ref="DateSelector"
                                         v-model="eventdateseletor"
-                                        :close-on-content-click="false"
-                                        :nudge-right="40"
-                                        transition="scale-transition"
-                                        offset-y
-                                        max-width="290px"
-                                        min-width="290px"
+                                        :return-value.sync="eventDate"
+                                        persistent
+                                        width="290px"
                                     >
-                                        <template v-slot:activator="{ on }">
+                                        <template v-slot:activator="{ on, datePicker }">
                                             <v-text-field
+                                                v-model="eventDate"
                                                 label="Event Date"
                                                 readonly
-                                                v-model="eventDate"
+                                                v-bind="datePicker"
                                                 v-on="on"
                                                 :error-messages="eventDateErrors"
                                                 @input="$v.eventDate.$touch()"
                                                 @blur="$v.eventDate.$touch()"
                                             ></v-text-field>
                                         </template>
-                                        <v-date-picker
-
-                                            locale="en-in"
-                                            v-model="eventDate"
-                                            no-title
-                                            @input="eventdateseletor = false"
-                                        ></v-date-picker>
-                                    </v-menu>
-
+                                        <v-date-picker v-model="eventDate" scrollable  :min="nowDate">
+                                            <v-spacer></v-spacer>
+                                            <v-btn text color="primary" @click="eventdateseletor = false">Cancel</v-btn>
+                                            <v-btn text color="primary" @click="$refs.DateSelector.save(eventDate)">OK</v-btn>
+                                        </v-date-picker>
+                                    </v-dialog>
                                 </v-col>
-                                <v-col
-                                    cols="12"
-                                    md="6"
-                                >
-                                    <v-menu
+                                <v-col cols="12" md="6">
+                                    <v-dialog
+                                        ref="starttimeselect"
                                         v-model="eventtimeletor"
-                                        :close-on-content-click="false"
-                                        :nudge-right="40"
-                                        transition="scale-transition"
-                                        offset-y
-                                        max-width="290px"
-                                        min-width="290px"
+                                        :return-value.sync="eventStart"
+                                        persistent
+                                        width="290px"
                                     >
-                                        <template v-slot:activator="{ on }">
+                                        <template v-slot:activator="{ on, startTime }">
                                             <v-text-field
-                                                label="Event Start"
+
                                                 readonly
-                                                v-model="eventStart"
+                                                v-bind="startTime"
                                                 v-on="on"
+                                                label="Event Start"
+                                                v-model="eventStart"
                                                 :error-messages="eventStartErrors"
                                                 @input="$v.eventStart.$touch()"
                                                 @blur="$v.eventStart.$touch()"
                                             ></v-text-field>
                                         </template>
                                         <v-time-picker
-                                            format="24hr"
+                                            v-if="eventtimeletor"
                                             v-model="eventStart"
-                                            @input="eventtimeletor = false"
-                                            min="7:00"
-                                            max="20:00"
+                                            full-width
+                                            :max="dutyEnd"
+                                            format="24hr"
                                         >
+                                            <v-spacer></v-spacer>
+                                            <v-btn text color="primary" @click="eventtimeletor = false">Cancel</v-btn>
+                                            <v-btn text color="primary" @click="$refs.starttimeselect.save(eventStart)">OK</v-btn>
                                         </v-time-picker>
-                                    </v-menu>
-
+                                    </v-dialog>
                                 </v-col>
                                 <v-col
                                     cols="12"
@@ -158,6 +152,7 @@
                                         @input="$v.details.$touch()"
                                         @blur="$v.details.$touch()"
                                     />
+                                    <small class="text-danger" v-if="detailsError">{{detailsError}}</small>
                                 </v-col>
                             </v-row>
                         </v-form>
@@ -205,9 +200,13 @@
     export default {
     name: "add",
     created() {
+        if (!User.isExpired()){
+            this.$router.push({name:'logout'});
+        }
         if (!User.hasadminaccess()) {
             this.$router.push({name: 'adminauth'});
         }
+        this.checkEmail();
     },
     validations: {
         name:{required,minLength:minLength(5)},
@@ -220,6 +219,9 @@
     },
         data(){
         return {
+            nowDate: new Date().toISOString().slice(0,10),
+            detailsError:'',
+            nameError:'',
             loading:false,
             name:'',
             company:'',
@@ -312,14 +314,17 @@
             },
         },
         methods:{
-            clearForm(){
-                this.name='';
-                this.company='';
-                this.selectedLocation='';
-                this.address="";
-                this.details='';
-                this.eventDate=null;
-                this.eventStart=null;
+            checkEmail(){
+                const formData = new FormData();
+                formData.append('email', User.email());
+                formData.append('type', User.permission());
+                axios.post('/api/auth/check/email',formData)
+                    .then(res =>{
+
+                    })
+                    .catch(error=>{
+                        this.$router.push({name:'logout'});
+                    })
             },
             save(){
                 this.loading=true;
@@ -347,15 +352,26 @@
                             res.data.msg,
                             'success'
                         )
-                        this.clearForm();
+                        this.$router.push({name:'allevent'});
                     })
                     .catch(error=>{
                         this.loading = false;
+                        console.log(error.response.data.errors)
                         if (error.response.data.errors){
                             Toast.fire({
                                 icon: 'error',
                                 title: 'Something Wrong Try Again'
                             })
+                        }
+                        if (error.response.data.errors.name){
+                            this.nameError=error.response.data.errors.name[0];
+                        }else{
+                            this.nameError="";
+                        }
+                        if (error.response.data.errors.details){
+                            this.detailsError=error.response.data.errors.details[0];
+                        }else{
+                            this.detailsError="";
                         }
                     })
                 }

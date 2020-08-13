@@ -52,6 +52,12 @@
                     <v-col cols="12" md="3">
                         <h4 class="body-1">Vacancy:- {{job.vacency}}</h4>
                     </v-col>
+                    <v-col cols="12" md="6">
+                        <h4 class="body-1">Email:- {{job.email}}</h4>
+                    </v-col>
+                    <v-col cols="12" md="6">
+                        <h4 class="body-1">Phone:- {{job.phone}}</h4>
+                    </v-col>
                     <v-col class="mt-5" cols="12" >
                         <span>Job Details</span>
                         <div class="tiptap-vuetify-editor__content" v-html="job.jobDetails"/>
@@ -67,6 +73,9 @@
                     <v-col class="mt-5" cols="12" >
                         <span>Other Benifit</span>
                         <div class="tiptap-vuetify-editor__content" v-html="job.benefit"/>
+                    </v-col>
+                    <v-col cols="12" v-if="!job.verify">
+                        <v-btn outlined color="indigo" >Approved</v-btn>
                     </v-col>
                 </v-row>
             </v-container>
@@ -88,10 +97,14 @@ import { TiptapVuetify } from 'tiptap-vuetify'
     export default {
         name: "views",
         created() {
+            if (!User.isExpired()){
+                this.$router.push({name:'logout'});
+            }
             if (!User.hasadminaccess()) {
                 this.$router.push({name: 'adminauth'});
             }
             this.fatchalldata();
+            this.checkEmail();
         },
         data(){
             return {
@@ -100,6 +113,18 @@ import { TiptapVuetify } from 'tiptap-vuetify'
             }
         },
         methods:{
+            checkEmail(){
+                const formData = new FormData();
+                formData.append('email', User.email());
+                formData.append('type', User.permission());
+                axios.post('/api/auth/check/email',formData)
+                    .then(res =>{
+
+                    })
+                    .catch(error=>{
+                        this.$router.push({name:'logout'});
+                    })
+            },
             fatchalldata(){
                 let id= this.$route.params.id;
                 axios.get('/api/admin/job/show/'+id)

@@ -143,6 +143,29 @@
                         </v-list-item>
 
                     </v-list-group>
+                    <v-list-group
+                        prepend-icon="mdi-account-check"
+                    >
+                        <template v-slot:activator>
+                            <v-list-item-title> Admins </v-list-item-title>
+                        </template>
+                        <v-list-item
+                            to='/admin/add'
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>Add new</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                        <v-list-item
+                            to='/admin/all'
+                        >
+                            <v-list-item-content>
+                                <v-list-item-title>All Admin</v-list-item-title>
+                            </v-list-item-content>
+                        </v-list-item>
+
+                    </v-list-group>
                 </v-list>
             </v-navigation-drawer>
         </v-container>
@@ -168,5 +191,7 @@
 </script>
 
 <style scoped>
-
+a:hover{
+    text-decoration:none;
+}
 </style>

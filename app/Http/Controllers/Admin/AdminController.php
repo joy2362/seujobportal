@@ -3,10 +3,14 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Admin;
+use App\Alumnni;
+use App\Faculty;
 use App\Http\Controllers\Controller;
-use http\Env\Response;
+use App\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class AdminController extends Controller
 {
@@ -21,5 +25,50 @@ class AdminController extends Controller
         }else{
             return response()->json(['message'=>'Access Denied'],404);
         }
+    }
+    protected function EmailCheck($email){
+        $faculty=Faculty::where('email',$email)->first();
+        $student=User::where('email',$email)->first();
+        $admin=Admin::where('email',$email)->first();
+        $alumni=Alumnni::where('email',$email)->first();
+
+        if($student || $admin || $faculty || $alumni){
+            return true;
+        }else{
+            return false;
+        }
+    }
+    public function adminreg(Request $request){
+        if($this->EmailCheck($request->email)){
+            return response()->json(['message' => 'Email already taken'] ,404);
+        }
+
+        $name=Str::random(10).".png";
+        $upload='asset/img/admin';
+        $img_name=$upload.'/'.$name;
+
+        (new \Laravolt\Avatar\Avatar)->create($request->name)->setFontSize(72)->setDimension(250, 250)->save($img_name);
+
+        $user=new Admin();
+        $user->name =$request->name;
+        $user->email=$request->email;
+        $user->password=Hash::make($request->password);
+        $user->verify=Hash::make($request->verification);
+        $user->pro_pic = $img_name;
+        $user->email_verified_at =now();
+        $user->save();
+        return response()->json(['message'=>'New Admin Added !!']);
+    }
+
+    public function allAdmin(){
+        $admin=Admin::where('id','!=',1)->get();
+        return response()->json($admin);
+    }
+
+    public function destroy($id){
+        $admin=Admin::where('id',$id)->first();
+        unlink($admin->pro_pic);
+        Admin::destroy($id);
+        return response()->json(['msg'=>'Admin Deleted !!']);
     }
 }

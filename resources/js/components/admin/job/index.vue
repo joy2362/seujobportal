@@ -40,7 +40,7 @@
                                 <v-icon dark>mdi-open-in-new</v-icon>
                             </v-btn>
                             <v-btn class="mx-1" fab dark small color="info" @click="JobEdit(jobs.item)">
-                                <v-icon dark>mdi-tune</v-icon>
+                                <v-icon dark>mdi-pencil</v-icon>
                             </v-btn>
                             <v-btn class="mx-1" fab dark small color="red" @click="deleteJob(jobs.item)">
                                 <v-icon dark>mdi-delete</v-icon>
@@ -67,9 +67,13 @@
     export default {
         name: "index",
         created() {
+            if (!User.isExpired()){
+                this.$router.push({name:'logout'});
+            }
             if (!User.hasadminaccess()) {
                 this.$router.push({name: 'adminauth'});
             }
+            this.checkEmail();
             this.fatchalldata();
         },
         data(){
@@ -90,6 +94,18 @@
             }
         },
         methods:{
+            checkEmail(){
+                const formData = new FormData();
+                formData.append('email', User.email());
+                formData.append('type', User.permission());
+                axios.post('/api/auth/check/email',formData)
+                    .then(res =>{
+
+                    })
+                    .catch(error=>{
+                        this.$router.push({name:'logout'});
+                    })
+            },
             fatchalldata(){
                 axios.get('/api/admin/job/index')
                     .then(res =>{

@@ -26,6 +26,10 @@ class EventController extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|unique:events',
+            'details' => 'required|min:10',
+        ]);
         $event=new Event();
         $event->name=$request->name;
         $event->company=$request->company;
@@ -59,6 +63,11 @@ class EventController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|unique:events,name,' . $id,
+            'details' => 'required|min:10',
+        ]);
+
         $event=Event::where('id',$id)->first();
         $event->name=$request->name;
         $event->company=$request->company;

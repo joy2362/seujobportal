@@ -19,7 +19,7 @@
                             class="red"
                             dark
                         >
-                            <v-toolbar-title class="text-uppercase ">Add New Job</v-toolbar-title>
+                            <v-toolbar-title class="text-uppercase ">Update Job Post</v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-toolbar-title class="text-uppercase ">
                                 <v-btn small text to="/admin/job/all">All Job</v-btn>
@@ -39,6 +39,7 @@
                                             @blur="$v.name.$touch()"
                                             label="Title"
                                         ></v-text-field>
+                                        <small class="text-danger" v-if="nameError">{{nameError}}</small>
                                     </v-col>
                                     <v-col
                                         cols="12"
@@ -70,7 +71,6 @@
                                             @input="$v.selectedLocation.$touch()"
                                             @blur="$v.selectedLocation.$touch()"
                                         ></v-select>
-
                                     </v-col>
                                     <v-col
                                         cols="12"
@@ -96,59 +96,48 @@
                                             label="Address"
                                         ></v-text-field>
                                     </v-col>
-                                    <v-col
-                                        cols="12"
-                                        md="3"
-                                    >
-                                        <v-menu
+
+                                    <v-col cols="12"  md="3">
+                                        <v-dialog
+                                            ref="dialog"
                                             v-model="datemenu"
-                                            :close-on-content-click="false"
-                                            :nudge-right="40"
-                                            transition="scale-transition"
-                                            offset-y
-                                            max-width="290px"
-                                            min-width="290px"
+                                            :return-value.sync="lastdate"
+                                            persistent
+                                            width="290px"
                                         >
-                                            <template v-slot:activator="{ on }">
+                                            <template v-slot:activator="{ on, datePicker }">
                                                 <v-text-field
+                                                    v-model="lastdate"
                                                     label="Last date of Application"
                                                     readonly
-                                                    v-model="lastdate"
+                                                    v-bind="datePicker"
                                                     v-on="on"
                                                     :error-messages="lastdateErrors"
                                                     @input="$v.lastdate.$touch()"
                                                     @blur="$v.lastdate.$touch()"
                                                 ></v-text-field>
                                             </template>
-                                            <v-date-picker
-
-                                                locale="en-in"
-                                                v-model="lastdate"
-                                                no-title
-                                                @input="datemenu = false"
-                                            ></v-date-picker>
-                                        </v-menu>
-
+                                            <v-date-picker v-model="lastdate" scrollable  :min="nowDate">
+                                                <v-spacer></v-spacer>
+                                                <v-btn text color="primary" @click="datemenu = false">Cancel</v-btn>
+                                                <v-btn text color="primary" @click="$refs.dialog.save(lastdate)">OK</v-btn>
+                                            </v-date-picker>
+                                        </v-dialog>
                                     </v-col>
-
-                                    <v-col
-                                        cols="12"
-                                        md="2"
-                                    >
-                                        <v-menu
+                                    <v-col cols="12" md="2">
+                                        <v-dialog
+                                            ref="starttimeselect"
                                             v-model="dutyStartMenu"
-                                            :close-on-content-click="false"
-                                            :nudge-right="40"
-                                            transition="scale-transition"
-                                            offset-y
-                                            max-width="290px"
-                                            min-width="290px"
+                                            :return-value.sync="dutyStart"
+                                            persistent
+                                            width="290px"
                                         >
-                                            <template v-slot:activator="{ on }">
+                                            <template v-slot:activator="{ on, startTime }">
                                                 <v-text-field
+                                                    v-model="dutyStart"
                                                     label="Duty Start"
                                                     readonly
-                                                    v-model="dutyStart"
+                                                    v-bind="startTime"
                                                     v-on="on"
                                                     :error-messages="dutyStartErrors"
                                                     @input="$v.dutyStart.$touch()"
@@ -156,33 +145,32 @@
                                                 ></v-text-field>
                                             </template>
                                             <v-time-picker
+                                                v-if="dutyStartMenu"
+                                                v-model="dutyStart"
+                                                full-width
                                                 :max="dutyEnd"
                                                 format="24hr"
-                                                v-model="dutyStart"
-                                                @input="dutyStartMenu = false"
                                             >
+                                                <v-spacer></v-spacer>
+                                                <v-btn text color="primary" @click="dutyStartMenu = false">Cancel</v-btn>
+                                                <v-btn text color="primary" @click="$refs.starttimeselect.save(dutyStart)">OK</v-btn>
                                             </v-time-picker>
-                                        </v-menu>
-
+                                        </v-dialog>
                                     </v-col>
-                                    <v-col
-                                        cols="12"
-                                        md="2"
-                                    >
-                                        <v-menu
+                                    <v-col cols="12" md="2">
+                                        <v-dialog
+                                            ref="endtimeselect"
                                             v-model="dutyEndMenu"
-                                            :close-on-content-click="false"
-                                            :nudge-right="40"
-                                            transition="scale-transition"
-                                            offset-y
-                                            max-width="290px"
-                                            min-width="290px"
+                                            :return-value.sync="dutyEnd"
+                                            persistent
+                                            width="290px"
                                         >
-                                            <template v-slot:activator="{ on }">
+                                            <template v-slot:activator="{ on, endTime }">
                                                 <v-text-field
+                                                    v-model="dutyEnd"
                                                     label="Duty End"
                                                     readonly
-                                                    v-model="dutyEnd"
+                                                    v-bind="endTime"
                                                     v-on="on"
                                                     :error-messages="dutyEndErrors"
                                                     @input="$v.dutyEnd.$touch()"
@@ -190,23 +178,26 @@
                                                 ></v-text-field>
                                             </template>
                                             <v-time-picker
+                                                v-if="dutyEndMenu"
+                                                full-width
                                                 :min="dutyStart"
                                                 format="24hr"
                                                 v-model="dutyEnd"
-                                                @input="dutyEndMenu = false"
-
                                             >
+                                                <v-spacer></v-spacer>
+                                                <v-btn text color="primary" @click="dutyEndMenu = false">Cancel</v-btn>
+                                                <v-btn text color="primary" @click="$refs.endtimeselect.save(dutyEnd)">OK</v-btn>
                                             </v-time-picker>
-                                        </v-menu>
-
+                                        </v-dialog>
                                     </v-col>
+
                                     <v-col
                                         cols="12"
                                         md="2"
                                     >
                                         <v-text-field
                                             v-model="experience"
-                                            label="Expericence"
+                                            label="Experience"
                                             :error-messages="experienceErrors"
                                             @input="$v.experience.$touch()"
                                             @blur="$v.experience.$touch()"
@@ -216,6 +207,7 @@
                                         cols="12"
                                         md="3"
                                     >
+
                                         <v-select
                                             v-model="selectedCategory"
                                             item-text="name"
@@ -229,14 +221,38 @@
                                     </v-col>
                                     <v-col
                                         cols="12"
+                                        md="6"
+                                    >
+                                        <v-text-field
+                                            v-model="email"
+                                            :error-messages="emailErrors"
+                                            label="Official E-mail"
+                                            @input="$v.email.$touch()"
+                                            @blur="$v.email.$touch()"
+                                        ></v-text-field>
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
+                                        md="6"
+                                    >
+                                        <v-text-field
+                                            v-model="phone"
+                                            :error-messages="phoneErrors"
+                                            label="Contact number"
+                                            @input="$v.phone.$touch()"
+                                            @blur="$v.phone.$touch()"
+                                        ></v-text-field>
+                                        <small class="text-danger" v-if="phoneError">{{phoneError}}</small>
+
+                                    </v-col>
+                                    <v-col
+                                        cols="12"
                                         md="4"
                                     >
                                         <v-select
                                             chips
                                             multiple
                                             v-model="selectedOffday"
-                                            item-text="name"
-                                            item-value="id"
                                             :items="offdays"
                                             label="Off day"
                                             :error-messages="selectedOffdayErrors"
@@ -268,60 +284,54 @@
                                             @blur="$v.vacency.$touch()"
                                         ></v-text-field>
                                     </v-col>
+
                                     <v-col
                                         cols="12"
                                     >
-
+                                        <div>
                                             <tiptap-vuetify
                                                 v-model="jobDetails"
                                                 :extensions="extensions"
                                                 placeholder="Job Details"
-                                                :error-messages="jobDetailsErrors"
-                                                @input="$v.jobDetails.$touch()"
-                                                @blur="$v.jobDetails.$touch()"
                                             />
-
+                                            <small class="text-danger" v-if="jobDetailsError">{{jobDetailsError}}</small>
+                                        </div>
                                     </v-col>
                                     <v-col
                                         cols="12"
                                     >
-
+                                        <div>
                                             <tiptap-vuetify
                                                 v-model="requerments"
                                                 :extensions="extensions"
                                                 placeholder="Requerments"
-                                                :error-messages="requermentsErrors"
-                                                @input="$v.requerments.$touch()"
-                                                @blur="$v.requerments.$touch()"
                                             />
-
+                                            <small class="text-danger" v-if="requermentsError">{{requermentsError}}</small>
+                                        </div>
                                     </v-col>
                                     <v-col
                                         cols="12"
                                     >
-
+                                        <div>
                                             <tiptap-vuetify
                                                 v-model="qualification"
                                                 :extensions="extensions"
                                                 placeholder="Educational Qualification"
-                                                :error-messages="qualificationErrors"
-                                                @input="$v.qualification.$touch()"
-                                                @blur="$v.qualification.$touch()"
                                             />
-
+                                            <small class="text-danger" v-if="qualificationError">{{qualificationError}}</small>
+                                        </div>
                                     </v-col>
                                     <v-col
                                         cols="12"
                                     >
-
+                                        <div>
                                             <tiptap-vuetify
                                                 v-model="benefit"
                                                 :extensions="extensions"
                                                 placeholder="Other benefit"
-                                                :error-messages="benefitErrors"
-                                                @input="$v.benefit.$touch()"
-                                                @blur="$v.benefit.$touch()"
                                             />
+                                            <small class="text-danger" v-if="benefitError">{{benefitError}}</small>
+                                        </div>
                                     </v-col>
                                 </v-row>
                             </v-form>
@@ -333,9 +343,7 @@
                 </v-col>
             </v-row>
         </v-container>
-        <v-footer
-
-        >
+        <v-footer>
             <BottomFooter></BottomFooter>
         </v-footer>
         <v-dialog
@@ -367,38 +375,52 @@ import User from "../../../helper/User";
 import TopNav from "../navigationBar";
 import BottomFooter from "../BottomFooter";
 import { TiptapVuetify, Heading, Bold, Italic, Strike, Underline, Code, Paragraph, BulletList, OrderedList, ListItem, Link, Blockquote, HardBreak, HorizontalRule, History } from 'tiptap-vuetify'
-import {required, minLength,integer} from 'vuelidate/lib/validators'
+import {required, minLength, integer, email, minValue} from 'vuelidate/lib/validators'
 export default {
     name:'edit',
     created() {
+        if (!User.isExpired()){
+            this.$router.push({name:'logout'});
+        }
         if (!User.hasadminaccess()) {
             this.$router.push({name: 'adminauth'});
         }
         this.fatchallcategory();
         this.fatchjobpost();
+        this.checkEmail();
+
     },
     validations: {
+        email: { required ,email },
         name:{required,minLength:minLength(5)},
         selectedJobType:{required},
         selectedLocation:{required},
-        experience:{required,integer},
+        experience:{required,integer,minValue:minValue(0)},
         selectedCategory:{required},
         selectedOffday:{required},
-        salary:{required,integer},
-        vacency:{required,integer},
-        jobDetails:{required},
-        requerments:{required},
-        qualification:{required},
-        benefit:{required},
+        salary:{required,integer,minValue:minValue(1)},
+        vacency:{required,integer,minValue:minValue(1)},
         lastdate:{required},
         dutyStart:{required},
         dutyEnd:{required},
+        phone:{required,minLength:minLength(11),integer},
         company:{required,minLength:minLength(5)},
         address:{required,minLength:minLength(5)},
     },
     data(){
         return {
+            nowDate: new Date().toISOString().slice(0,10),
+            nameError:'',
+            qualificationError:'',
+            requermentsError:'',
+            jobDetailsError:'',
+            benefitError:'',
+            phoneError:'',
+
             loading: false,
+
+            phone:'',
+            email:'',
             name:'',
             selectedJobType:'',
             selectedLocation:'',
@@ -472,6 +494,13 @@ export default {
         }
     },
     computed:{
+        emailErrors () {
+            const errors = []
+            if (!this.$v.email.$dirty) return errors
+            !this.$v.email.email && errors.push('Must be valid e-mail')
+            !this.$v.email.required && errors.push('E-mail is required')
+            return errors
+        },
         nameErrors(){
             const errors = []
             if (!this.$v.name.$dirty) return errors
@@ -484,6 +513,14 @@ export default {
             if (!this.$v.company.$dirty) return errors
             !this.$v.company.minLength && errors.push('Company Name Must Be At least 5 character')
             !this.$v.company.required && errors.push('Company Name required')
+            return errors
+        },
+        phoneErrors(){
+            const errors = []
+            if (!this.$v.phone.$dirty) return errors
+            !this.$v.phone.minLength && errors.push('Phone Name Must Be At least 11 Digit')
+            !this.$v.phone.integer && errors.push('Phone Name  Must be Integer')
+            !this.$v.phone.required && errors.push('Phone Name required')
             return errors
         },
         addressErrors(){
@@ -509,14 +546,16 @@ export default {
             const errors = []
             if (!this.$v. experience.$dirty) return errors
             !this.$v. experience.required && errors.push('Experience required')
-            !this.$v.experience.integer && errors.push('Experience Must be Interger ')
+            !this.$v.experience.integer && errors.push('Experience Must be Integer ')
+            !this.$v.experience.minValue && errors.push('Experience Must be At least 0')
             return errors
         },
         vacencyErrors(){
             const errors = []
             if (!this.$v.vacency.$dirty) return errors
-            !this.$v.vacency.required && errors.push('Vacency required')
-            !this.$v.vacency.integer && errors.push('Vacency Must be Interger ')
+            !this.$v.vacency.required && errors.push('Vacancy required')
+            !this.$v.vacency.integer && errors.push('Vacancy Must be Integer ')
+            !this.$v.vacency.minValue && errors.push('At least 1 Vacancy')
             return errors
         },
         selectedCategoryErrors(){
@@ -535,33 +574,11 @@ export default {
             const errors = []
             if (!this.$v.salary.$dirty) return errors
             !this.$v.salary.required && errors.push('Salary required')
-            !this.$v.salary.integer && errors.push('Salary Must be Interger ')
+            !this.$v.salary.integer && errors.push('Salary Must be Integer ')
+            !this.$v.salary.minValue && errors.push('Salary Must be At least 1')
             return errors
         },
-        jobDetailsErrors(){
-            const errors = []
-            if (!this.$v.jobDetails.$dirty) return errors
-            !this.$v.jobDetails.required && errors.push('Details required')
-            return errors
-        },
-        requermentsErrors(){
-            const errors = []
-            if (!this.$v.requerments.$dirty) return errors
-            !this.$v.requerments.required && errors.push('Requerments required')
-            return errors
-        },
-        qualificationErrors(){
-            const errors = []
-            if (!this.$v.qualification.$dirty) return errors
-            !this.$v.qualification.required && errors.push('Qualification required')
-            return errors
-        },
-        benefitErrors(){
-            const errors = []
-            if (!this.$v.benefit.$dirty) return errors
-            !this.$v.benefit.required && errors.push('Other benefit required')
-            return errors
-        },
+
         lastdateErrors(){
             const errors = []
             if (!this.$v.lastdate.$dirty) return errors
@@ -582,6 +599,18 @@ export default {
         },
     },
     methods:{
+        checkEmail(){
+            const formData = new FormData();
+            formData.append('email', User.email());
+            formData.append('type', User.permission());
+            axios.post('/api/auth/check/email',formData)
+                .then(res =>{
+
+                })
+                .catch(error=>{
+                    this.$router.push({name:'logout'});
+                })
+        },
         fatchallcategory(){
             axios.get('/api/admin/category/index')
             .then(res =>{
@@ -593,6 +622,8 @@ export default {
             axios.get('/api/admin/job/fatch/'+id)
                 .then(res =>{
                     this.name=res.data[0].name;
+                    this.email=res.data[0].email;
+                    this.phone=res.data[0].phone;
                     this.selectedJobType=res.data[0].JobType;
                     this.selectedLocation=res.data[0].location;
                     this.company=res.data[0].company;
@@ -630,6 +661,8 @@ export default {
             }else{
                 const formData = new FormData();
                 formData.append('name', this.name);
+                formData.append('email', this.email);
+                formData.append('phone', this.phone);
                 formData.append('JobType', this.selectedJobType);
                 formData.append('location', this.selectedLocation);
                 formData.append('company', this.company);
@@ -663,11 +696,41 @@ export default {
                     })
                     .catch(error => {
                         this.loading = false;
-                        if (error.response.data.errors){
+                        if(error.response.data.errors){
                             Toast.fire({
                                 icon: 'error',
-                                title: 'Somthing Wrong Try Again'
+                                title: 'Something Wrong Try Again'
                             })
+                        }
+                        if (error.response.data.errors.phone){
+                            this.phoneError=error.response.data.errors.phone[0];
+                        }else{
+                            this.phoneError="";
+                        }
+                        if (error.response.data.errors.benefit){
+                            this.benefitError=error.response.data.errors.benefit[0];
+                        }else{
+                            this.benefitError="";
+                        }
+                        if (error.response.data.errors.jobDetails){
+                            this.jobDetailsError=error.response.data.errors.jobDetails[0];
+                        }else{
+                            this.jobDetailsError="";
+                        }
+                        if (error.response.data.errors.requerments){
+                            this.requermentsError=error.response.data.errors.requerments[0];
+                        }else{
+                            this.requermentsError="";
+                        }
+                        if (error.response.data.errors.qualification){
+                            this.qualificationError=error.response.data.errors.qualification[0];
+                        }else{
+                            this.qualificationError="";
+                        }
+                        if (error.response.data.errors.name){
+                            this.nameError=error.response.data.errors.name[0];
+                        }else{
+                            this.nameError="";
                         }
                     })
             }

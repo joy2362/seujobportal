@@ -1139,9 +1139,13 @@ export default {
         if (! User.loggedIn()){
             this.$router.push({name:'login'});
         }
+        if (!User.isExpired()){
+            this.$router.push({name:'logout'});
+        }
         if (!User.isverifiedAccount()){
             this.$router.push({name:'emailverify'});
         }
+        this.checkEmail();
         this.fatchcategory();
     },
     data(){
@@ -1161,12 +1165,23 @@ export default {
         }
     },
     methods:{
+        checkEmail(){
+            const formData = new FormData();
+            formData.append('email', User.email());
+            formData.append('type', User.permission());
+            axios.post('/api/auth/check/email',formData)
+            .then(res =>{
+
+            })
+            .catch(error=>{
+                this.$router.push({name:'logout'});
+            })
+        },
         fatchcategory(){
             axios.get('/api/admin/category/index')
-                .then(res =>{
-                    this.category=res.data;
-                    console.log(this.category)
-                })
+            .then(res =>{
+                this.category=res.data;
+            })
         }
     },
     components:{

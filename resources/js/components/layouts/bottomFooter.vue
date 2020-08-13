@@ -7,13 +7,20 @@
                 <v-container>
                     <v-row class="grey--text text--lighten-4 font-weight-thin">
                         <v-col
-                            md="4"
+
+                            md="3"
                             cols="12"
                         >
+                            <div
+                                align="center"
+                                justify="center"
+
+                            >
                             <h1 class="h4">ABOUT US</h1>
-                            <v-toolbar-title class="text-uppercase red--text mt-5 mb-5 h1" >
-                                <span  class="font-weight-light">SouthEast<span class="font-weight-black">University</span></span>
+                            <v-toolbar-title class=" mt-5 mb-5 " >
+                                <v-img src="/asset/img/logo/seu_logo.png" width="70" height="70" ></v-img>
                             </v-toolbar-title>
+                            </div>
                             <h1 class="body-2 ">
                                 The Vision of Southeast University is:
                                 To Obtain Global Recognition as a World Class University.

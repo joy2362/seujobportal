@@ -32,9 +32,20 @@ class Jobcontroller extends Controller
      */
     public function store(Request $request)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|unique:job_posts',
+            'jobDetails' => 'required|min:10',
+            'requerments' => 'required|min:10',
+            'benefit' => 'required|min:10',
+            'qualification' => 'required|min:10',
+            'phone' => 'required||regex:/(01)[0-9]{9}/',
+        ]);
+
         $number=count($request->offday);
 
         $job= new JobPost();
+        $job->email=$request->email;
+        $job->phone=$request->phone;
         $job->name=$request->name;
         $job->JobType=$request->JobType;
         $job->location=$request->location;
@@ -102,12 +113,24 @@ class Jobcontroller extends Controller
      */
     public function update(Request $request ,$id)
     {
+        $validatedData = $request->validate([
+            'name' => 'required|unique:job_posts,name,' . $id,
+            'jobDetails' => 'required|min:10',
+            'requerments' => 'required|min:10',
+            'benefit' => 'required|min:10',
+            'qualification' => 'required|min:10',
+            'phone' => 'required||regex:/(01)[0-9]{9}/',
+        ]);
+
         $job=JobPost::where('id',$id)->first();
 
         $category=Category::where('id',$job->category)->first();
         $category->total_job -=  $job->vacency;
         $category->save();
 
+        $job->name=$request->name;
+        $job->email=$request->email;
+        $job->phone=$request->phone;
         $job->name=$request->name;
         $job->JobType=$request->JobType;
         $job->location=$request->location;
@@ -124,7 +147,6 @@ class Jobcontroller extends Controller
         $job->dutyStart=$request->dutyStart;
         $job->dutyEnd=$request->dutyEnd;
         $job->vacency=$request->vacency;
-        $job->verify=1;
         $job->save();
         $number=count($request->offday);
         JobOffday::where('job_id',$job->id)->delete();

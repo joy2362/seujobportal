@@ -52,10 +52,14 @@ import { TiptapVuetify } from 'tiptap-vuetify'
 export default {
     name: "views",
     created() {
+        if (!User.isExpired()){
+            this.$router.push({name:'logout'});
+        }
         if (!User.hasadminaccess()) {
             this.$router.push({name: 'adminauth'});
         }
         this.fatchalldata();
+        this.checkEmail();
     },
     data(){
         return {
@@ -63,6 +67,18 @@ export default {
         }
     },
     methods:{
+        checkEmail(){
+            const formData = new FormData();
+            formData.append('email', User.email());
+            formData.append('type', User.permission());
+            axios.post('/api/auth/check/email',formData)
+                .then(res =>{
+
+                })
+                .catch(error=>{
+                    this.$router.push({name:'logout'});
+                })
+        },
         fatchalldata(){
             let id= this.$route.params.id;
             axios.get('/api/admin/event/show/'+id)

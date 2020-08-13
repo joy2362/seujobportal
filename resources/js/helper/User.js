@@ -31,10 +31,25 @@ import AppStorage from "./AppStorage";
         hasToken(){
             const storeToken = localStorage.getItem('token');
             if (storeToken){
-                return Token.isValid(storeToken)?true : false
+                if (Token.isValid(storeToken)) {
+                    return true
+                } else {
+                    return false
+                }
             }
         }
+        isExpired(){
+            const storeToken = localStorage.getItem('token');
+            if (storeToken){
+                if(Token.isExpired(storeToken)){
+                    return true
+                }else {
+                    return false
+                }
 
+            }
+
+        }
         loggedIn(){
             return this.hasToken()
         }

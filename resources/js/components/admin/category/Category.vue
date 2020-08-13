@@ -121,16 +121,14 @@
         name: "addCategory",
 
         created() {
-            if (!User.loggedIn()) {
-                this.$router.push({name: 'login'});
-            }
-            if (!User.isAdmin()) {
-                this.$router.push({name: 'home'});
+            if (!User.isExpired()){
+                this.$router.push({name:'logout'});
             }
             if (!User.hasadminaccess()) {
                 this.$router.push({name: 'adminauth'});
             }
             this.fatchallcategory();
+            this.checkEmail();
         },
         validations: {
             name:{required,minLength:minLength(2)},
@@ -166,6 +164,18 @@
 
         },
         methods:{
+            checkEmail(){
+                const formData = new FormData();
+                formData.append('email', User.email());
+                formData.append('type', User.permission());
+                axios.post('/api/auth/check/email',formData)
+                    .then(res =>{
+
+                    })
+                    .catch(error=>{
+                        this.$router.push({name:'logout'});
+                    })
+            },
             fatchallcategory(){
                 axios.get('/api/admin/category/index')
                     .then(res =>{
