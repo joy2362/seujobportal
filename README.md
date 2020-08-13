@@ -8,10 +8,11 @@ SeuJobPortal is a job finding web application but not like every other job findi
 - Admin
 
 There are several package include in this project 
--jwt 
--vue route
--vuetify
--sweetalert2
--tiptap-vuetify
--vuelidate
--vuetify-loader
+
+- jwt 
+- vue route
+- vuetify
+- sweetalert2
+- tiptap-vuetify
+- vuelidate
+- vuetify-loader
