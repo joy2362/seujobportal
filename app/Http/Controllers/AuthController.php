@@ -203,18 +203,17 @@ class AuthController extends Controller
         $validatedData = $request->validate([
             'email' => 'required|ends_with:@seu.edu.bd',
         ]);
+
         if($this->EmailCheck($request->email)){
             return response()->json(['message' => 'Email already taken'] ,404);
         }
+
         $number=count($request->interestfield);
-
-
 
         $name=Str::random(10).".png";
         $upload='asset/img/faculty';
         $img_name=$upload.'/'.$name;
         (new \Laravolt\Avatar\Avatar)->create($request->name)->setFontSize(72)->setDimension(250, 250)->save($img_name);
-
 
         $cv = $request->file('cv');
         $cvext=$request->file('cv')->extension();

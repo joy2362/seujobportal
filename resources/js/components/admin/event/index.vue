@@ -36,13 +36,13 @@
                             :items="event"
                         >
                             <template v-slot:item.controls="event">
-                                <v-btn class="mx-1" fab dark small color="success" @click="eventShow(event.item)">
+                                <v-btn class="mx-1" icon dark small color="success" @click="eventShow(event.item)">
                                     <v-icon dark>mdi-open-in-new</v-icon>
                                 </v-btn>
-                                <v-btn class="mx-1" fab dark small color="info" @click="eventEdit(event.item)">
-                                    <v-icon dark>mdi-tune</v-icon>
+                                <v-btn class="mx-1" icon dark small color="info" @click="eventEdit(event.item)">
+                                    <v-icon dark>mdi-pencil</v-icon>
                                 </v-btn>
-                                <v-btn class="mx-1" fab dark small color="red" @click="deleteevent(event.item)">
+                                <v-btn class="mx-1" icon dark small color="red" @click="deleteevent(event.item)">
                                     <v-icon dark>mdi-delete</v-icon>
                                 </v-btn>
                             </template>

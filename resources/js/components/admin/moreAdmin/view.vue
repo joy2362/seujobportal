@@ -36,7 +36,7 @@
                             :items="admins"
                         >
                             <template v-slot:item.controls="admins">
-                                <v-btn class="mx-1" fab dark small color="red" @click="deleteAdmin(admins.item)">
+                                <v-btn class="mx-1" icon dark small color="red" @click="deleteAdmin(admins.item)">
                                     <v-icon dark>mdi-delete</v-icon>
                                 </v-btn>
                             </template>

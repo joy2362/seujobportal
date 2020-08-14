@@ -22,7 +22,7 @@
                             <v-toolbar-title class="text-uppercase ">Add New Admin</v-toolbar-title>
                             <v-spacer></v-spacer>
                             <v-toolbar-title class="text-uppercase ">
-                                <v-btn small text to="/admin/job/all">All Admin</v-btn>
+                                <v-btn small text to="/admin/all">All Admin</v-btn>
                             </v-toolbar-title>
                         </v-toolbar>
                         <v-card-text>

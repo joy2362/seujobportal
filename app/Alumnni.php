@@ -12,7 +12,7 @@ class Alumnni extends Authenticatable implements JWTSubject
     use Notifiable  ,SoftDeletes;
 
     protected $fillable = [
-        'name', 'email', 'password','pro_pic' ,'user_type','activation_token','active'
+        'name', 'email', 'password','pro_pic' ,'user_type','activation_token','active','cv'
     ];
 
     /**

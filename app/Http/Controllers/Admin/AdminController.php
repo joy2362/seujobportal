@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Admin;
 use App\Alumnni;
+use App\Event;
 use App\Faculty;
 use App\Http\Controllers\Controller;
+use App\JobPost;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -70,5 +72,63 @@ class AdminController extends Controller
         unlink($admin->pro_pic);
         Admin::destroy($id);
         return response()->json(['msg'=>'Admin Deleted !!']);
+    }
+
+    protected  function countUser(){
+        $totalUser=0;
+        $alumni=Alumnni::all();
+        $faculty=Faculty::all();
+        $student=User::all();
+        $totalUser+=$alumni->count();
+        $totalUser+=$faculty->count();
+        $totalUser+=$student->count();
+        return $totalUser;
+    }
+    public function adminHome(){
+      $user=$this->countUser();
+      $Job=JobPost::all();
+      $totalJob=$Job->count();
+
+      $student=User::where('active',0)->get();
+      $faculty=Faculty::where('active',0)->get();
+      $alumni=Alumnni::where('active',0)->get();
+
+      $event= Event::where('eventDate','<',now())->get();
+      $job= JobPost::where('lastdate','<',now())->get();
+      $Events=Event::all();
+      $totalEvents=$Events->count();
+
+      return response()->json(['totaluser'=>$user,
+          'totalJob'=>$totalJob,
+          'student'=>$student,
+          'faculty'=>$faculty,
+          'alumni'=>$alumni,
+          'event'=>$event,
+          'job'=>$job,
+          'totalEvents'=>$totalEvents
+      ]);
+    }
+
+    public function studentDestroy($id){
+        $student=User::where('id',$id)->first();
+        unlink($student->pro_pic);
+        unlink($student->cv);
+        User::destroy($id);
+        return response()->json(['msg'=>'Student Account Deleted']);
+    }
+
+    public function alumniDestroy($id){
+        $student=Alumnni::where('id',$id)->first();
+        unlink($student->pro_pic);
+        unlink($student->cv);
+        Alumnni::destroy($id);
+        return response()->json(['msg'=>'Alumni Account Deleted']);
+    }
+
+    public function facultyDestroy($id){
+        $faculty=Faculty::where('id',$id)->first();
+        unlink($faculty->pro_pic);
+        Faculty::destroy($id);
+        return response()->json(['msg'=>'Faculty Account Deleted']);
     }
 }

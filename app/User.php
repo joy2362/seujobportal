@@ -14,7 +14,7 @@ class User extends Authenticatable implements JWTSubject
     protected $dates = ['deleted_at'];
 
     protected $fillable = [
-        'name', 'email', 'password','pro_pic' ,'user_type','activation_token','active'
+        'name', 'email', 'password','pro_pic' ,'user_type','activation_token','active','cv'
     ];
 
     /**

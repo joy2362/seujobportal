@@ -36,13 +36,13 @@
                         :items="jobs"
                     >
                         <template v-slot:item.controls="jobs">
-                            <v-btn class="mx-1" fab dark small color="success" @click="JobShow(jobs.item)">
+                            <v-btn class="mx-1" icon dark small color="success" @click="JobShow(jobs.item)">
                                 <v-icon dark>mdi-open-in-new</v-icon>
                             </v-btn>
-                            <v-btn class="mx-1" fab dark small color="info" @click="JobEdit(jobs.item)">
+                            <v-btn class="mx-1" icon dark small color="info" @click="JobEdit(jobs.item)">
                                 <v-icon dark>mdi-pencil</v-icon>
                             </v-btn>
-                            <v-btn class="mx-1" fab dark small color="red" @click="deleteJob(jobs.item)">
+                            <v-btn class="mx-1" icon dark small color="red" @click="deleteJob(jobs.item)">
                                 <v-icon dark>mdi-delete</v-icon>
                             </v-btn>
                         </template>

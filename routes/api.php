@@ -58,6 +58,9 @@ Route::group([
     Route::post('category/update', 'Admin\category\CategoryController@update');
     Route::get('category/index', 'Admin\category\CategoryController@index');
     Route::get('category/destroy/{id}', 'Admin\category\CategoryController@destroy');
+    Route::get('student/destroy/{id}', 'Admin\AdminController@studentDestroy');
+    Route::get('alumni/destroy/{id}', 'Admin\AdminController@alumniDestroy');
+    Route::get('faculty/destroy/{id}', 'Admin\AdminController@facultyDestroy');
 
     Route::post('job/add', 'Admin\job\Jobcontroller@store');
     Route::get('job/index', 'Admin\job\Jobcontroller@index');
@@ -73,6 +76,7 @@ Route::group([
     Route::post('event/add', 'Admin\event\EventController@store');
 
     Route::post('all', 'Admin\AdminController@allAdmin');
+    Route::get('home/all', 'Admin\AdminController@adminHome');
     Route::get('remove/{id}', 'Admin\AdminController@destroy');
 
 });

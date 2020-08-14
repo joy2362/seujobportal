@@ -20,7 +20,7 @@
                         align="center"
                         justify="center"
                     >
-                        <h2 class="title">1990</h2>
+                        <h2 class="title">{{totalUser}}</h2>
                     </v-card-text>
                 </v-card>
                </v-col>
@@ -40,7 +40,7 @@
                            align="center"
                            justify="center"
                        >
-                           <h2 class="title">19</h2>
+                           <h2 class="title">{{totalJob}}</h2>
                        </v-card-text>
                    </v-card>
                </v-col>
@@ -54,13 +54,13 @@
                >
                    <v-card>
                        <v-card-title primary-title class="layout justify-center info white--text">
-                           <h1 class="title">Total  Application</h1>
+                           <h1 class="title">Total Events</h1>
                        </v-card-title>
                        <v-card-text
                            align="center"
                            justify="center"
                        >
-                           <h2 class="title">1990</h2>
+                           <h2 class="title">{{totalEvents}}</h2>
                        </v-card-text>
                    </v-card>
                </v-col>
@@ -71,10 +71,10 @@
                >
                    <v-card class="red white--text" >
                        <v-card-title class="mb-3">
-                           Recent Application
+                          Expired Job post
                            <v-spacer></v-spacer>
                            <v-text-field
-                               v-model="recentApplicationsearch"
+                               v-model="ExpiredJobSearch"
                                append-icon="mdi-magnify"
                                label="Search"
                                single-line
@@ -82,10 +82,16 @@
                            ></v-text-field>
                        </v-card-title>
                        <v-data-table
-                           :headers="recentApplicationheaders"
-                           :items="recentApplication"
-                           :search="recentApplicationsearch"
-                       ></v-data-table>
+                           :headers="expiredJobHeader"
+                           :items="expiredJob"
+                           :search="ExpiredJobSearch"
+                       >
+                           <template v-slot:item.controls="expiredJob">
+                               <v-btn class="mx-1" icon  @click="deleteJob(expiredJob.item)">
+                                   <v-icon dark>mdi-delete</v-icon>
+                               </v-btn>
+                           </template>
+                       </v-data-table>
                    </v-card>
                </v-col>
            </v-row>
@@ -112,7 +118,13 @@
                             :headers="recentUserheaders"
                             :items="recentStudent"
                             :search="recentStudentsearch"
-                        ></v-data-table>
+                        >
+                            <template v-slot:item.controls="recentStudent">
+                                <v-btn class="mx-1" icon  @click="deleteStudent(recentStudent.item)">
+                                    <v-icon dark>mdi-delete</v-icon>
+                                </v-btn>
+                            </template>
+                        </v-data-table>
                     </v-card>
                 </v-col>
                 <v-col
@@ -135,7 +147,13 @@
                             :headers="recentUserheaders"
                             :items="recentAlumni"
                             :search="recentAlumnisearch"
-                        ></v-data-table>
+                        >
+                            <template v-slot:item.controls="recentAlumni">
+                                <v-btn class="mx-1" icon  @click="deletealumni(recentAlumni.item)">
+                                    <v-icon dark>mdi-delete</v-icon>
+                                </v-btn>
+                            </template>
+                        </v-data-table>
                     </v-card>
                 </v-col>
                 <v-col
@@ -158,7 +176,13 @@
                             :headers="recentUserheaders"
                             :items="recentFaculty"
                             :search="recentFacultysearch"
-                        ></v-data-table>
+                        >
+                            <template v-slot:item.controls="recentFaculty">
+                                <v-btn class="mx-1" icon  @click="deleteFaculty(recentFaculty.item)">
+                                    <v-icon dark>mdi-delete</v-icon>
+                                </v-btn>
+                            </template>
+                        </v-data-table>
                     </v-card>
                 </v-col>
 
@@ -169,10 +193,10 @@
                >
                    <v-card class="success white--text" >
                        <v-card-title class="mb-3">
-                           Upcomming Event
+                          Event
                            <v-spacer></v-spacer>
                            <v-text-field
-                               v-model="recenteventsearch"
+                               v-model="expiredeventsearch"
                                append-icon="mdi-magnify"
                                label="Search"
                                single-line
@@ -180,10 +204,16 @@
                            ></v-text-field>
                        </v-card-title>
                        <v-data-table
-                           :headers="recentEventheaders"
-                           :items="recentEvent"
-                           :search="recenteventsearch"
-                       ></v-data-table>
+                           :headers="expiredEventheaders"
+                           :items="expiredEvent"
+                           :search="expiredeventsearch"
+                       >
+                           <template v-slot:item.controls="expiredEvent">
+                               <v-btn class="mx-1" icon  @click="deleteevent(expiredEvent.item)">
+                                   <v-icon dark>mdi-delete</v-icon>
+                               </v-btn>
+                           </template>
+                       </v-data-table>
                    </v-card>
                </v-col>
            </v-row>
@@ -208,35 +238,41 @@
                 this.$router.push({name: 'adminauth'});
             }
             this.checkEmail();
+            this.featchAllData();
         },
         data(){
             return{
+                totalUser:'',
+                totalJob:'',
+                totalEvents:'',
 
-                recentApplicationsearch: '',
+                ExpiredJobSearch:'',
                 recentStudentsearch: '',
                 recentAlumnisearch: '',
                 recentFacultysearch: '',
-                recenteventsearch: '',
+                expiredeventsearch: '',
 
-                recentApplicationheaders: [
+                expiredJobHeader: [
                     {
-                        text: 'Student name',
+                        text: 'Title',
                         align: 'start',
                         value: 'name',
                     },
-                    { text: 'Position', value: 'job' },
                     { text: 'Conpany name', value: 'company' },
-                    { text: 'Date ', value: 'date' },
+                    { text: 'Date ', value: 'lastdate' },
+                    { text: "Action", value: "controls", sortable: false }
 
                 ],
-                recentEventheaders: [
+
+                expiredEventheaders: [
                     {
                         text: 'Event name',
                         align: 'start',
                         value: 'name',
                     },
                     { text: 'company', value: 'company' },
-                    { text: 'Date ', value: 'date' },
+                    { text: 'Date ', value: 'eventDate' },
+                    { text: "Action", value: "controls", sortable: false }
 
                 ],
 
@@ -244,72 +280,33 @@
                     {
                         text: 'Name',
                         align: 'start',
-                        value: 'name',
+                        value: 'email',
                     },
-                    { text: 'Join Date ', value: 'date' },
+                    { text: "Action", value: "controls", sortable: false }
 
                 ],
-                recentApplication: [
-                    {
-                        name: 'Zahid',
-                        job: 'web-developer',
-                        company: 'web-developer',
-                        date: "6/12/2020",
-                    },
-                    {
-                        name: 'Zahid',
-                        job: 'web-developer',
-                        company: 'web-developer',
-                        date: "6/12/2020",
-                    },
-                ],
-                recentEvent: [
-                    {
-                        name: 'Graphic designer',
-                        company: 'Samsung',
-                        date: "6/12/2020",
-                    },
-                    {
-                        name: 'Seminer',
-                        company: 'Seu',
-                        date: "6/12/2020",
-                    },
-                ],
-                recentStudent: [
-                    {
-                        name: 'Zahid',
-                        date: "6/12/2020",
-                    },
-                    {
-                        name: 'Ripon',
-                        date: "6/12/2020",
-                    },
-                ],
-                recentAlumni: [
-                    {
-                        name: 'zahid234',
-                        date: "6/12/2020",
-                    },
-                    {
-                        name: 'Ripon234',
-                        date: "6/12/2020",
-                    },
-                ],
-                recentFaculty: [
-                    {
-                        name: 'Ripon123',
-                        date: "6/12/2020",
-                    },
-                    {
-                        name: 'zahid123',
-                        date: "6/12/2020",
-                    },
-                ],
+
+                expiredJob:[],
+                recentStudent: [],
+                recentAlumni: [],
+                recentFaculty: [],
+                expiredEvent: [],
             }
-
-
         },
         methods:{
+            featchAllData(){
+                axios.get('/api/admin/home/all')
+                .then(res =>{
+                    this.totalUser=res.data.totaluser;
+                    this.totalJob=res.data.totalJob;
+                    this.totalEvents=res.data.totalEvents;
+                    this.expiredEvent=res.data.event;
+                    this.recentStudent=res.data.student;
+                    this.recentAlumni=res.data.alumni;
+                    this.recentFaculty=res.data.faculty;
+                    this.expiredJob=res.data.job;
+                })
+            },
             checkEmail(){
                 const formData = new FormData();
                 formData.append('email', User.email());
@@ -322,6 +319,156 @@
                         this.$router.push({name:'logout'});
                     })
             },
+            deleteevent(item){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.get('/api/admin/event/destroy/'+ item.id)
+                            .then(res=>{
+                                this.featchAllData();
+                                Swal.fire(
+                                    'Deleted!',
+                                    res.data.msg,
+                                    'success'
+                                )
+                            } )
+                            .catch(error => {
+                                Swal.fire(
+                                    'Sorry!',
+                                    'Something wrong try again.',
+                                    'error'
+                                )
+                            })
+                    }
+                })
+            },
+            deleteStudent(item){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.get('/api/admin/student/destroy/'+ item.id)
+                            .then(res=>{
+                                this.featchAllData();
+                                Swal.fire(
+                                    'Deleted!',
+                                    res.data.msg,
+                                    'success'
+                                )
+                            } )
+                            .catch(error => {
+                                Swal.fire(
+                                    'Sorry!',
+                                    'Something wrong try again.',
+                                    'error'
+                                )
+                            })
+                    }
+                })
+            },
+            deletealumni(item){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.get('/api/admin/alumni/destroy/'+ item.id)
+                            .then(res=>{
+                                this.featchAllData();
+                                Swal.fire(
+                                    'Deleted!',
+                                    res.data.msg,
+                                    'success'
+                                )
+                            } )
+                            .catch(error => {
+                                Swal.fire(
+                                    'Sorry!',
+                                    'Something wrong try again.',
+                                    'error'
+                                )
+                            })
+                    }
+                })
+            },
+            deleteFaculty(item){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.get('/api/admin/faculty/destroy/'+ item.id)
+                            .then(res=>{
+                                this.featchAllData();
+                                Swal.fire(
+                                    'Deleted!',
+                                    res.data.msg,
+                                    'success'
+                                )
+                            } )
+                            .catch(error => {
+                                Swal.fire(
+                                    'Sorry!',
+                                    'Something wrong try again.',
+                                    'error'
+                                )
+                            })
+                    }
+                })
+            },
+            deleteJob(item){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        axios.get('/api/admin/job/destroy/'+ item.id)
+                            .then(res=>{
+                                this.featchAllData();
+                                Swal.fire(
+                                    'Deleted!',
+                                    res.data.msg,
+                                    'success'
+                                )
+                            } )
+                            .catch(error => {
+                                Swal.fire(
+                                    'Sorry!',
+                                    'Something wrong try again.',
+                                    'error'
+                                )
+                            })
+                    }
+                })
+            }
         },
         components:{
             Navbars,BottomFooter
