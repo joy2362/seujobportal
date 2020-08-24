@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <TopNav></TopNav>
+        <TopNav :user="user"></TopNav>
         <v-container
             class="fill-height"
         >
@@ -208,6 +208,7 @@ export default {
         }
         this.fatchData();
         this.checkEmail();
+        this.featchUserData();
     },
     validations: {
         name:{required,minLength:minLength(5)},
@@ -220,6 +221,7 @@ export default {
     },
     data(){
         return {
+            user:[],
             nowDate: new Date().toISOString().slice(0,10),
             detailsError:'',
             nameError:'',
@@ -315,6 +317,13 @@ export default {
         },
     },
     methods:{
+        featchUserData(){
+            let id=User.id();
+            axios.get('/api/admin/info/'+id)
+                .then(res =>{
+                    this.user=res.data.user;
+                })
+        },
         checkEmail(){
             const formData = new FormData();
             formData.append('email', User.email());

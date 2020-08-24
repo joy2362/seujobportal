@@ -1,6 +1,6 @@
 <template>
 <v-app>
-    <TopNav></TopNav>
+    <TopNav :user="user"></TopNav>
     <v-container
         class="fill-height"
     >
@@ -207,6 +207,7 @@
             this.$router.push({name: 'adminauth'});
         }
         this.checkEmail();
+        this.featchUserData();
     },
     validations: {
         name:{required,minLength:minLength(5)},
@@ -219,6 +220,7 @@
     },
         data(){
         return {
+            user:[],
             nowDate: new Date().toISOString().slice(0,10),
             detailsError:'',
             nameError:'',
@@ -314,6 +316,13 @@
             },
         },
         methods:{
+            featchUserData(){
+                let id=User.id();
+                axios.get('/api/admin/info/'+id)
+                    .then(res =>{
+                        this.user=res.data.user;
+                    })
+            },
             checkEmail(){
                 const formData = new FormData();
                 formData.append('email', User.email());

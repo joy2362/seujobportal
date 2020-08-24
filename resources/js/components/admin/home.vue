@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <Navbars></Navbars>
+        <Navbars :user="user"></Navbars>
         <!--this end  navigration-->
        <v-container>
            <v-row>
@@ -239,9 +239,12 @@
             }
             this.checkEmail();
             this.featchAllData();
+            this.featchUserData();
         },
         data(){
             return{
+                user:[],
+
                 totalUser:'',
                 totalJob:'',
                 totalEvents:'',
@@ -294,6 +297,13 @@
             }
         },
         methods:{
+            featchUserData(){
+                let id=User.id();
+                axios.get('/api/admin/info/'+id)
+                    .then(res =>{
+                        this.user=res.data.user;
+                    })
+            },
             featchAllData(){
                 axios.get('/api/admin/home/all')
                 .then(res =>{

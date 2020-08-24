@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <TopNav></TopNav>
+        <TopNav :user="user"></TopNav>
         <v-container>
             <v-row class="mt-15">
                 <v-col
@@ -59,7 +59,7 @@ import TopNav from "../navigationBar"
 import BottomFooter from "../BottomFooter"
 
 export default {
-    name: "view",
+    name: "moreadminview",
     created() {
         if (!User.isExpired()){
             this.$router.push({name:'logout'});
@@ -69,9 +69,12 @@ export default {
         }
         this.fatchalladmin();
         this.checkEmail();
+        this.featchUserData();
     },
     data(){
       return {
+          user:[],
+
           admins:[],
           adminsearch:'',
           adminheader:[
@@ -87,6 +90,15 @@ export default {
       }
     },
     methods:{
+        featchUserData(){
+            let id=User.id();
+            axios.get('/api/admin/info/'+id)
+                .then(res =>{
+                    this.user=res.data.user;
+                    this.verify=res.data.verify;
+                    this.created=res.data.create;
+                })
+        },
         fatchalladmin(){
             axios.post('/api/admin/all')
             .then(res =>{

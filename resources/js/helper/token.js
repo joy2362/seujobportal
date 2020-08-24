@@ -2,7 +2,7 @@ class Token {
     isValid(token){
         const payload =this.payload(token);
         if(payload){
-            if (payload.iss === "http://seujobportal.herokuapp.com/api/auth/login"  ) {
+            if (payload.iss === "http://localhost:8000/api/auth/login"  ) {
                 return true
             }
         }

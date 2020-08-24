@@ -1,6 +1,6 @@
 <template>
 <v-app>
-    <TopNav></TopNav>
+    <TopNav :user="user"></TopNav>
     <v-container>
         <v-row class="mt-15">
             <v-col
@@ -75,9 +75,11 @@
             }
             this.checkEmail();
             this.fatchalldata();
+            this.featchUserData();
         },
         data(){
             return{
+                user:[],
                 jobs:[],
                 jobsearch:'',
                 jobheaders: [
@@ -94,6 +96,13 @@
             }
         },
         methods:{
+            featchUserData(){
+                let id=User.id();
+                axios.get('/api/admin/info/'+id)
+                    .then(res =>{
+                        this.user=res.data.user;
+                    })
+            },
             checkEmail(){
                 const formData = new FormData();
                 formData.append('email', User.email());

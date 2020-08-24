@@ -1,6 +1,6 @@
 <template>
 <v-app>
-    <TopNav></TopNav>
+    <TopNav :user="user"></TopNav>
     <v-container
         class="fill-height"
     >
@@ -387,6 +387,7 @@
             }
             this.checkEmail();
             this.fatchallcategory();
+            this.featchUserData();
         },
         validations: {
             email: { required ,email },
@@ -407,6 +408,7 @@
         },
         data(){
             return {
+                user:[],
                 nowDate: new Date().toISOString().slice(0,10),
                 nameError:'',
                 qualificationError:'',
@@ -597,6 +599,13 @@
             },
         },
         methods:{
+            featchUserData(){
+                let id=User.id();
+                axios.get('/api/admin/info/'+id)
+                    .then(res =>{
+                        this.user=res.data.user;
+                    })
+            },
             checkEmail(){
                 const formData = new FormData();
                 formData.append('email', User.email());

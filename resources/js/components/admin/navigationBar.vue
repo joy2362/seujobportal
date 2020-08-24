@@ -18,27 +18,27 @@
                                 v-on="on"
                             >
                                 <v-img
-                                    :src="'/'+user.image"
+                                    :src="'/'+user.pro_pic"
                                 >
                                 </v-img>
                             </v-avatar>
                         </template>
                         <v-list>
                             <v-list-item
-                                to="/"
+                                to="/admin/profile"
                             >
                                 <v-list-item-title>
-                                    <v-icon>
+                                    <v-icon left>
                                         mdi-account
                                     </v-icon>
                                     Profile
                                 </v-list-item-title>
                             </v-list-item>
                             <v-list-item
-                                to="/"
+                                to="/admin/setting"
                             >
                                 <v-list-item-title>
-                                    <v-icon>
+                                    <v-icon left>
                                         mdi-tune
                                     </v-icon>
                                     Setting</v-list-item-title>
@@ -47,7 +47,7 @@
                                 to="/logout"
                             >
                                 <v-list-item-title>
-                                    <v-icon>mdi-exit-to-app</v-icon>
+                                    <v-icon left>mdi-exit-to-app</v-icon>
                                     Logout
                                 </v-list-item-title>
                             </v-list-item>
@@ -65,7 +65,7 @@
                     <v-list-item two-line :class=" 'px-0'">
                         <v-list-item-avatar>
                             <v-img
-                                :src="'/'+user.image"
+                                :src="'/'+user.pro_pic"
                             >
                             </v-img>
                         </v-list-item-avatar>
@@ -177,16 +177,13 @@
 
     export default {
         name: "navigationBar",
+        props:['user'],
         data(){
             return{
-                user:{
-                    name:User.name(),
-                    email:User.email(),
-                    image:User.picture(),
-                },
                 sideMenu:false,
             }
-        }
+        },
+
     }
 </script>
 

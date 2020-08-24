@@ -129,7 +129,7 @@
                                     error.response.data.message,
                                     'error'
                                 )
-                            }0
+                            }
                         } )
                 }
             }

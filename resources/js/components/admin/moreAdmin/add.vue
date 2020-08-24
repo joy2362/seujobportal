@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <TopNav></TopNav>
+        <TopNav :user="user"></TopNav>
         <v-container
             class="fill-height"
         >
@@ -119,6 +119,7 @@ export default {
             this.$router.push({name:'logout'});
         }
         this.checkEmail();
+        this.featchUserData();
     },
     validations: {
         email: { required ,email },
@@ -146,6 +147,7 @@ export default {
     },
     data(){
         return {
+            user:[],
             loading:false,
             verification:'',
             password:'',
@@ -186,6 +188,13 @@ export default {
         },
     },
     methods:{
+        featchUserData(){
+            let id=User.id();
+            axios.get('/api/admin/info/'+id)
+                .then(res =>{
+                    this.user=res.data.user;
+                })
+        },
         save(){
             this.loading=true;
             this.$v.$touch()

@@ -78,5 +78,10 @@ Route::group([
     Route::post('all', 'Admin\AdminController@allAdmin');
     Route::get('home/all', 'Admin\AdminController@adminHome');
     Route::get('remove/{id}', 'Admin\AdminController@destroy');
+    Route::get('info/{id}', 'Admin\AdminController@info');
+    Route::post('profile/image/{id}', 'Admin\adminProfile@imageChange');
+    Route::post('setting/name/{id}', 'Admin\adminProfile@namechange');
+    Route::post('setting/password/{id}', 'Admin\adminProfile@passwordchange');
+    Route::post('setting/validation/{id}', 'Admin\adminProfile@validationchange');
 
 });

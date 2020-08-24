@@ -1,6 +1,6 @@
 <template>
     <v-app>
-        <TopNav></TopNav>
+        <TopNav :user="user"></TopNav>
         <v-container>
             <v-card>
                 <v-card-title>
@@ -60,13 +60,22 @@ export default {
         }
         this.fatchalldata();
         this.checkEmail();
+        this.featchUserData();
     },
     data(){
         return {
+            user:[],
             event:{},
         }
     },
     methods:{
+        featchUserData(){
+            let id=User.id();
+            axios.get('/api/admin/info/'+id)
+                .then(res =>{
+                    this.user=res.data.user;
+                })
+        },
         checkEmail(){
             const formData = new FormData();
             formData.append('email', User.email());
