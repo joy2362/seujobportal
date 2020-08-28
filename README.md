@@ -17,4 +17,5 @@ There are several package include in this project
 - vuelidate
 - vuetify-loader
 
+Current progress Admin panel almost done.
 This project is currently live on http://seujobportal.herokuapp.com/
