@@ -30,10 +30,13 @@ let adminsetting = require('./components/admin/setting').default;
 
 //home route
 let index = require('./components/index').default;
+let forum = require('./components/forum').default;
+
 
 export const routes = [
     { path: '/', component: login  , name:'login'},
     { path: '/home', component: index  , name:'home'},
+    { path: '/forum', component: forum  , name:'forum'},
     { path: '/reg', component: registation, name: 'registation' },
     { path: '/faculty/registion', component: facultyreg, name: 'facultyreg' },
     { path: '/student/registion', component: studentreg, name: 'studentreg' },

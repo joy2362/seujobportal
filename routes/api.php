@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+//authentication api
 Route::group([
 
     'middleware' => 'api',
@@ -30,9 +31,11 @@ Route::group([
     Route::post('check/email', 'AuthController@verify');
 
 });
+//email verification api
 Route::get('email/verify/{id}', 'VerificationController@verify')->name('verification.verify');
 Route::post('email/resend', 'VerificationController@resend')->name('verification.resend');
 
+//user password api
 Route::group([
 
     'middleware' => 'api',
@@ -45,6 +48,8 @@ Route::group([
     Route::post('reset', 'PasswordResetController@reset');
 
 });
+
+//admin panel api
 Route::group([
 
     'middleware' => 'api',
@@ -83,5 +88,20 @@ Route::group([
     Route::post('setting/name/{id}', 'Admin\adminProfile@namechange');
     Route::post('setting/password/{id}', 'Admin\adminProfile@passwordchange');
     Route::post('setting/validation/{id}', 'Admin\adminProfile@validationchange');
+
+});
+
+//forum api
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'forum'
+
+], function () {
+
+    Route::post('create', 'ForumController@store');
+    Route::get('mypost/{email}', 'ForumController@myPost');
+    Route::get('find/{token}', 'PasswordResetController@find');
+    Route::post('reset', 'PasswordResetController@reset');
 
 });

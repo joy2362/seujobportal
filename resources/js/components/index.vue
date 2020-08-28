@@ -1137,7 +1137,7 @@ export default {
     name:"index",
     created() {
         if (! User.loggedIn()){
-            this.$router.push({name:'login'});
+            this.$router.push({name:'logout'});
         }
         if (!User.isExpired()){
             this.$router.push({name:'logout'});

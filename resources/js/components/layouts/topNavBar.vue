@@ -17,7 +17,7 @@
             <v-btn  small text to='/'>
                 <span>Event</span>
             </v-btn>
-            <v-btn  small text to='/'>
+            <v-btn  small text to='/forum'>
                 <span>Forum</span>
             </v-btn>
             <v-btn  small text to='/'>
