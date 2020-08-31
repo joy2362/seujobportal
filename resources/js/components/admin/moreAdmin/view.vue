@@ -128,7 +128,7 @@ export default {
                 confirmButtonText: 'Yes, delete it!'
             }).then((result) => {
                 if (result.value) {
-                    console.log(item.id)
+                   //console.log(item.id)
                     axios.get('/api/admin/remove/'+ item.id)
                         .then(res=>{
                             this.fatchalladmin();

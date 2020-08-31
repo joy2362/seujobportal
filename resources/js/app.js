@@ -31,6 +31,7 @@ window.Toast=Toast;
 Vue.use(VueRouter)
 Vue.use(Typewriter)
 Vue.use(Vuelidate)
+
 //post filter (forum post short view)
 Vue.filter('sortPost',val=>{
     if(!val || typeof (val)!= 'string') return ''
@@ -38,10 +39,12 @@ Vue.filter('sortPost',val=>{
     val= val+'...';
     return val
 })
+
 const router = new VueRouter({
     routes,
     mode: 'history',
 });
+
 const app = new Vue({
     el: '#app',
     vuetify: Vuetify,

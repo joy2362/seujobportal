@@ -30,13 +30,17 @@ let adminsetting = require('./components/admin/setting').default;
 
 //home route
 let index = require('./components/index').default;
-let forum = require('./components/forum').default;
+let forum = require('./components/forum/index').default;
+let singleforum = require('./components/forum/view').default;
+let editforum = require('./components/forum/edit').default;
 
 
 export const routes = [
     { path: '/', component: login  , name:'login'},
     { path: '/home', component: index  , name:'home'},
     { path: '/forum', component: forum  , name:'forum'},
+    { path: '/forum/:id', component: singleforum, name: 'singleforum' },
+    { path: '/forum/edit/:id', component: editforum, name: 'editforum' },
     { path: '/reg', component: registation, name: 'registation' },
     { path: '/faculty/registion', component: facultyreg, name: 'facultyreg' },
     { path: '/student/registion', component: studentreg, name: 'studentreg' },

@@ -101,7 +101,37 @@ Route::group([
 
     Route::post('create', 'ForumController@store');
     Route::get('mypost/{email}', 'ForumController@myPost');
-    Route::get('find/{token}', 'PasswordResetController@find');
-    Route::post('reset', 'PasswordResetController@reset');
+    Route::get('other/{email}', 'ForumController@index');
+    Route::get('show/{id}', 'ForumController@show');
+    Route::get('delete/{id}', 'ForumController@destroy');
+    Route::post('update/{id}', 'ForumController@update');
+
+});
+
+//user info api
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'user'
+
+], function () {
+
+    Route::get('info/{email}', 'UserDetails@info');
+
+});
+
+//comment api
+Route::group([
+
+    'middleware' => 'api',
+    'prefix' => 'comment'
+
+], function () {
+
+    Route::post('new', 'ForumController@newComment');
+    Route::post('update/{id}', 'ForumController@updateComment');
+    Route::get('all/{id}', 'ForumController@allComment');
+    Route::get('delete/{id}', 'ForumController@destroyComment');
+
 
 });

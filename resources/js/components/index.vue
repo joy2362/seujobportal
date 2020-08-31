@@ -1147,14 +1147,11 @@ export default {
         }
         this.checkEmail();
         this.fatchcategory();
+        this.userData();
     },
     data(){
         return {
-            user:{
-                name:User.name(),
-                email:User.email(),
-                image:User.picture(),
-            },
+            user:{},
             items: [
                 'Item 1',
                 'Item 2',
@@ -1165,6 +1162,13 @@ export default {
         }
     },
     methods:{
+        userData(){
+            let email=User.email();
+            axios.get('/api/user/info/'+email)
+            .then(res=>{
+                this.user=res.data.user;
+            })
+        },
         checkEmail(){
             const formData = new FormData();
             formData.append('email', User.email());

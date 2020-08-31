@@ -9,4 +9,5 @@ class Forum extends Model
     protected $fillable = [
         'title', 'email','description', 'image'
     ];
+
 }

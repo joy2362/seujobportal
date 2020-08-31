@@ -32,7 +32,7 @@
                     v-on="on"
                 >
                     <v-img
-                        :src="user.image"
+                        :src="'/'+user.pro_pic"
                     >
                     </v-img>
                 </v-avatar>
