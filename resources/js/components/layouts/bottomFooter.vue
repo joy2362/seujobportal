@@ -11,12 +11,13 @@
                             md="3"
                             cols="12"
                         >
+
+                            <h1 class="h4">ABOUT US</h1>
                             <div
                                 align="center"
                                 justify="center"
 
                             >
-                            <h1 class="h4">ABOUT US</h1>
                             <v-toolbar-title class=" mt-5 mb-5 " >
                                 <v-img src="/asset/img/logo/seu_logo.png" width="70" height="70" ></v-img>
                             </v-toolbar-title>
@@ -92,4 +93,7 @@
     }
 </script>
 <style scoped>
+a:hover{
+    text-decoration:none;
+}
 </style>

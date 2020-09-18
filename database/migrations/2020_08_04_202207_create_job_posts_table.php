@@ -34,6 +34,7 @@ class CreateJobPostsTable extends Migration
             $table->text('dutyEnd');
             $table->integer('vacency');
             $table->boolean('verify')->default(0);
+            $table->text('owner');
             $table->timestamps();
         });
     }

@@ -22,6 +22,8 @@ class CreateEventsTable extends Migration
             $table->string('eventDate');
             $table->string('eventStart');
             $table->longText('details');
+            $table->text('owner');
+            $table->boolean('verify')->default(0);
             $table->timestamps();
         });
     }

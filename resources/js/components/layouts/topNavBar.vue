@@ -14,6 +14,12 @@
             <v-btn  small text to='/'>
                 <span>Find a Job</span>
             </v-btn>
+            <v-btn  small text to='/add/job' v-if=" user.user_type === '3' || user.user_type === '2' ">
+                <span>Add Job</span>
+            </v-btn>
+            <v-btn  small text to='/'v-if=" user.user_type === '3' || user.user_type === '2' ">
+                <span>Add Event</span>
+            </v-btn>
             <v-btn  small text to='/'>
                 <span>Event</span>
             </v-btn>
@@ -67,5 +73,7 @@
 </script>
 
 <style scoped>
-
+a:hover{
+    text-decoration:none;
+}
 </style>

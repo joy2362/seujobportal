@@ -72,6 +72,7 @@ Route::group([
     Route::get('job/destroy/{id}', 'Admin\job\Jobcontroller@destroy');
     Route::get('job/fatch/{id}', 'Admin\job\Jobcontroller@fatch');
     Route::get('job/show/{id}', 'Admin\job\Jobcontroller@show');
+    Route::get('job/approve/{id}', 'Admin\job\Jobcontroller@approve');
     Route::post('job/update/{id}', 'Admin\job\Jobcontroller@update');
 
     Route::get('event/destroy/{id}', 'Admin\event\EventController@destroy');
@@ -108,7 +109,7 @@ Route::group([
 
 });
 
-//user info api
+//user info & add job and event api
 Route::group([
 
     'middleware' => 'api',
@@ -117,10 +118,11 @@ Route::group([
 ], function () {
 
     Route::get('info/{email}', 'UserDetails@info');
+    Route::post('job/add', 'UserDetails@addJob');
 
 });
 
-//comment api
+//forum comment api
 Route::group([
 
     'middleware' => 'api',
@@ -133,5 +135,6 @@ Route::group([
     Route::get('all/{id}', 'ForumController@allComment');
     Route::get('delete/{id}', 'ForumController@destroyComment');
 
-
 });
+
+

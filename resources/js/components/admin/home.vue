@@ -95,6 +95,36 @@
                    </v-card>
                </v-col>
            </v-row>
+           <v-row class="mt-15">
+               <v-col
+                   col="12"
+               >
+                   <v-card class="blue-grey lighten-1 white--text" >
+                       <v-card-title class="mb-3">
+                           Pending Job post
+                           <v-spacer></v-spacer>
+                           <v-text-field
+                               v-model="pendingJobSearch"
+                               append-icon="mdi-magnify"
+                               label="Search"
+                               single-line
+                               hide-details
+                           ></v-text-field>
+                       </v-card-title>
+                       <v-data-table
+                           :headers="pendingJobHeader"
+                           :items="pendingJob"
+                           :search="pendingJobSearch"
+                       >
+                           <template v-slot:item.controls="pendingJob">
+                               <v-btn class="mx-1" icon dark small color="success" @click="JobShow(pendingJob.item)">
+                                   <v-icon dark>mdi-open-in-new</v-icon>
+                               </v-btn>
+                           </template>
+                       </v-data-table>
+                   </v-card>
+               </v-col>
+           </v-row>
             <v-row
             class="mt-15"
             >
@@ -250,12 +280,24 @@
                 totalEvents:'',
 
                 ExpiredJobSearch:'',
+                pendingJobSearch:'',
                 recentStudentsearch: '',
                 recentAlumnisearch: '',
                 recentFacultysearch: '',
                 expiredeventsearch: '',
 
                 expiredJobHeader: [
+                    {
+                        text: 'Title',
+                        align: 'start',
+                        value: 'name',
+                    },
+                    { text: 'Conpany name', value: 'company' },
+                    { text: 'Date ', value: 'lastdate' },
+                    { text: "Action", value: "controls", sortable: false }
+
+                ],
+                pendingJobHeader: [
                     {
                         text: 'Title',
                         align: 'start',
@@ -290,6 +332,7 @@
                 ],
 
                 expiredJob:[],
+                pendingJob:[],
                 recentStudent: [],
                 recentAlumni: [],
                 recentFaculty: [],
@@ -297,6 +340,9 @@
             }
         },
         methods:{
+            JobShow(item){
+                this.$router.push('/show/job/'+ item.id);
+            },
             featchUserData(){
                 let id=User.id();
                 axios.get('/api/admin/info/'+id)
@@ -315,6 +361,7 @@
                     this.recentAlumni=res.data.alumni;
                     this.recentFaculty=res.data.faculty;
                     this.expiredJob=res.data.job;
+                    this.pendingJob=res.data.pendingJob;
                 })
             },
             checkEmail(){

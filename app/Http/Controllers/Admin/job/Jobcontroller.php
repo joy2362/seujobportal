@@ -2,14 +2,19 @@
 
 namespace App\Http\Controllers\Admin\job;
 
+use App\Alumnni;
+use App\Faculty;
 use App\Http\Controllers\Controller;
 use App\Category;
 use App\JobOffday;
 use App\JobPost;
+use App\Notifications\JobDelete;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Notification;
 use Illuminate\Support\Str;
 use Image;
 use DB;
+use App\Notifications\jobApproved;
 
 class Jobcontroller extends Controller
 {
@@ -63,16 +68,20 @@ class Jobcontroller extends Controller
         $job->dutyEnd=$request->dutyEnd;
         $job->vacency=$request->vacency;
         $job->verify=1;
+        $job->owner=$request->owner;
         $job->save();
+
         for ($i=0;$i<$number;$i++){
             $offday=new JobOffday();
             $offday->job_id=$job->id;
             $offday->day=$request->offday[$i];
             $offday->save();
         }
+
         $category=Category::where('id',$request->category)->first();
         $category->total_job += $request->vacency;
         $category->save();
+
         return response()->json(['msg'=>'Job Post Added successfully']);
     }
 
@@ -147,8 +156,11 @@ class Jobcontroller extends Controller
         $job->dutyStart=$request->dutyStart;
         $job->dutyEnd=$request->dutyEnd;
         $job->vacency=$request->vacency;
+
         $job->save();
+
         $number=count($request->offday);
+
         JobOffday::where('job_id',$job->id)->delete();
          for ($i=0;$i<$number;$i++){
             $offday=new JobOffday();
@@ -156,6 +168,7 @@ class Jobcontroller extends Controller
             $offday->day=$request->offday[$i];
             $offday->save();
         }
+
         $category=Category::where('id',$request->category)->first();
         $category->total_job += $request->vacency;
         $category->save();
@@ -167,16 +180,55 @@ class Jobcontroller extends Controller
      * Remove the specified resource from storage.
      *
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
         $job=JobPost::where('id',$id)->first();
+
+        if ($job->verify == 0){
+            $user=$this->UserSelect($job->owner);
+            $user-> notify(
+                new JobDelete()
+            );
+        }
+
         $category=Category::where('id',$job->category)->first();
         $category->total_job -= $job->vacency;
         $category->save();
+
         JobPost::where('id',$id)->delete();
         JobOffday::where('job_id',$id)->delete();
+
         return response()->json(['msg'=>'Job Post Delete Successfully']);
+    }
+    private function UserSelect($email){
+        $faculty=Faculty::where('email',$email)->first();
+        $alumni=Alumnni::where('email',$email)->first();
+        if ($faculty){
+            return ($faculty);
+        }
+        if ($alumni){
+            return ($alumni);
+        }
+    }
+    public function approve($id){
+
+        $job=JobPost::where('id',$id)->first();
+        $user=$this->UserSelect($job->owner);
+
+        $category=Category::where('id',$job->category)->first();
+        $category->total_job += $job->vacency;
+        $category->save();
+
+        $job=JobPost::where('id',$id)->first();
+        $job->verify=1;
+        $job->save();
+
+        $user-> notify(
+            new jobApproved()
+        );
+
+        return response()->json(['msg'=>'Job Post Approved']);
     }
 }

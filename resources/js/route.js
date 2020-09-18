@@ -33,11 +33,13 @@ let index = require('./components/index').default;
 let forum = require('./components/forum/index').default;
 let singleforum = require('./components/forum/view').default;
 let editforum = require('./components/forum/edit').default;
+let reqjob = require('./components/newjob').default;
 
 
 export const routes = [
     { path: '/', component: login  , name:'login'},
     { path: '/home', component: index  , name:'home'},
+    { path: '/add/job', component: reqjob  , name:'reqjob'},
     { path: '/forum', component: forum  , name:'forum'},
     { path: '/forum/:id', component: singleforum, name: 'singleforum' },
     { path: '/forum/edit/:id', component: editforum, name: 'editforum' },

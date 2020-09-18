@@ -75,7 +75,8 @@
                         <div class="tiptap-vuetify-editor__content" v-html="job.benefit"/>
                     </v-col>
                     <v-col cols="12" v-if="!job.verify">
-                        <v-btn outlined color="indigo" >Approved</v-btn>
+                        <v-btn outlined color="indigo" @click="approve">Approved</v-btn>
+                        <v-btn outlined color="red" @click="deleteJob">Delete</v-btn>
                     </v-col>
                 </v-row>
             </v-container>
@@ -85,6 +86,26 @@
         <v-footer>
             <BottomFooter></BottomFooter>
         </v-footer>
+        <v-dialog
+            v-model="loading"
+            hide-overlay
+            persistent
+            width="300"
+        >
+            <v-card
+                color="primary"
+                dark
+            >
+                <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -112,9 +133,45 @@ import { TiptapVuetify } from 'tiptap-vuetify'
                 user:[],
                 job:{},
                 offday:[],
+                loading:false,
             }
         },
         methods:{
+            approve(){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, approve it!'
+                }).then((result) => {
+                        if (result.value) {
+                            this.loading = true;
+                            let id= this.$route.params.id;
+                            axios.get('/api/admin/job/approve/'+id)
+                                .then(res => {
+                                    this.loading = false;
+                                    Swal.fire(
+                                        'Success!',
+                                        res.data.msg,
+                                        'success'
+                                    )
+                                    this.fatchalldata();
+                                })
+                                .catch(error => {
+                                    this.loading = false;
+                                    if (error.response.data.errors) {
+                                        Toast.fire({
+                                            icon: 'error',
+                                            title: 'Something Wrong Try Again'
+                                        })
+                                    }
+                                })
+                        }
+                })
+            },
             featchUserData(){
                 let id=User.id();
                 axios.get('/api/admin/info/'+id)
@@ -140,6 +197,40 @@ import { TiptapVuetify } from 'tiptap-vuetify'
                     .then(res =>{
                     this.job=res.data[0][0];
                     this.offday=res.data[1];
+                })
+            },
+            deleteJob(){
+                Swal.fire({
+                    title: 'Are you sure?',
+                    text: "You won't be able to revert this!",
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.value) {
+                        this.loading = true;
+                        let id= this.$route.params.id;
+                        axios.get('/api/admin/job/destroy/'+ id)
+                            .then(res=>{
+                                this.loading = false;
+                                this.$router.push({name:'alljob'});
+                                Swal.fire(
+                                    'Deleted!',
+                                    res.data.msg,
+                                    'success'
+                                )
+                            } )
+                            .catch(error => {
+                                this.loading = false;
+                                Swal.fire(
+                                    'Sorry!',
+                                    'Something wrong try again.',
+                                    'error'
+                                )
+                            })
+                    }
                 })
             },
         },

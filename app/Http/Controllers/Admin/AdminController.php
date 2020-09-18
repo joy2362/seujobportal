@@ -95,6 +95,7 @@ class AdminController extends Controller
 
       $event= Event::where('eventDate','<',now())->get();
       $job= JobPost::where('lastdate','<',now())->get();
+      $pendingJob= JobPost::where('verify','0')->get();
       $Events=Event::all();
       $totalEvents=$Events->count();
 
@@ -105,7 +106,8 @@ class AdminController extends Controller
           'alumni'=>$alumni,
           'event'=>$event,
           'job'=>$job,
-          'totalEvents'=>$totalEvents
+          'totalEvents'=>$totalEvents,
+          'pendingJob'=>$pendingJob
       ]);
     }
 

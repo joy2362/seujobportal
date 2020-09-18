@@ -35,17 +35,27 @@
                         :search="jobsearch"
                         :items="jobs"
                     >
-                        <template v-slot:item.controls="jobs">
+                        <template v-slot:item.controls="jobs"  >
                             <v-btn class="mx-1" icon dark small color="success" @click="JobShow(jobs.item)">
                                 <v-icon dark>mdi-open-in-new</v-icon>
                             </v-btn>
-                            <v-btn class="mx-1" icon dark small color="info" @click="JobEdit(jobs.item)">
+                            <v-btn class="mx-1" icon dark small color="info" v-if="jobs.item.verify" @click="JobEdit(jobs.item)">
                                 <v-icon dark>mdi-pencil</v-icon>
                             </v-btn>
-                            <v-btn class="mx-1" icon dark small color="red" @click="deleteJob(jobs.item)">
+                            <v-btn class="mx-1" icon dark small color="red" v-if="jobs.item.verify" @click="deleteJob(jobs.item)">
                                 <v-icon dark>mdi-delete</v-icon>
                             </v-btn>
+                            <v-chip
+                                v-if="!jobs.item.verify"
+                                class="ma-2"
+                                color="red"
+                                text-color="white"
+                                small
+                            >
+                                Pending
+                            </v-chip>
                         </template>
+
                     </v-data-table>
                 </v-card>
             </v-col>

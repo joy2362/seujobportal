@@ -653,6 +653,7 @@
                      formData.append('dutyStart', this.dutyStart);
                      formData.append('vacency', this.vacency);
                      formData.append('dutyEnd', this.dutyEnd);
+                     formData.append('owner', User.email());
 
                      for (var i = 0; i < this.selectedOffday.length; i++) {
                         formData.append('offday[]', this.selectedOffday[i]);
