@@ -34,12 +34,15 @@ let forum = require('./components/forum/index').default;
 let singleforum = require('./components/forum/view').default;
 let editforum = require('./components/forum/edit').default;
 let reqjob = require('./components/newjob').default;
+let reqevent = require('./components/newEvent').default;
+let errorPage = require('./components/404').default;
 
 
 export const routes = [
     { path: '/', component: login  , name:'login'},
     { path: '/home', component: index  , name:'home'},
     { path: '/add/job', component: reqjob  , name:'reqjob'},
+    { path: '/add/event', component: reqevent , name:'reqevent'},
     { path: '/forum', component: forum  , name:'forum'},
     { path: '/forum/:id', component: singleforum, name: 'singleforum' },
     { path: '/forum/edit/:id', component: editforum, name: 'editforum' },
@@ -67,4 +70,5 @@ export const routes = [
     { path: '/admin/all', component: alladmin, name: 'alladmin' },
     { path: '/admin/profile', component: adminprofile, name: 'adminprofile' },
     { path: '/admin/setting', component: adminsetting, name: 'adminsetting' },
+    { path: '*', component: errorPage, name: 'errorPage' },
 ]

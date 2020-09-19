@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Admin\event;
 
+use App\Alumnni;
 use App\Event;
+use App\Faculty;
 use App\Http\Controllers\Controller;
+use App\Notifications\eventApprove;
+use App\Notifications\eventDelete;
 use Illuminate\Http\Request;
 
 class EventController extends Controller
@@ -11,7 +15,7 @@ class EventController extends Controller
     /**
      * Display a listing of the resource.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
@@ -22,7 +26,7 @@ class EventController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {
@@ -30,6 +34,7 @@ class EventController extends Controller
             'name' => 'required|unique:events',
             'details' => 'required|min:10',
         ]);
+
         $event=new Event();
         $event->name=$request->name;
         $event->company=$request->company;
@@ -38,7 +43,10 @@ class EventController extends Controller
         $event->eventDate=$request->eventDate;
         $event->eventStart=$request->eventStart;
         $event->details=$request->details;
+        $event->owner=$request->owner;
+        $event->verify=1;
         $event->save();
+
         return response()->json(['msg'=>"Event Added Successfully"]);
     }
 
@@ -59,7 +67,7 @@ class EventController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -76,10 +84,21 @@ class EventController extends Controller
         $event->eventDate=$request->eventDate;
         $event->eventStart=$request->eventStart;
         $event->details=$request->details;
+
         $event->save();
+
         return response()->json(['msg'=>"Event Updated Successfully"]);
     }
-
+    private function UserSelect($email){
+        $faculty=Faculty::where('email',$email)->first();
+        $alumni=Alumnni::where('email',$email)->first();
+        if ($faculty){
+            return ($faculty);
+        }
+        if ($alumni){
+            return ($alumni);
+        }
+    }
     /**
      * Remove the specified resource from storage.
      *
@@ -88,7 +107,28 @@ class EventController extends Controller
      */
     public function destroy($id)
     {
+        $event=Event::where('id',$id)->first();
+        if ($event->verify == 0){
+            $user=$this->UserSelect($event->owner);
+            $user-> notify(
+                new eventDelete()
+            );
+        }
         Event::where('id',$id)->delete();
         return response()->json(['msg'=>"Event Deleted Successfully"]);
+    }
+
+    public function approve($id){
+        $event=Event::where('id',$id)->first();
+        $user=$this->UserSelect($event->owner);
+
+        $event->verify=1;
+        $event->save();
+
+        $user-> notify(
+            new eventApprove()
+        );
+
+        return response()->json(['msg'=>'Event Approved']);
     }
 }

@@ -4,9 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use App\Alumnni;
+use App\Event;
 use App\Faculty;
 use App\JobOffday;
 use App\JobPost;
+use App\Notifications\eventPending;
 use App\Notifications\jobpending;
 use App\User;
 use Illuminate\Http\Request;
@@ -69,11 +71,44 @@ class UserDetails extends Controller
             $offday->day=$request->offday[$i];
             $offday->save();
         }
-
-        $job->notify(
+        $user=$this->UserSelect($job->owner);
+        $user->notify(
             new jobpending()
         );
 
         return response()->json(['msg'=>'Job Post Added for Admin verification']);
+    }
+    private function UserSelect($email){
+        $faculty=Faculty::where('email',$email)->first();
+        $alumni=Alumnni::where('email',$email)->first();
+        if ($faculty){
+            return ($faculty);
+        }
+        if ($alumni){
+            return ($alumni);
+        }
+    }
+    public function addevent(Request $request){
+        $validatedData = $request->validate([
+            'name' => 'required|unique:events',
+            'details' => 'required|min:10',
+        ]);
+
+        $event=new Event();
+        $event->name=$request->name;
+        $event->company=$request->company;
+        $event->location=$request->location;
+        $event->address=$request->address;
+        $event->eventDate=$request->eventDate;
+        $event->eventStart=$request->eventStart;
+        $event->details=$request->details;
+        $event->owner=$request->owner;
+        $event->save();
+
+        $user=$this->UserSelect($event->owner);
+        $user->notify(
+            new eventPending()
+        );
+        return response()->json(['msg'=>"Event post is pending"]);
     }
 }

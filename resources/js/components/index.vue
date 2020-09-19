@@ -137,217 +137,72 @@
                     <span  class="font-weight-light h1 red--text  text-uppercase">RECENT  <span class="font-weight-black">JOBS</span></span>
                 </v-col>
             </v-row>
-            <v-row  class="mt-10">
+            <v-row
+                class="mt-10"
+            >
                 <v-col
                 cols="12"
                 md="6"
+                v-for="row in recentJob" :key="row.id"
                 >
                     <v-card
                         outlined
+                        @click="job"
                     >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
-                            >
-                                <v-img
-                                src="asset/img/others/job/job-list3.png"
-                                >
-
-                                </v-img>
-                            </v-list-item-avatar>
+                        <v-list-item >
                             <v-list-item-content
                             >
-                                    <v-list-item-title class=" mb-1">
+                                <v-toolbar flat>
+                                    <v-toolbar-title>
                                         <v-btn
                                         text
                                         to="/"
-                                        class="headline"
-                                        >
-                                            Digital Marketer
+                                        class="body-1"
+                                    >
+                                            {{row.name}}
+                                    </v-btn>
+                                    </v-toolbar-title>
+                                    <v-spacer></v-spacer>
+                                    <div>
+                                        <v-btn icon color="pink">
+                                            <v-icon>mdi-heart</v-icon>
                                         </v-btn>
-
-                                    </v-list-item-title>
+                                    </div>
+                                </v-toolbar>
                                 <v-list-item-subtitle
                                 >
                                     <v-chip
                                         class="ma-2"
                                     >
-                                        Creative Agency
+                                        {{row.company}}
                                     </v-chip>
                                     <v-chip
                                         class="ma-2"
+                                        v-if="row.location === '1'"
                                     >
                                         <v-icon left>mdi-map-marker</v-icon>
                                         Dhaka, Bangladesh
                                     </v-chip>
                                     <v-chip
                                         class="ma-2"
+                                        v-if="row.location === '2'"
+                                    >
+                                        <v-icon left>mdi-map-marker</v-icon>
+                                        Outside Dhaka
+                                    </v-chip>
+                                    <v-chip
+                                        class="ma-2"
+                                        v-if="row.JobType === '2'"
                                     >
                                         <v-icon left>mdi-timetable</v-icon>
                                        Full time
                                     </v-chip>
-                                </v-list-item-subtitle>
-
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-                </v-col>
-                <v-col
-                    md="6"
-                    cols="12"
-                >
-                    <v-card
-                        outlined
-                    >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
-                            >
-                                <v-img
-                                    src="asset/img/others/job/job-list3.png"
-                                >
-
-                                </v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content
-                            >
-                                <v-list-item-title class=" mb-1">
-                                    <v-btn
-                                        text
-                                        to="/"
-                                        class="headline"
-                                    >
-                                        Digital Marketer
-                                    </v-btn>
-
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                >
                                     <v-chip
                                         class="ma-2"
-                                    >
-                                        Creative Agency
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-map-marker</v-icon>
-                                        Dhaka, Bangladesh
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
+                                        v-if="row.JobType === '1'"
                                     >
                                         <v-icon left>mdi-timetable</v-icon>
-                                        Full time
-                                    </v-chip>
-                                </v-list-item-subtitle>
-
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-                </v-col>
-                <v-col
-                    cols="12"
-                    md="6"
-                >
-                    <v-card
-                        outlined
-                    >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
-                            >
-                                <v-img
-                                    src="asset/img/others/job/job-list3.png"
-                                >
-                                </v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content
-                            >
-                                <v-list-item-title class=" mb-1">
-                                    <v-btn
-                                        text
-                                        to="/"
-                                        class="headline"
-                                    >
-                                        Digital Marketer
-                                    </v-btn>
-
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                >
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        Creative Agency
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-map-marker</v-icon>
-                                        Dhaka, Bangladesh
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-timetable</v-icon>
-                                        Full time
-                                    </v-chip>
-                                </v-list-item-subtitle>
-                            </v-list-item-content>
-                        </v-list-item>
-                    </v-card>
-                </v-col>
-                <v-col
-                    cols="12"
-                    md="6"
-                >
-                    <v-card
-                        outlined
-                    >
-                        <v-list-item three-line>
-                            <v-list-item-avatar
-                                tile
-                                size="80"
-                            >
-                                <v-img
-                                    src="asset/img/others/job/job-list3.png"
-                                >
-                                </v-img>
-                            </v-list-item-avatar>
-                            <v-list-item-content
-                            >
-                                <v-list-item-title class=" mb-1">
-                                    <v-btn
-                                        text
-                                        to="/"
-                                        class="headline"
-                                    >
-                                        Digital Marketer
-                                    </v-btn>
-
-                                </v-list-item-title>
-                                <v-list-item-subtitle
-                                >
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        Creative Agency
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-map-marker</v-icon>
-                                        Dhaka, Bangladesh
-                                    </v-chip>
-                                    <v-chip
-                                        class="ma-2"
-                                    >
-                                        <v-icon left>mdi-timetable</v-icon>
-                                        Full time
+                                        Part time
                                     </v-chip>
                                 </v-list-item-subtitle>
 
@@ -1148,6 +1003,7 @@ export default {
         this.checkEmail();
         this.fatchcategory();
         this.userData();
+        this.fatchAllData();
     },
     data(){
         return {
@@ -1159,9 +1015,20 @@ export default {
                 'Item 4',
             ],
             category:[],
+            recentJob:[],
         }
     },
     methods:{
+        job(){
+            alert('you got it write')
+        },
+        fatchAllData(){
+            axios.get('/api/home/all')
+                .then(res=>{
+                    this.recentJob=res.data.recentJob;
+                    console.log(this.recentJob);
+                })
+        },
         userData(){
             let email=User.email();
             axios.get('/api/user/info/'+email)

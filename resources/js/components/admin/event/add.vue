@@ -353,6 +353,7 @@
                     formData.append('eventDate', this.eventDate);
                     formData.append('eventStart', this.eventStart);
                     formData.append('details', this.details);
+                    formData.append('owner', User.email());
                     axios.post('/api/admin/event/add',formData)
                     .then(res=>{
                         this.loading = false;

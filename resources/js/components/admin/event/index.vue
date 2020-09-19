@@ -39,12 +39,21 @@
                                 <v-btn class="mx-1" icon dark small color="success" @click="eventShow(event.item)">
                                     <v-icon dark>mdi-open-in-new</v-icon>
                                 </v-btn>
-                                <v-btn class="mx-1" icon dark small color="info" @click="eventEdit(event.item)">
+                                <v-btn class="mx-1" icon dark small color="info" v-if="event.item.verify" @click="eventEdit(event.item)">
                                     <v-icon dark>mdi-pencil</v-icon>
                                 </v-btn>
-                                <v-btn class="mx-1" icon dark small color="red" @click="deleteevent(event.item)">
+                                <v-btn class="mx-1" icon dark small color="red" v-if="event.item.verify" @click="deleteevent(event.item)">
                                     <v-icon dark>mdi-delete</v-icon>
                                 </v-btn>
+                                <v-chip
+                                    v-if="!event.item.verify"
+                                    class="ma-2"
+                                    color="red"
+                                    text-color="white"
+                                    small
+                                >
+                                    Pending
+                                </v-chip>
                             </template>
                         </v-data-table>
                     </v-card>

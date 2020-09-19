@@ -161,8 +161,6 @@ class AuthController extends Controller
             return response()->json(['message' => 'Email already taken'] ,404);
         }
 
-        $number=count($request->interestfield);
-
         $name=Str::random(10).".png";
         $upload='asset/img/alumni';
         $img_name=$upload.'/'.$name;
@@ -186,13 +184,6 @@ class AuthController extends Controller
         $user->save();
         $userid=$user->id;
 
-
-        for ($i=0; $i <$number ; $i++) {
-            $section=new interestSectionAlumni;
-            $section->user_id=$userid;
-            $section->section=$request->interestfield[$i];
-            $section->save();
-        }
         $user->notify(
             new Emailverification($user)
         );
@@ -207,8 +198,6 @@ class AuthController extends Controller
         if($this->EmailCheck($request->email)){
             return response()->json(['message' => 'Email already taken'] ,404);
         }
-
-        $number=count($request->interestfield);
 
         $name=Str::random(10).".png";
         $upload='asset/img/faculty';
@@ -232,12 +221,6 @@ class AuthController extends Controller
         ]);
         $userid=$user->id;
 
-        for ($i=0; $i <$number ; $i++) {
-            $section=new interestSectionStudent;
-            $section->user_id=$userid;
-            $section->section=$request->interestfield[$i];
-            $section->save();
-        }
         $user->notify(
             new Emailverification($user)
         );

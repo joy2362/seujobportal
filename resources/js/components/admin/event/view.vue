@@ -32,14 +32,38 @@
                                 <span>Event Details</span>
                                 <div class="tiptap-vuetify-editor__content" v-html="event.details"/>
                             </v-col>
+                            <v-col cols="12" v-if="!event.verify">
+                                <v-btn outlined color="indigo" @click="approve">Approved</v-btn>
+                                <v-btn outlined color="red" @click="deleteevent">Delete</v-btn>
+                            </v-col>
                         </v-row>
                     </v-container>
                 </v-card-text>
             </v-card>
         </v-container>
-        <v-footer fixed>
+        <v-footer >
             <BottomFooter></BottomFooter>
         </v-footer>
+        <v-dialog
+            v-model="loading"
+            hide-overlay
+            persistent
+            width="300"
+        >
+            <v-card
+                color="primary"
+                dark
+            >
+                <v-card-text>
+                    Please stand by
+                    <v-progress-linear
+                        indeterminate
+                        color="white"
+                        class="mb-0"
+                    ></v-progress-linear>
+                </v-card-text>
+            </v-card>
+        </v-dialog>
     </v-app>
 </template>
 
@@ -66,6 +90,7 @@ export default {
         return {
             user:[],
             event:{},
+            loading:false,
         }
     },
     methods:{
@@ -95,6 +120,74 @@ export default {
                     this.event=res.data;
                 })
         },
+        deleteevent(){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then((result) => {
+                if (result.value) {
+                    this.loading=true;
+                    let id= this.$route.params.id;
+                    axios.get('/api/admin/event/destroy/'+ id)
+                        .then(res=>{
+                            this.loading=false;
+                            this.$router.push({name:'allevent'});
+                            Swal.fire(
+                                'Deleted!',
+                                res.data.msg,
+                                'success'
+                            )
+                        } )
+                        .catch(error => {
+                            this.loading=false;
+                            Swal.fire(
+                                'Sorry!',
+                                'Something wrong try again.',
+                                'error'
+                            )
+                        })
+                }
+            })
+        },
+        approve(){
+            Swal.fire({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, approve it!'
+            }).then((result) => {
+                if (result.value) {
+                    this.loading = true;
+                    let id = this.$route.params.id;
+                    axios.get('/api/admin/event/approve/' + id)
+                        .then(res => {
+                            this.loading = false;
+                            this.$router.push({name: 'allevent'});
+                            Swal.fire(
+                                'Success!',
+                                res.data.msg,
+                                'success'
+                            )
+                        })
+                        .catch(error => {
+                            this.loading = false;
+                            Swal.fire(
+                                'Sorry!',
+                                'Something wrong try again.',
+                                'error'
+                            )
+                        })
+                }
+            })
+        }
     },
     components:{
         TopNav,BottomFooter,TiptapVuetify

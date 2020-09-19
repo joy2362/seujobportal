@@ -56,19 +56,6 @@
                                     @input="$v.repeatpassword.$touch()"
                                     @blur="$v.repeatpassword.$touch()"
                                 ></v-text-field>
-                                <v-select
-                                    v-model="selectedfiled"
-                                    item-text="name"
-                                    item-value="id"
-                                    :items="category"
-                                    chips
-                                    label="Interest Fields"
-                                    multiple
-                                    prepend-icon="mdi-playlist-plus"
-                                    @input="$v.selectedfiled.$touch()"
-                                    @blur="$v.selectedfiled.$touch()"
-                                    :error-messages="selectedfiledErrors"
-                                ></v-select>
                                 <v-file-input
                                     v-model="cv"
                                     :error-messages="cvErrors"
@@ -80,14 +67,12 @@
                                 ></v-file-input>
                             </v-form>
                         </v-card-text>
-
                         <v-card-text class="text-center">
                             <p >Already have account?
                                 <v-btn small text to="/">Login</v-btn>
                                 Or
                                 <v-btn small text to="/reg">Back</v-btn>
                             </p>
-
                         </v-card-text>
                         <v-card-actions>
                             <v-btn color="primary" outlined @click="reg">Sign Up</v-btn>
@@ -144,7 +129,6 @@
             },
             name:{required,minLength:minLength(5)},
             repeatpassword:{required,minLength: minLength(6), sameAsPassword: sameAs("password")},
-            selectedfiled:{required},
             cv:{required},
 
         },
@@ -154,9 +138,7 @@
                 password:'',
                 name:'',
                 repeatpassword:'',
-                selectedfiled: [],
                 cv:null,
-                category: [],
                 loading:false,
             }
         },
@@ -191,12 +173,6 @@
                 !this.$v.repeatpassword.required && errors.push('Repeat password is required')
                 return errors
             },
-            selectedfiledErrors(){
-                const errors = []
-                if (!this.$v.selectedfiled.$dirty) return errors
-                !this.$v.selectedfiled.required && errors.push('Interest field is required')
-                return errors
-            },
             cvErrors(){
                 const errors = []
                 if (!this.$v.cv.$dirty) return errors
@@ -205,12 +181,6 @@
             }
         },
         methods:{
-            fatchdata(){
-                axios.get('/api/admin/category/index')
-                .then(res =>{
-                    this.category=res.data;
-                })
-            },
             reg(){
                 this.loading=true;
                 this.$v.$touch()
@@ -224,9 +194,6 @@
                     formData.append('name', this.name);
                     formData.append('email', this.email);
                     formData.append('password', this.password);
-                    for (var i = 0; i < this.selectedfiled.length; i++) {
-                        formData.append('interestfield[]', this.selectedfiled[i]);
-                    }
                     formData.append('cv', this.cv,this.cv.name);
 
                     axios.post('/api/auth/alumni/signup',formData)

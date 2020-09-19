@@ -80,6 +80,7 @@ Route::group([
     Route::get('event/show/{id}', 'Admin\event\EventController@show');
     Route::get('event/index', 'Admin\event\EventController@index');
     Route::post('event/add', 'Admin\event\EventController@store');
+    Route::get('event/approve/{id}', 'Admin\event\EventController@approve');
 
     Route::post('all', 'Admin\AdminController@allAdmin');
     Route::get('home/all', 'Admin\AdminController@adminHome');
@@ -119,6 +120,7 @@ Route::group([
 
     Route::get('info/{email}', 'UserDetails@info');
     Route::post('job/add', 'UserDetails@addJob');
+    Route::post('event/add', 'UserDetails@addevent');
 
 });
 
@@ -137,4 +139,7 @@ Route::group([
 
 });
 
+
+//home page data
+Route::get('home/all', 'HomeController@index');
 
