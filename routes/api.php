@@ -139,7 +139,10 @@ Route::group([
 
 });
 
-
 //home page data
 Route::get('home/all', 'HomeController@index');
+
+//shortlist
+Route::post('shortlist/add', 'HomeController@addShortList');
+Route::post('event/shortlist/add', 'HomeController@addShortListEvent');
 
