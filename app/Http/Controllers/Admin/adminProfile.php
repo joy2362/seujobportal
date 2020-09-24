@@ -11,6 +11,13 @@ use Illuminate\Support\Facades\Hash;
 
 class adminProfile extends Controller
 {
+    public function info($id){
+        $admin=Admin::where('id',$id)->first();
+        $verify=\Carbon\Carbon::parse($admin->email_verified_at)->diffForHumans();
+        $create=\Carbon\Carbon::parse($admin->created_at)->diffForHumans();
+        return response()->json(['user'=>$admin,'verify'=>$verify,'create'=>$create]);
+    }
+
     public function imageChange($id,Request $request){
         $admin=Admin::where('id',$id)->first();
         unlink($admin->pro_pic);

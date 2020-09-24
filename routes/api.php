@@ -85,7 +85,8 @@ Route::group([
     Route::post('all', 'Admin\AdminController@allAdmin');
     Route::get('home/all', 'Admin\AdminController@adminHome');
     Route::get('remove/{id}', 'Admin\AdminController@destroy');
-    Route::get('info/{id}', 'Admin\AdminController@info');
+
+    Route::get('info/{id}', 'Admin\adminProfile@info');
     Route::post('profile/image/{id}', 'Admin\adminProfile@imageChange');
     Route::post('setting/name/{id}', 'Admin\adminProfile@namechange');
     Route::post('setting/password/{id}', 'Admin\adminProfile@passwordchange');
@@ -118,7 +119,14 @@ Route::group([
 
 ], function () {
 
-    Route::get('info/{email}', 'UserDetails@info');
+    Route::get('info/{email}', 'AuthController@info');
+    Route::get('profile/{email}', 'UserDetails@profile');
+    Route::post('profile/image/{email}', 'UserDetails@imageChange');
+    Route::post('setting/name/{email}', 'UserDetails@namechange');
+    Route::post('setting/cv/{email}', 'UserDetails@cvchange');
+    Route::post('setting/password/{email}', 'UserDetails@passwordchange');
+
+
     Route::post('job/add', 'UserDetails@addJob');
     Route::post('event/add', 'UserDetails@addevent');
 

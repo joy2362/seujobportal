@@ -12,25 +12,32 @@ use App\Notifications\eventPending;
 use App\Notifications\jobpending;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Str;
+use Image;
 
 class UserDetails extends Controller
 {
-    public function info($email){
+    public function profile($email){
         $faculty=Faculty::where('email',$email)->first();
         $student=User::where('email',$email)->first();
         $alumni=Alumnni::where('email',$email)->first();
-        $admin=Admin::where('email',$email)->first();
 
         if ($faculty){
-            return response()->json(['user'=>$faculty]);
+            $verify=\Carbon\Carbon::parse($faculty->email_verified_at)->diffForHumans();
+            $create=\Carbon\Carbon::parse($faculty->created_at)->diffForHumans();
+            return response()->json(['user'=>$faculty,'verify'=>$verify,'create'=>$create]);
         }elseif ($alumni){
-            return response()->json(['user'=>$alumni]);
+            $verify=\Carbon\Carbon::parse($alumni->email_verified_at)->diffForHumans();
+            $create=\Carbon\Carbon::parse($alumni->created_at)->diffForHumans();
+            return response()->json(['user'=>$alumni,'verify'=>$verify,'create'=>$create]);
         }elseif ($student){
-            return response()->json(['user'=>$student]);
-        }elseif ($admin){
-            return response()->json(['user'=>$admin]);
+            $verify=\Carbon\Carbon::parse($student->email_verified_at)->diffForHumans();
+            $create=\Carbon\Carbon::parse($student->created_at)->diffForHumans();
+            return response()->json(['user'=>$student,'verify'=>$verify,'create'=>$create]);
         }
     }
+
     public function addJob(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|unique:job_posts',
@@ -78,16 +85,23 @@ class UserDetails extends Controller
 
         return response()->json(['msg'=>'Job Post Added for Admin verification']);
     }
+
     private function UserSelect($email){
         $faculty=Faculty::where('email',$email)->first();
         $alumni=Alumnni::where('email',$email)->first();
+        $student=User::where('email',$email)->first();
+
         if ($faculty){
             return ($faculty);
         }
         if ($alumni){
             return ($alumni);
         }
+        if ($student){
+            return ($student);
+        }
     }
+
     public function addevent(Request $request){
         $validatedData = $request->validate([
             'name' => 'required|unique:events',
@@ -110,5 +124,61 @@ class UserDetails extends Controller
             new eventPending()
         );
         return response()->json(['msg'=>"Event post is pending"]);
+    }
+
+
+    public function imageChange($email , Request $request){
+        $user=$this->UserSelect($email);;
+        unlink($user->pro_pic);
+
+        $ext = $request->file('image')->extension();
+        $name=Str::random(10).".".$ext;
+        $img=Image::make($request->image)->resize(250,250);
+        $upload='asset/img/admin';
+        $img_name=$upload.'/'.$name;
+        $img->save($img_name);
+
+        $user->pro_pic=$img_name;
+        $user->save();
+
+        return response()->json(['msg'=>'Image Updated successfully !!']);
+    }
+
+    public function namechange($email,Request $request){
+        $user=$this->UserSelect($email);;
+        $user->name=$request->name;
+        $user->save();
+        return response()->json(['msg'=>'Name Changed !!']);
+    }
+
+    public function passwordchange($email,Request $request){
+        $user=$this->UserSelect($email);
+        if (! Hash::check($request->oldpassword,$user->password)){
+            return response()->json(['msg'=>'Current Password not matched !!'],404);
+        }
+        $user->password=Hash::make($request->newpassword);
+        $user->save();
+
+        return response()->json(['msg'=>'Password Changed !!']);
+    }
+
+    public function cvchange($email , Request $request){
+        $validatedData = $request->validate([
+            'cv' => 'required|mimetypes:application/pdf',
+        ]);
+        $cv = $request->file('cv');
+        $cvext=$request->file('cv')->extension();
+        $cvname=Str::random(10).".".$cvext;
+        $destinationPath="asset/cv/alumni";
+        $cv->move($destinationPath,$cvname);
+        $cvsource=$destinationPath."/".$cvname;
+
+        $user=$this->UserSelect($email);
+        unlink($user->cv);
+        $user->cv =  $cvsource;
+        $user->save();
+
+        return response()->json(['msg'=>'Cv Updated !!']);
+
     }
 }

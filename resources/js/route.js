@@ -36,11 +36,17 @@ let editforum = require('./components/forum/edit').default;
 let reqjob = require('./components/newjob').default;
 let reqevent = require('./components/newEvent').default;
 let errorPage = require('./components/404').default;
+let findJob = require('./components/findJob').default;
+let userProfile = require('./components/profile').default;
+let profileSetting = require('./components/setting').default;
 
 
 export const routes = [
     { path: '/', component: login  , name:'login'},
     { path: '/home', component: index  , name:'home'},
+    { path: '/user/profile', component: userProfile  , name:'userProfile'},
+    { path: '/user/setting', component: profileSetting  , name:'profileSetting'},
+    { path: '/all/job', component: findJob  , name:'findJob'},
     { path: '/add/job', component: reqjob  , name:'reqjob'},
     { path: '/add/event', component: reqevent , name:'reqevent'},
     { path: '/forum', component: forum  , name:'forum'},

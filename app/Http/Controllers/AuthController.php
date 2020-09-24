@@ -182,7 +182,6 @@ class AuthController extends Controller
         $user->cv =  $cvsource;
         $user->activation_token = Str::random(60);
         $user->save();
-        $userid=$user->id;
 
         $user->notify(
             new Emailverification($user)
@@ -240,6 +239,23 @@ class AuthController extends Controller
        }else{
            return response()->json(['msg'=>'user not found'],404);
        }
+    }
+
+    public function info($email){
+        $faculty=Faculty::where('email',$email)->first();
+        $student=User::where('email',$email)->first();
+        $alumni=Alumnni::where('email',$email)->first();
+        $admin=Admin::where('email',$email)->first();
+
+        if ($faculty){
+            return response()->json(['user'=>$faculty]);
+        }elseif ($alumni){
+            return response()->json(['user'=>$alumni]);
+        }elseif ($student){
+            return response()->json(['user'=>$student]);
+        }elseif ($admin){
+            return response()->json(['user'=>$admin]);
+        }
     }
 
 }

@@ -11,7 +11,7 @@
             <v-btn depressed small text to='/home'>
                 <span>Home</span>
             </v-btn>
-            <v-btn  small text to='/'>
+            <v-btn  small text to='/all/job'>
                 <span>Find a Job</span>
             </v-btn>
             <v-btn  small text to='/add/job' v-if=" user.user_type === '3' || user.user_type === '2' ">
@@ -43,16 +43,23 @@
                     </v-img>
                 </v-avatar>
             </template>
-            <v-list>
+            <v-list
+                color="blue-grey lighten-3"
+                class="align-center"
+            >
 
                 <v-list-item
-                    to="/"
+                   @click="profileSelect"
                 >
                     <v-list-item-title>Profile</v-list-item-title>
                 </v-list-item>
-
                 <v-list-item
-                    to="/"
+                    to="/user/profile"
+                >
+                    <v-list-item-title>Favourit List</v-list-item-title>
+                </v-list-item>
+                <v-list-item
+                    to="/user/setting"
                 >
                     <v-list-item-title>Setting</v-list-item-title>
                 </v-list-item>
@@ -73,6 +80,16 @@
     export default {
         name: "topNavBar",
         props: ['user'],
+        methods:{
+            profileSelect(){
+                if (this.user.user_type){
+                    this.$router.push({name:'userProfile'});
+                }else{
+                    this.$router.push({name:'adminauth'});
+                }
+            }
+        }
+
     }
 </script>
 
