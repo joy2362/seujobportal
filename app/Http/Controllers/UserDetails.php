@@ -10,11 +10,14 @@ use App\JobOffday;
 use App\JobPost;
 use App\Notifications\eventPending;
 use App\Notifications\jobpending;
+use App\shortList;
+use App\shortListEvent;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Image;
+use DB;
 
 class UserDetails extends Controller
 {
@@ -181,4 +184,33 @@ class UserDetails extends Controller
         return response()->json(['msg'=>'Cv Updated !!']);
 
     }
+
+    public function eventFavouriteList($email){
+        $event = DB::table('short_list_events')
+            ->join('events', 'events.id', '=', 'short_list_events.eventId')
+            ->select('short_list_events.*', 'events.name')
+            ->paginate(10);
+
+        return response()->json([ 'event'=>$event ]);
+    }
+    public function jobFavouriteList($email){
+        $job = DB::table('short_lists')
+            ->join('job_posts', 'job_posts.id', '=', 'short_lists.jobId')
+            ->select('short_lists.*', 'job_posts.name')
+            ->paginate(10);
+
+        return response()->json([ 'job'=>$job ]);
+    }
+
+    public function removeJob($id){
+
+        shortList::destroy($id);
+        return response()->json(['msg'=>'Removed From Favourite List !!']);
+    }
+    public function removeEvent($id){
+
+        shortListEvent::destroy($id);
+        return response()->json(['msg'=>'Removed From Favourite List !!']);
+    }
+
 }

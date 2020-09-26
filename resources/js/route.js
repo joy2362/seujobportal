@@ -39,6 +39,7 @@ let errorPage = require('./components/404').default;
 let findJob = require('./components/findJob').default;
 let userProfile = require('./components/profile').default;
 let profileSetting = require('./components/setting').default;
+let favList = require('./components/favList').default;
 
 
 export const routes = [
@@ -46,6 +47,7 @@ export const routes = [
     { path: '/home', component: index  , name:'home'},
     { path: '/user/profile', component: userProfile  , name:'userProfile'},
     { path: '/user/setting', component: profileSetting  , name:'profileSetting'},
+    { path: '/user/favourite', component: favList  , name:'favList'},
     { path: '/all/job', component: findJob  , name:'findJob'},
     { path: '/add/job', component: reqjob  , name:'reqjob'},
     { path: '/add/event', component: reqevent , name:'reqevent'},

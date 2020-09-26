@@ -121,6 +121,10 @@ Route::group([
 
     Route::get('info/{email}', 'AuthController@info');
     Route::get('profile/{email}', 'UserDetails@profile');
+    Route::get('favourite/event/{email}', 'UserDetails@eventFavouriteList');
+    Route::get('favourite/job/{email}', 'UserDetails@jobFavouriteList');
+    Route::get('favourite/job/remove/{id}', 'UserDetails@removeJob');
+    Route::get('favourite/event/remove/{id}', 'UserDetails@removeEvent');
     Route::post('profile/image/{email}', 'UserDetails@imageChange');
     Route::post('setting/name/{email}', 'UserDetails@namechange');
     Route::post('setting/cv/{email}', 'UserDetails@cvchange');

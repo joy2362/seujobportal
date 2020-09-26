@@ -31,6 +31,7 @@ window.Toast=Toast;
 Vue.use(VueRouter)
 Vue.use(Typewriter)
 Vue.use(Vuelidate)
+Vue.component('pagination', require('laravel-vue-pagination'));
 
 //post filter (forum post short view)
 Vue.filter('sortPost',val=>{

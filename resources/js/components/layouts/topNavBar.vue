@@ -54,7 +54,7 @@
                     <v-list-item-title>Profile</v-list-item-title>
                 </v-list-item>
                 <v-list-item
-                    to="/user/profile"
+                    to="/user/favourite"
                 >
                     <v-list-item-title>Favourit List</v-list-item-title>
                 </v-list-item>

@@ -572,7 +572,7 @@ export default {
                  }else{
                      Toast.fire({
                          icon: 'error',
-                         title: 'Somthing wrong try again'
+                         title: 'Something wrong try again'
                      })
                  }
 
@@ -584,7 +584,6 @@ export default {
                     this.recentJob=res.data.recentJob;
                     this.featuredJob=res.data.featuredJob;
                     this.events=res.data.event;
-                    console.log(this.events)
                 })
         },
         userData(){
