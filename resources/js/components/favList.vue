@@ -50,7 +50,7 @@
                         <pagination
                             :data="jobs"
                             align="center"
-                            show-disabled="true" @pagination-change-page="fetchJobList"></pagination>
+                            @pagination-change-page="fetchJobList"></pagination>
                     </v-col>
                 </v-row>
             </v-col>
@@ -100,7 +100,7 @@
                         <pagination
                             :data="events"
                             align="center"
-                            show-disabled="true" @pagination-change-page="fetchEventList"></pagination>
+                            @pagination-change-page="fetchEventList"></pagination>
                     </v-col>
                 </v-row>
             </v-col>

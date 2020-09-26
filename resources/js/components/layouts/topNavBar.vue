@@ -20,7 +20,7 @@
             <v-btn  small text to='/add/event'v-if=" user.user_type === '3' || user.user_type === '2' ">
                 <span>Add Event</span>
             </v-btn>
-            <v-btn  small text to='/'>
+            <v-btn  small text to='/all/event'>
                 <span>Event</span>
             </v-btn>
             <v-btn  small text to='/forum'>

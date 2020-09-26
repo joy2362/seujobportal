@@ -69,4 +69,12 @@ class HomeController extends Controller
             return response()->json(['msg'=>'ok']);
         }
     }
+
+    public function allevent(){
+        $events=Event::where('verify','1')
+            ->where('eventDate','>',now())
+            ->paginate(10);
+
+        return response()->json(['event'=> $events]);
+    }
 }

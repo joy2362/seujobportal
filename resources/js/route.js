@@ -37,6 +37,7 @@ let reqjob = require('./components/newjob').default;
 let reqevent = require('./components/newEvent').default;
 let errorPage = require('./components/404').default;
 let findJob = require('./components/findJob').default;
+let findEvent = require('./components/allEvent').default;
 let userProfile = require('./components/profile').default;
 let profileSetting = require('./components/setting').default;
 let favList = require('./components/favList').default;
@@ -49,6 +50,7 @@ export const routes = [
     { path: '/user/setting', component: profileSetting  , name:'profileSetting'},
     { path: '/user/favourite', component: favList  , name:'favList'},
     { path: '/all/job', component: findJob  , name:'findJob'},
+    { path: '/all/event', component: findEvent  , name:'findEvent'},
     { path: '/add/job', component: reqjob  , name:'reqjob'},
     { path: '/add/event', component: reqevent , name:'reqevent'},
     { path: '/forum', component: forum  , name:'forum'},

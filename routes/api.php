@@ -158,3 +158,5 @@ Route::get('home/all', 'HomeController@index');
 Route::post('shortlist/add', 'HomeController@addShortList');
 Route::post('event/shortlist/add', 'HomeController@addShortListEvent');
 
+//all event
+Route::get('event/all', 'HomeController@allevent');
