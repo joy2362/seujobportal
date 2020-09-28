@@ -77,7 +77,7 @@
                             <v-btn
                                 text
                                 small
-                                to="/"
+                                :to="'/event/'+row.id"
                             >
                                 {{row.name}}
                             </v-btn>

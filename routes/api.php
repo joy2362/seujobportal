@@ -121,15 +121,16 @@ Route::group([
 
     Route::get('info/{email}', 'AuthController@info');
     Route::get('profile/{email}', 'UserDetails@profile');
+    Route::post('profile/image/{email}', 'UserDetails@imageChange');
+
     Route::get('favourite/event/{email}', 'UserDetails@eventFavouriteList');
     Route::get('favourite/job/{email}', 'UserDetails@jobFavouriteList');
     Route::get('favourite/job/remove/{id}', 'UserDetails@removeJob');
     Route::get('favourite/event/remove/{id}', 'UserDetails@removeEvent');
-    Route::post('profile/image/{email}', 'UserDetails@imageChange');
+
     Route::post('setting/name/{email}', 'UserDetails@namechange');
     Route::post('setting/cv/{email}', 'UserDetails@cvchange');
     Route::post('setting/password/{email}', 'UserDetails@passwordchange');
-
 
     Route::post('job/add', 'UserDetails@addJob');
     Route::post('event/add', 'UserDetails@addevent');
@@ -160,3 +161,6 @@ Route::post('event/shortlist/add', 'HomeController@addShortListEvent');
 
 //all event
 Route::get('event/all', 'HomeController@allevent');
+
+//single event
+Route::get('event/info/{id}', 'HomeController@singleevent');

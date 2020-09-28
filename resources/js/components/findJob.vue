@@ -70,6 +70,12 @@ name: "findJob",
                 })
         },
         fatchcategory(){
+            if(this.$route.params.category){
+                console.log(this.$route.params.category);
+            }else{
+                console.log("sorry");
+            }
+
             axios.get('/api/admin/category/index')
                 .then(res =>{
                     this.category=res.data;

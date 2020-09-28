@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use DB;
 use App\Event;
 use App\JobPost;
 use App\shortList;
@@ -75,6 +76,13 @@ class HomeController extends Controller
             ->where('eventDate','>',now())
             ->paginate(10);
 
+        return response()->json(['event'=> $events]);
+    }
+
+    public function singleevent($id){
+        $events=Event::where('verify','1')
+            ->where('id',$id)
+            ->first();
         return response()->json(['event'=> $events]);
     }
 }

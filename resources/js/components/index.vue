@@ -432,7 +432,7 @@
                                     <v-toolbar-title>
                                         <v-btn
                                             text
-                                            to="/"
+                                            :to="'/event/'+row.id"
                                             class="body-1"
                                         >
                                             {{row.name}}
