@@ -20,7 +20,7 @@
                             align="center"
                             class="mx-0"
                         >
-                            Posted By {{event.owner}}
+                            Posted By {{owner.name}}
                         </v-row>
 
                         <div class="my-4 subtitle-1">
@@ -102,6 +102,7 @@ name: "singleEvent",
         return {
             user:{},
             event:{},
+            owner:{},
         }
     },
     methods:{
@@ -111,6 +112,7 @@ name: "singleEvent",
             axios.get('/api/event/info/'+id)
                 .then(res=>{
                     this.event=res.data.event;
+                    this.owner=res.data.user;
                 })
                 .catch(error=>{
                     this.$router.push({name:'findEvent'});

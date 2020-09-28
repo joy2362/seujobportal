@@ -27,7 +27,7 @@
                             <v-btn
                                 text
                                 small
-                                to="/"
+                                :to="'/job/'+row.id"
                             >
                                 {{row.name}}
                             </v-btn>

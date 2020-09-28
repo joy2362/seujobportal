@@ -157,7 +157,7 @@
                                     <v-toolbar-title>
                                         <v-btn
                                         text
-                                        to="/"
+                                        :to="'/job/'+row.id"
                                         class="body-1"
                                     >
                                             {{row.name}}
@@ -348,7 +348,7 @@
                                     <v-toolbar-title>
                                         <v-btn
                                             text
-                                            to="/"
+                                            :to="'/job/'+row.id"
                                             class="body-1"
                                         >
                                             {{row.name}}

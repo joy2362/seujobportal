@@ -2,6 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Admin;
+use App\Alumnni;
+use App\Faculty;
+use App\Feadback;
+use App\JobOffday;
+use App\User;
 use DB;
 use App\Event;
 use App\JobPost;
@@ -79,10 +85,49 @@ class HomeController extends Controller
         return response()->json(['event'=> $events]);
     }
 
+    private function UserSelect($email){
+        $faculty=Faculty::where('email',$email)->first();
+        $alumni=Alumnni::where('email',$email)->first();
+        $user=User::where('email',$email)->first();
+        $admin=Admin::where('email',$email)->first();
+        if ($faculty){
+            return ($faculty);
+        }if ($alumni){
+            return ($alumni);
+        }if ($admin){
+            return ($admin);
+        }if ($user){
+            return ($user);
+        }
+    }
+
     public function singleevent($id){
         $events=Event::where('verify','1')
             ->where('id',$id)
             ->first();
-        return response()->json(['event'=> $events]);
+        $user=$this->UserSelect($events->owner);
+
+        return response()->json(['event'=> $events,'user'=>$user]);
+    }
+
+    public function singlejob($id){
+        $job=JobPost::where('verify','1')
+            ->where('id',$id)
+            ->first();
+        $user=$this->UserSelect($job->owner);
+        $offday = JobOffday::where('job_id',$id)
+            ->first();
+
+        return response()->json(['job'=> $job,'user'=>$user,'offday'=>$offday]);
+    }
+
+    public function addFeadback(Request $request){
+        $feadback = new Feadback();
+        $feadback->email = $request->email;
+        $feadback->review = $request->review;
+        $feadback->save();
+
+        return response()->json(['msg'=>'Thank you for your message']);
+
     }
 }

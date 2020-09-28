@@ -26,8 +26,8 @@
             <v-btn  small text to='/forum'>
                 <span>Forum</span>
             </v-btn>
-            <v-btn  small text to='/'>
-                <span>About Us</span>
+            <v-btn  small text to='/contact'>
+                <span>Contact Us</span>
             </v-btn>
         </v-toolbar-items>
         <v-menu  offset-y>

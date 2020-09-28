@@ -28,6 +28,7 @@ class AdminController extends Controller
             return response()->json(['message'=>'Access Denied'],404);
         }
     }
+
     protected function EmailCheck($email){
         $faculty=Faculty::where('email',$email)->first();
         $student=User::where('email',$email)->first();
@@ -40,6 +41,7 @@ class AdminController extends Controller
             return false;
         }
     }
+
     public function adminreg(Request $request){
         if($this->EmailCheck($request->email)){
             return response()->json(['message' => 'Email already taken'] ,404);

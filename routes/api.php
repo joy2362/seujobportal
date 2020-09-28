@@ -162,5 +162,9 @@ Route::post('event/shortlist/add', 'HomeController@addShortListEvent');
 //all event
 Route::get('event/all', 'HomeController@allevent');
 
-//single event
+//single job & event
 Route::get('event/info/{id}', 'HomeController@singleevent');
+Route::get('job/info/{id}', 'HomeController@singlejob');
+
+//feadback
+Route::post('feadback/add', 'HomeController@addFeadback');

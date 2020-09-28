@@ -193,6 +193,7 @@ class UserDetails extends Controller
 
         return response()->json([ 'event'=>$event ]);
     }
+
     public function jobFavouriteList($email){
         $job = DB::table('short_lists')
             ->join('job_posts', 'job_posts.id', '=', 'short_lists.jobId')
@@ -203,12 +204,11 @@ class UserDetails extends Controller
     }
 
     public function removeJob($id){
-
         shortList::destroy($id);
         return response()->json(['msg'=>'Removed From Favourite List !!']);
     }
-    public function removeEvent($id){
 
+    public function removeEvent($id){
         shortListEvent::destroy($id);
         return response()->json(['msg'=>'Removed From Favourite List !!']);
     }
