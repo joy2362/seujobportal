@@ -2,18 +2,95 @@
 <v-app>
     <topNavBar :user="user"></topNavBar>
     <v-container>
-        <v-row>
+            <v-row v-if="count<=0" align="center"
+                   justify="center">
+                <v-banner
+                    single-line
+                    class="h5"
+                >
+                    No related post found
+                </v-banner>
+            </v-row>
+        <v-row v-else>
             <v-col
-                md="4"
                 cols="12"
+                md="6"
+                v-for="row in job" :key="row.id"
             >
-                <h2>you got me</h2>
+                <v-card
+                    outlined
+                >
+                    <v-list-item >
+                        <v-list-item-content
+                        >
+                            <v-toolbar flat>
+                                <v-toolbar-title>
+                                    <v-btn
+                                        text
+                                        :to="'/job/'+row.id"
+                                        class="body-1"
+                                    >
+                                        {{row.name}}
+                                    </v-btn>
+                                </v-toolbar-title>
+                                <v-spacer></v-spacer>
+                                <div>
+                                    <v-btn icon color="pink" @click="shortlist(row.id)">
+                                        <v-icon>mdi-star-outline</v-icon>
+                                    </v-btn>
+                                </div>
+                            </v-toolbar>
+                            <v-banner
+                                single-line
+                            >
+                                Company:- {{row.company}}
+
+                            </v-banner>
+                            <v-list-item-subtitle
+                            >
+                                <v-chip
+                                    class="ma-2"
+                                    v-if="row.location === '1'"
+                                >
+                                    <v-icon left>mdi-map-marker</v-icon>
+                                    Dhaka, Bangladesh
+                                </v-chip>
+                                <v-chip
+                                    class="ma-2"
+                                    v-if="row.location === '2'"
+                                >
+                                    <v-icon left>mdi-map-marker</v-icon>
+                                    Outside Dhaka
+                                </v-chip>
+                                <v-chip
+                                    class="ma-2"
+                                    v-if="row.JobType === '2'"
+                                >
+                                    <v-icon left>mdi-timetable</v-icon>
+                                    Full time
+                                </v-chip>
+                                <v-chip
+                                    class="ma-2"
+                                    v-if="row.JobType === '1'"
+                                >
+                                    <v-icon left>mdi-timetable</v-icon>
+                                    Part time
+                                </v-chip>
+                            </v-list-item-subtitle>
+
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-card>
             </v-col>
-            <v-col
-                md="8"
-                cols="12"
-            >
-                <h2>you got me too</h2>
+        </v-row>
+        <v-row>
+            <v-col>
+                <pagination
+                    :data="jobs"
+                    align="center"
+                    @pagination-change-page="fatchAllData"
+                >
+                </pagination>
             </v-col>
         </v-row>
     </v-container>
@@ -39,14 +116,15 @@ name: "findJob",
             this.$router.push({name:'emailverify'});
         }
         this.checkEmail();
-        this.fatchcategory();
         this.userData();
         this.fatchAllData();
     },
     data(){
         return {
-            category:[],
             user:{},
+            count:'',
+            job:{},
+            jobs:{},
         }
     },
     methods:{
@@ -69,17 +147,19 @@ name: "findJob",
                     this.$router.push({name:'logout'});
                 })
         },
-        fatchcategory(){
-            if(this.$route.params.category){
-                console.log(this.$route.params.category);
-            }else{
-                console.log("sorry");
-            }
-
-            axios.get('/api/admin/category/index')
-                .then(res =>{
-                    this.category=res.data;
+        fatchAllData(page = 1){
+            let location= this.$route.params.location;
+            let title= this.$route.params.title;
+            const formData = new FormData();
+            formData.append('location', location);
+            formData.append('title', title);
+            axios.post('/api/job/search?page=' + page,formData)
+                .then(res=>{
+                    this.count=res.data.job.total;
+                    this.jobs=res.data.job;
+                    this.job=res.data.job.data;
                 })
+
         }
     },
     components:{

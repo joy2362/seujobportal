@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use App\Alumnni;
+use App\Category;
 use App\Faculty;
 use App\Feadback;
 use App\JobOffday;
@@ -117,8 +118,9 @@ class HomeController extends Controller
         $user=$this->UserSelect($job->owner);
         $offday = JobOffday::where('job_id',$id)
             ->first();
+        $category = Category::where('id',$job->category)->first();
 
-        return response()->json(['job'=> $job,'user'=>$user,'offday'=>$offday]);
+        return response()->json(['job'=> $job,'user'=>$user,'offday'=>$offday ,'category'=> $category]);
     }
 
     public function addFeadback(Request $request){
@@ -129,5 +131,54 @@ class HomeController extends Controller
 
         return response()->json(['msg'=>'Thank you for your message']);
 
+    }
+
+    public function allcategory(){
+        $category = Category::orderBy('total_job', 'desc')->paginate(20);
+        return response()->json([ 'category'=> $category ]);
+    }
+
+    public function alljob(){
+        $job = JobPost::where('verify','1')
+            ->where('lastdate','>',now())
+            ->orderBy('vacency', 'desc')
+            ->paginate(10);
+
+        return response()->json([ 'job'=>  $job ]);
+    }
+
+    public function jobFilter(Request  $request){
+        $exprienceStart=$request->experience[0];
+        $exprienceEnd=$request->experience[1];
+
+        $salaryStart=$request->salary[0];
+        $salaryEnd=$request->salary[1];
+
+        $job=JobPost::where('verify','1')
+            ->where('lastdate','>',now())
+            ->where('category',$request->category)
+            ->where('location',$request->location)
+            ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
+            ->whereBetween('salary', [$salaryStart, $salaryEnd])
+            ->paginate(10);
+        return response()->json([ 'job'=> $job ]);
+    }
+    public function alljobCategory($id){
+        $job = JobPost::where('verify','1')
+            ->where('lastdate','>',now())
+            ->where('category',$id)
+            ->orderBy('vacency', 'desc')
+            ->paginate(10);
+        return response()->json([ 'job'=>  $job ]);
+    }
+    public function searchJob(Request $request){
+        $job = JobPost::where('verify','1')
+            ->where('lastdate','>',now())
+            ->where('location',$request->location)
+            ->where('name' ,'like', '%' .$request->title . '%')
+            ->orderBy('vacency', 'desc')
+            ->paginate(10);
+
+        return response()->json([ 'job'=>  $job ]);
     }
 }

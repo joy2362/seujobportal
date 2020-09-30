@@ -28,6 +28,7 @@
                                         dark
                                         label="Keyword"
                                         required
+                                        v-model="title"
                                     ></v-text-field>
                                 </v-col>
 
@@ -42,6 +43,7 @@
                                         :items="location"
                                         label="Location"
                                         required
+                                        v-model="selectlocation"
                                     ></v-select>
                                 </v-col>
                                 <v-col
@@ -52,6 +54,7 @@
                                     outlined
                                     dark
                                     color="success"
+                                    @click="search"
                                     >
                                         Search
                                     </v-btn>
@@ -98,7 +101,7 @@
                             <v-btn
                                 text
                                 small
-                                to="/"
+                                :to="'/all/job/'+item.id"
                             >
                                 {{item.name}}
                             </v-btn>
@@ -122,6 +125,7 @@
                         color="success "
                         outlined
                         dark
+                        to="/all/category"
                     >
                         Browse All Sector
                     </v-btn>
@@ -508,6 +512,9 @@ export default {
     data(){
         return {
             user:{},
+            title:'',
+            selectlocation:'',
+
             location:[
 
                 {
@@ -527,6 +534,9 @@ export default {
         }
     },
     methods:{
+        search(){
+            this.$router.push('/search/job/'+this.title+'/'+this.selectlocation)
+        },
         shortlist(id){
             const formData = new FormData();
             formData.append('email', User.email());

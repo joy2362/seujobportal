@@ -162,9 +162,22 @@ Route::post('event/shortlist/add', 'HomeController@addShortListEvent');
 //all event
 Route::get('event/all', 'HomeController@allevent');
 
+//all category
+Route::get('category/all', 'HomeController@allcategory');
+
+//all job
+Route::get('job/all', 'HomeController@alljob');
+Route::get('job/all/{category}', 'HomeController@alljobCategory');
+
 //single job & event
 Route::get('event/info/{id}', 'HomeController@singleevent');
 Route::get('job/info/{id}', 'HomeController@singlejob');
 
 //feadback
 Route::post('feadback/add', 'HomeController@addFeadback');
+
+//job filter
+Route::post('job/filter', 'HomeController@jobFilter');
+
+//search job
+Route::post('job/search', 'HomeController@searchJob');

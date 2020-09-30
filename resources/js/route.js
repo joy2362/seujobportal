@@ -37,6 +37,7 @@ let reqjob = require('./components/newjob').default;
 let reqevent = require('./components/newEvent').default;
 let errorPage = require('./components/404').default;
 let findJob = require('./components/findJob').default;
+let findCategory = require('./components/allCategory').default;
 let findEvent = require('./components/allEvent').default;
 let userProfile = require('./components/profile').default;
 let profileSetting = require('./components/setting').default;
@@ -44,6 +45,7 @@ let favList = require('./components/favList').default;
 let singleEvent = require('./components/singleEvent').default;
 let singleJob = require('./components/singleJob').default;
 let contactUs = require('./components/contactUs').default;
+let allJob = require('./components/allJob').default;
 
 
 export const routes = [
@@ -53,7 +55,10 @@ export const routes = [
     { path: '/user/profile', component: userProfile  , name:'userProfile'},
     { path: '/user/setting', component: profileSetting  , name:'profileSetting'},
     { path: '/user/favourite', component: favList  , name:'favList'},
-    { path: '/all/job', component: findJob  , name:'findJob'},
+    { path: '/all/category', component: findCategory  , name:'findCategory'},
+    { path: '/all/job', component: allJob  , name:'allJob'},
+    { path: '/all/job/:category', component: allJob  , name:'categoryJob'},
+    { path: '/search/job/:title/:location', component: findJob  , name:'findJob'},
     { path: '/all/event', component: findEvent  , name:'findEvent'},
     { path: '/event/:id', component: singleEvent  , name:'singleEvent'},
     { path: '/job/:id', component: singleJob  , name:'singleJob'},

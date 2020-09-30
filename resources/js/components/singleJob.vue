@@ -11,7 +11,7 @@
                 cols="12"
             >
                 <v-card
-                    class="mx-auto my-12 blue-grey lighten-5"
+                    class=" blue-grey lighten-5"
                 >
                     <v-card-title>{{job.name}}</v-card-title>
 
@@ -20,11 +20,11 @@
                             align="center"
                             class="mx-0"
                         >
-                            Posted By {{job.owner}}
+                            Posted By {{owner.name}}
                         </v-row>
 
-                        <div class="my-4 subtitle-1">
-                            sponsor {{job.company}}
+                        <div class="my-4 ">
+                            Company {{job.company}}
                         </div>
 
                         <div>Location {{job.address}}</div>
@@ -32,12 +32,70 @@
 
                     <v-divider class="mx-4"></v-divider>
 
-                    <v-card-title>Event Details</v-card-title>
 
                     <v-card-text>
-                        <div class="tiptap-vuetify-editor__content" v-html="job.details"/>
+                        <v-row
+                            align="center"
+                            class="mx-0"
+                        >
+                            Category {{category.name}}
+                        </v-row>
+
+                        <div class="my-4 " v-if="job.JobType==1">
+                            Job Type part-time
+                        </div>
+                        <div class="my-4 " v-else>
+                            Job Type full-time
+                        </div>
+
+                        <div class="my-4 ">Experience {{job.experience}} year</div>
+                        <div class="my-4 ">Office Time {{job.dutyStart}} - {{job.dutyEnd}}</div>
+                        <div>Salary  {{job.salary}} BDT</div>
+                    </v-card-text>
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-text>
+                        <v-row
+                            align="center"
+                            class="mx-0"
+                        >
+                           Email {{job.email}}
+                        </v-row>
+
+                        <div class="mt-4 ">
+                            Phone {{job.phone}}
+                        </div>
 
                     </v-card-text>
+
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-title>Job Description</v-card-title>
+
+                    <v-card-text>
+                        <div class="tiptap-vuetify-editor__content" v-html="job.jobDetails"/>
+
+                    </v-card-text>
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-title>Requerments</v-card-title>
+
+                    <v-card-text>
+                        <div class="tiptap-vuetify-editor__content" v-html="job.requerments"/>
+
+                    </v-card-text>
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-title>Education</v-card-title>
+
+                    <v-card-text>
+                        <div class="tiptap-vuetify-editor__content" v-html="job.qualification"/>
+
+                    </v-card-text>
+                    <v-divider class="mx-4"></v-divider>
+                    <v-card-title>Benifit</v-card-title>
+
+                    <v-card-text>
+                        <div class="tiptap-vuetify-editor__content" v-html="job.benefit"/>
+
+                    </v-card-text>
+
                     <v-card-text>
                         <v-chip
                             class="ma-2"
@@ -58,16 +116,18 @@
                             class="ma-2"
                         >
                             <v-icon left>mdi-calendar-check</v-icon>
-                            {{job.eventDate}}
-                        </v-chip>
-                        <v-chip
-                            class="ma-2"
-                        >
-                            <v-icon left> mdi-timer</v-icon>
-                            {{job.eventStart}}
+                            {{job.lastdate}}
                         </v-chip>
 
                     </v-card-text>
+                    <v-card-actions>
+                        <v-btn
+                            color="deep-purple lighten-2"
+                            text
+                        >
+                            Apply now
+                        </v-btn>
+                    </v-card-actions>
                 </v-card>
             </v-col>
         </v-row>
@@ -102,6 +162,7 @@ name: "singleJob",
             job:{},
             owner:{},
             offdays:{},
+            category:{},
         }
     },
     methods:{
@@ -113,6 +174,7 @@ name: "singleJob",
                     this.job=res.data.job;
                     this.owner=res.data.user;
                     this.offdays=res.data.offday;
+                    this.category=res.data.category;
                 })
                 .catch(error=>{
                     this.$router.push({name:'findJob'});
