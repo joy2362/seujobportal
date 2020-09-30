@@ -13,7 +13,17 @@
                 <v-card
                     class="mx-auto my-12 blue-grey lighten-5"
                 >
-                    <v-card-title>{{event.name}}</v-card-title>
+                    <v-toolbar flat>
+                        <v-toolbar-title>
+                            {{event.name}}
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <div >
+                            <v-btn icon color="pink"  @click="shortlistEvent(event.id)">
+                                <v-icon>mdi-star-outline</v-icon>
+                            </v-btn>
+                        </div>
+                    </v-toolbar>
 
                     <v-card-text>
                         <v-row
@@ -106,6 +116,32 @@ name: "singleEvent",
         }
     },
     methods:{
+        shortlistEvent(id){
+            const formData = new FormData();
+            formData.append('email', User.email());
+            formData.append('eventId', id);
+            axios.post('/api/event/shortlist/add',formData)
+                .then(res =>{
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Successfully Added to your favourite list'
+                    })
+                })
+                .catch(error=>{
+                    if(error.response.data.msg){
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Already Added'
+                        })
+                    }else{
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Something wrong try again'
+                        })
+                    }
+
+                })
+        },
         fetchEvent() {
             let id=this.$route.params.id;
 

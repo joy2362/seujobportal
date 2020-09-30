@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Admin;
 use App\Alumnni;
+use App\AppliedJob;
 use App\Category;
 use App\Faculty;
 use App\Feadback;
 use App\JobOffday;
+use App\Mail\ApplyJob;
+use App\Mail\facultyApplyJob;
 use App\User;
 use DB;
 use App\Event;
@@ -15,6 +18,7 @@ use App\JobPost;
 use App\shortList;
 use App\shortListEvent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 
 class HomeController extends Controller
 {
@@ -154,14 +158,40 @@ class HomeController extends Controller
         $salaryStart=$request->salary[0];
         $salaryEnd=$request->salary[1];
 
-        $job=JobPost::where('verify','1')
-            ->where('lastdate','>',now())
-            ->where('category',$request->category)
-            ->where('location',$request->location)
-            ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
-            ->whereBetween('salary', [$salaryStart, $salaryEnd])
-            ->paginate(10);
-        return response()->json([ 'job'=> $job ]);
+        if ($request->category && $request->location !="3"){
+            $job=JobPost::where('verify','1')
+                ->where('lastdate','>',now())
+                ->where('category',$request->category)
+                ->where('location',$request->location)
+                ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
+                ->whereBetween('salary', [$salaryStart, $salaryEnd])
+                ->paginate(1);
+            return response()->json([ 'job'=> $job ]);
+        }elseif (!$request->category && $request->location !="3"){
+            $job=JobPost::where('verify','1')
+                ->where('lastdate','>',now())
+                ->where('location',$request->location)
+                ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
+                ->whereBetween('salary', [$salaryStart, $salaryEnd])
+                ->paginate(1);
+            return response()->json([ 'job'=> $job ]);
+        }elseif($request->location =="3" && $request->category){
+            $job=JobPost::where('verify','1')
+                ->where('lastdate','>',now())
+                ->where('category',$request->category)
+                ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
+                ->whereBetween('salary', [$salaryStart, $salaryEnd])
+                ->paginate(1);
+            return response()->json([ 'job'=> $job ]);
+        }else{
+            $job=JobPost::where('verify','1')
+                ->where('lastdate','>',now())
+                ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
+                ->whereBetween('salary', [$salaryStart, $salaryEnd])
+                ->paginate(1);
+            return response()->json([ 'job'=> $job ]);
+        }
+
     }
     public function alljobCategory($id){
         $job = JobPost::where('verify','1')
@@ -188,7 +218,44 @@ class HomeController extends Controller
                 ->paginate(10);
         }
 
-
         return response()->json([ 'job'=>  $job ]);
     }
+
+
+    public function applyJob(Request $request){
+        $applyJob=AppliedJob::where('email',$request->email)
+            ->where('jobId',$request->id)->first();
+        if($applyJob){
+            return response()->json(['msg'=>'Already Added'],404);
+        }
+        $user=$this->UserSelect($request->email);
+        $job = JobPost::where('id',$request->id)->first();
+
+        mail::to($job->email)->send(new ApplyJob($job,$user));
+
+        $jobPost=new AppliedJob();
+        $jobPost->email=$request->email;
+        $jobPost->jobId=$request->id;
+        $jobPost->save();
+
+        return response()->json(['msg'=>'Apply for the post complete.']);
+
+    }
+    public function facultyApplyJob(Request $request){
+        $applyJob=AppliedJob::where('email',$request->email)
+            ->where('jobId',$request->id)->first();
+        if($applyJob){
+            return response()->json(['msg'=>'Already Added'],404);
+        }
+        $user=$this->UserSelect($request->email);
+        $job = JobPost::where('id',$request->id)->first();
+        mail::to($job->email)->send(new facultyApplyJob($job,$user,$request->cv));
+
+        $jobPost=new AppliedJob();
+        $jobPost->email=$request->email;
+        $jobPost->jobId=$request->id;
+        $jobPost->save();
+        return response()->json(['msg'=>'Apply for the post complete.']);
+    }
+
 }

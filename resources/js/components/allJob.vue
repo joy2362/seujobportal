@@ -2,6 +2,7 @@
 <v-app>
     <topNavBar :user="user"></topNavBar>
     <v-container>
+
         <v-form>
         <v-row>
 
@@ -51,7 +52,8 @@
 
         </v-row>
         </v-form>
-        <v-row  class=" mb-10">
+
+        <v-row  class=" ">
             <v-col
                 cols="12"
                 md="6"
@@ -143,13 +145,64 @@
                     :data="jobs"
                     align="center"
                     @pagination-change-page="fetchjob"
-                    v-else
+                    v-if="!usedCategory && !filteredJob"
                 >
                 </pagination>
             </v-col>
         </v-row>
+        <v-row v-if="count<=0" align="center"
+               justify="center">
+            <v-card
+                outlined
+            >
+                <v-list-item >
+                    <v-list-item-avatar
+                        tile
+                        size="140"
+                    >
+                        <v-img
+                            src="/asset/img/others/404/emoji.png"
+                        >
+                        </v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content
+                    >
+                        <v-list-item-title class=" font-weight-black" >
+                            <h1  >Sorry</h1>
+                        </v-list-item-title>
+                        <v-list-item-title
+                        >
+                            <p>  No related post found</p>
+
+                        </v-list-item-title>
+
+                    </v-list-item-content>
+                </v-list-item>
+            </v-card>
+        </v-row>
+
     </v-container>
     <bottom-footer ></bottom-footer>
+    <v-dialog
+        v-model="loading"
+        hide-overlay
+        persistent
+        width="300"
+    >
+        <v-card
+            color="primary"
+            dark
+        >
+            <v-card-text>
+                Please stand by
+                <v-progress-linear
+                    indeterminate
+                    color="white"
+                    class="mb-0"
+                ></v-progress-linear>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
 </v-app>
 </template>
 
@@ -161,37 +214,23 @@ import bottomFooter from "./layouts/bottomFooter";
 export default {
 name: "allJob",
     created() {
-        if (! User.loggedIn()){
-            this.$router.push({name:'logout'});
-        }
-        if (!User.isExpired()){
-            this.$router.push({name:'logout'});
-        }
-        if (!User.isverifiedAccount()){
-            this.$router.push({name:'emailverify'});
-        }
-        this.checkEmail();
-        this.userData();
-        this.fatchallcategory();
-        if(this.$route.params.category){
-            this.fetchcategoryjob()
-        }else{
-            this.fetchjob();
-        }
+        this.Created()
 
     },
     data(){
         return {
+            loading:false,
             filteredJob:false,
             usedCategory:false,
-            category:[],
+            category:[ ],
             user:{},
+            count:'',
             job:{},
             jobs:{},
             experience: [0, 20],
-            selectSalary:[],
+            selectSalary:[0, 100000000],
             selectCategory:'',
-            selectLocation:'',
+            selectLocation:'3',
             location:[
                 {
                     id:'1',
@@ -200,6 +239,10 @@ name: "allJob",
                 {
                     id:'2',
                     name:'Outside Dhaka'
+                },
+                {
+                    id:'3',
+                    name:'All'
                 },
 
             ],
@@ -221,14 +264,38 @@ name: "allJob",
                     id:[75001, 100000],
                 },
                 {
-                    name:'100001-',
+                    name:'100001-*',
                     id:[100001, 100000000],
+                },
+                {
+                    name:'0 - *',
+                    id:[0, 100000000],
                 },
             ],
         }
     },
     methods:{
+        Created(){
+            if (! User.loggedIn()){
+                this.$router.push({name:'logout'});
+            }
+            if (!User.isExpired()){
+                this.$router.push({name:'logout'});
+            }
+            if (!User.isverifiedAccount()){
+                this.$router.push({name:'emailverify'});
+            }
+            this.checkEmail();
+            this.userData();
+            this.fatchallcategory();
+            if(this.$route.params.category){
+                this.fetchcategoryjob()
+            }else{
+                this.fetchjob();
+            }
+        },
         filtered(page = 1){
+            this.loading=true;
             const formData = new FormData();
             for (var i = 0; i < this.experience.length; i++) {
                 formData.append('experience[]', this.experience[i]);
@@ -240,11 +307,14 @@ name: "allJob",
             formData.append('location', this.selectLocation);
             axios.post('/api/job/filter?page=' + page,formData)
                 .then(res =>{
+                    this.loading=false;
                     this.filteredJob=true;
                     this.jobs=res.data.job;
                     this.job=res.data.job.data;
+                    this.count=res.data.job.total;
                 })
                 .catch(error=>{
+                    this.loading=false;
                     this.fetchjob();
                 })
         },
@@ -252,7 +322,6 @@ name: "allJob",
             axios.get('/api/admin/category/index')
                 .then(res =>{
                     this.category=res.data;
-
                 })
         },
         fetchcategoryjob(page = 1){
@@ -263,6 +332,7 @@ name: "allJob",
                     this.usedCategory=true;
                     this.jobs=res.data.job;
                     this.job=res.data.job.data;
+                    this.count=res.data.job.total;
                 })
         },
         fetchjob(page = 1){
@@ -270,6 +340,7 @@ name: "allJob",
                 .then(res=>{
                     this.jobs=res.data.job;
                     this.job=res.data.job.data;
+                    this.count=res.data.job.total;
                 })
         },
         userData(){

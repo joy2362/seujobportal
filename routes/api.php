@@ -181,3 +181,7 @@ Route::post('job/filter', 'HomeController@jobFilter');
 
 //search job
 Route::post('job/search', 'HomeController@searchJob');
+
+//apply job
+Route::post('job/apply', 'HomeController@applyJob');
+Route::post('faculty/job/apply', 'HomeController@facultyApplyJob');

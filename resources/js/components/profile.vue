@@ -182,6 +182,15 @@ name: "profile",
             newImage:null,
         }
     },
+    computed:{
+        newImageErrors () {
+            const errors = []
+            if (!this.$v.newImage.$dirty) return errors
+            !this.$v.newImage.required && errors.push('Image is required')
+            return errors
+        },
+
+    },
     methods:{
         featchUserData(){
             let email=User.email();

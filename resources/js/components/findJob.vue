@@ -4,12 +4,36 @@
     <v-container>
             <v-row v-if="count<=0" align="center"
                    justify="center">
-                <v-banner
-                    single-line
-                    class="h5"
-                >
-                    No related post found
-                </v-banner>
+                <v-row v-if="count<=0" align="center"
+                       justify="center">
+                    <v-card
+                        outlined
+                    >
+                        <v-list-item >
+                            <v-list-item-avatar
+                                tile
+                                size="140"
+                            >
+                                <v-img
+                                    src="/asset/img/others/404/emoji.png"
+                                >
+                                </v-img>
+                            </v-list-item-avatar>
+                            <v-list-item-content
+                            >
+                                <v-list-item-title class=" font-weight-black" >
+                                    <h1  >Sorry</h1>
+                                </v-list-item-title>
+                                <v-list-item-title
+                                >
+                                    <p>  No related post found</p>
+
+                                </v-list-item-title>
+
+                            </v-list-item-content>
+                        </v-list-item>
+                    </v-card>
+                </v-row>
             </v-row>
         <v-row v-else>
             <v-col

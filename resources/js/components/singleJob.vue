@@ -13,7 +13,18 @@
                 <v-card
                     class=" blue-grey lighten-5"
                 >
-                    <v-card-title>{{job.name}}</v-card-title>
+                    <v-toolbar flat>
+                        <v-toolbar-title>
+                                {{job.name}}
+                        </v-toolbar-title>
+                        <v-spacer></v-spacer>
+                        <div >
+                            <v-btn icon color="pink"  @click="shortlist(job.id)">
+                                <v-icon>mdi-star-outline</v-icon>
+                            </v-btn>
+                        </div>
+                    </v-toolbar>
+
 
                     <v-card-text>
                         <v-row
@@ -124,6 +135,7 @@
                         <v-btn
                             color="deep-purple lighten-2"
                             text
+                            @click="applyJob"
                         >
                             Apply now
                         </v-btn>
@@ -132,6 +144,56 @@
             </v-col>
         </v-row>
     </v-container>
+    <v-dialog v-model="addCv"  max-width="600px">
+        <v-card>
+            <v-toolbar
+                flat
+                dark
+                class="red lighten-1"
+            >
+                <v-toolbar-title class="text-uppercase ">Add CV</v-toolbar-title>
+            </v-toolbar>
+            <v-card-text>
+                <v-form>
+                    <v-file-input
+                        v-model="cv"
+                        accept=".pdf"
+                        label="CV"
+                        prepend-icon="mdi-cloud-upload"
+                        :error-messages="cvErrors"
+                        @input="$v.cv.$touch()"
+                        @blur="$v.cv.$touch()"
+                    >
+                    </v-file-input>
+                </v-form>
+            </v-card-text>
+            <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="blue darken-1" text @click="addCv = false">Close</v-btn>
+                <v-btn color="blue darken-1" text @click="Update">Apply now</v-btn>
+            </v-card-actions>
+        </v-card>
+    </v-dialog>
+    <v-dialog
+        v-model="loading"
+        hide-overlay
+        persistent
+        width="300"
+    >
+        <v-card
+            color="primary"
+            dark
+        >
+            <v-card-text>
+                Please stand by
+                <v-progress-linear
+                    indeterminate
+                    color="white"
+                    class="mb-0"
+                ></v-progress-linear>
+            </v-card-text>
+        </v-card>
+    </v-dialog>
 </v-app>
 </template>
 
@@ -140,6 +202,8 @@ import User from "../helper/User";
 import topNavBar from "./layouts/topNavBar";
 import bottomFooter from "./layouts/bottomFooter";
 import { TiptapVuetify } from 'tiptap-vuetify'
+import {required} from "vuelidate/lib/validators";
+
 export default {
 name: "singleJob",
     created() {
@@ -156,6 +220,9 @@ name: "singleJob",
         this.userData();
         this.fetchEvent();
     },
+    validations: {
+        cv:{required},
+    },
     data(){
         return {
             user:{},
@@ -163,9 +230,134 @@ name: "singleJob",
             owner:{},
             offdays:{},
             category:{},
+            addCv:false,
+            loading:false,
+            cv:null,
         }
     },
+    computed:{
+        cvErrors () {
+            const errors = []
+            if (!this.$v.cv.$dirty) return errors
+            !this.$v.cv.required && errors.push('CV is required')
+            return errors
+        },
+
+    },
     methods:{
+        Update(){
+            this.loading=true;
+            this.$v.$touch()
+            if (this.$v.$invalid) {
+                this.loading=false;
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Select a image first!!'
+                })
+            }else{
+                const formData = new FormData();
+                let id=this.$route.params.id;
+                formData.append('email', this.user.email);
+                formData.append('id', id);
+                formData.append('cv', this.cv,this.cv.name);
+                axios.post('/api/faculty/job/apply',formData)
+                    .then(res =>{
+                        this.loading=false;
+                        Swal.fire(
+                            'Success!',
+                            res.data.msg,
+                            'success'
+                        )
+                    })
+                    .catch(error=>{
+                        this.loading=false;
+                        if(error.response.data.msg){
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Already Applied this job'
+                            })
+                        }else{
+                            Toast.fire({
+                                icon: 'error',
+                                title: 'Something wrong try again'
+                            })
+                        }
+                    })
+            }
+        },
+        applyJob(){
+            this.loading=true;
+            let id=this.$route.params.id;
+            if(this.user.user_type){
+                if(this.user.user_type === '4' || this.user.user_type === '3' ){
+                    const formData = new FormData();
+                    formData.append('email', this.user.email);
+                    formData.append('id', id);
+                    axios.post('/api/job/apply',formData)
+                        .then(res =>{
+                            this.loading=false;
+                            Swal.fire(
+                                'Success!',
+                                res.data.msg,
+                                'success'
+                            )
+                        })
+                        .catch(error=>{
+                            this.loading=false;
+                            if(error.response.data.msg){
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Already Applied this job'
+                                })
+                            }else{
+                                Toast.fire({
+                                    icon: 'error',
+                                    title: 'Something wrong try again'
+                                })
+                            }
+                        })
+
+                }else{
+                    this.loading=false;
+                    this.addCv=!this.addCv;
+
+                }
+            }else{
+                this.loading=false;
+                Swal.fire(
+                    'Sorry!',
+                    "Admin Are not Allow to Apply for job",
+                    'error'
+                )
+            }
+
+
+        },
+        shortlist(id){
+            const formData = new FormData();
+            formData.append('email', User.email());
+            formData.append('jobId', id);
+            axios.post('/api/shortlist/add',formData)
+                .then(res =>{
+                    Toast.fire({
+                        icon: 'success',
+                        title: 'Successfully Added to your favourite list'
+                    })
+                })
+                .catch(error=>{
+                    if(error.response.data.msg){
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Already Added'
+                        })
+                    }else{
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Something wrong try again'
+                        })
+                    }
+                })
+        },
         fetchEvent() {
             let id=this.$route.params.id;
 

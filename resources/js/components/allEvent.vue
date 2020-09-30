@@ -74,6 +74,36 @@
                    @pagination-change-page="fetchEventList"></pagination>
            </v-col>
        </v-row>
+       <v-row v-if="count<=0" align="center"
+              justify="center">
+           <v-card
+               outlined
+           >
+               <v-list-item >
+                   <v-list-item-avatar
+                       tile
+                       size="140"
+                   >
+                       <v-img
+                           src="/asset/img/others/404/emoji.png"
+                       >
+                       </v-img>
+                   </v-list-item-avatar>
+                   <v-list-item-content
+                   >
+                       <v-list-item-title class=" font-weight-black" >
+                           <h1 >Sorry</h1>
+                       </v-list-item-title>
+                       <v-list-item-title
+                       >
+                           <p>  No related post found</p>
+
+                       </v-list-item-title>
+
+                   </v-list-item-content>
+               </v-list-item>
+           </v-card>
+       </v-row>
    </v-container>
     <bottom-footer ></bottom-footer>
 </v-app>
@@ -105,6 +135,7 @@ name: "allEvent",
             user:{},
             event:{},
             events:{},
+            count:'',
         }
     },
     methods:{
@@ -139,7 +170,7 @@ name: "allEvent",
                 .then(res=>{
                     this.events=res.data.event;
                     this.event=res.data.event.data;
-                    console.log(res.data.event.data);
+                    this.count=res.data.event.total;
                 })
         },
         userData(){
