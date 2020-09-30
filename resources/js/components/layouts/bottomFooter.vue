@@ -16,7 +16,6 @@
                             <div
                                 align="center"
                                 justify="center"
-
                             >
                             <v-toolbar-title class=" mt-5 mb-5 " >
                                 <v-img src="/asset/img/logo/seu_logo.png" width="70" height="70" ></v-img>
@@ -33,13 +32,11 @@
                             class="grey--text text--lighten-4 "
                         >
                             <h1 class="h4">QUICK ACCESS</h1>
-                            <v-btn text  dark href="https://www.facebook.com/" target="_blank">About Us</v-btn>
+                            <v-btn text  dark to='/all/job' >Find job</v-btn>
 
-                            <v-btn  text dark href="https://www.facebook.com/" target="_blank">Faq</v-btn>
+                            <v-btn  text dark to='/all/event' >Event </v-btn>
 
-                            <v-btn  text dark href="https://www.facebook.com/" target="_blank">Services</v-btn>
-
-                            <v-btn  text dark href="https://www.facebook.com/" target="_blank">Contact</v-btn>
+                            <v-btn  text dark to='/contact' >Contact us</v-btn>
                         </v-col>
                         <v-col
                             md="4"

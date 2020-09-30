@@ -171,13 +171,23 @@ class HomeController extends Controller
             ->paginate(10);
         return response()->json([ 'job'=>  $job ]);
     }
+
     public function searchJob(Request $request){
-        $job = JobPost::where('verify','1')
-            ->where('lastdate','>',now())
-            ->where('location',$request->location)
-            ->where('name' ,'like', '%' .$request->title . '%')
-            ->orderBy('vacency', 'desc')
-            ->paginate(10);
+        if ($request->location === '3'){
+            $job = JobPost::where('verify','1')
+                ->where('lastdate','>',now())
+                ->where('name' ,'like', '%' .$request->title . '%')
+                ->orderBy('vacency', 'desc')
+                ->paginate(10);
+        }else{
+            $job = JobPost::where('verify','1')
+                ->where('lastdate','>',now())
+                ->where('location',$request->location)
+                ->where('name' ,'like', '%' .$request->title . '%')
+                ->orderBy('vacency', 'desc')
+                ->paginate(10);
+        }
+
 
         return response()->json([ 'job'=>  $job ]);
     }

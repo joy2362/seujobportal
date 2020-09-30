@@ -113,7 +113,6 @@
             if (User.loggedIn()){
                 this.$router.push({name:'home'});
             }
-            this.fatchdata();
         },
         validations: {
             email: { required ,email },

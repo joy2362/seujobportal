@@ -11,8 +11,6 @@ class Token {
     isExpired(token){
         const payload =this.payload(token);
         if(payload){
-            console.log(payload.exp*1000)
-            console.log(Date.now())
             if (payload.exp *1000 > Date.now() ) {
                 return true
             }

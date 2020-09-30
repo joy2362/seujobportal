@@ -29,6 +29,9 @@
                                         label="Keyword"
                                         required
                                         v-model="title"
+                                        :error-messages="titleErrors"
+                                        @input="$v.title.$touch()"
+                                        @blur="$v.title.$touch()"
                                     ></v-text-field>
                                 </v-col>
 
@@ -44,6 +47,9 @@
                                         label="Location"
                                         required
                                         v-model="selectlocation"
+                                        :error-messages="selectlocationErrors"
+                                        @input="$v.selectlocation.$touch()"
+                                        @blur="$v.selectlocation.$touch()"
                                     ></v-select>
                                 </v-col>
                                 <v-col
@@ -492,6 +498,8 @@
     import User from "../helper/User";
     import topNavBar from "./layouts/topNavBar"
     import bottomFooter from "./layouts/bottomFooter"
+    import {email, required} from 'vuelidate/lib/validators'
+
 export default {
     name:"index",
     created() {
@@ -509,14 +517,17 @@ export default {
         this.userData();
         this.fatchAllData();
     },
+    validations: {
+        selectlocation: { required  },
+        title: { required },
+    },
     data(){
         return {
             user:{},
             title:'',
-            selectlocation:'',
+            selectlocation:'3',
 
             location:[
-
                 {
                     id:'1',
                     name:'Inside Dhaka'
@@ -524,6 +535,10 @@ export default {
                 {
                     id:'2',
                     name:'Outside Dhaka'
+                },
+                {
+                    id:'3',
+                    name:'All'
                 },
 
             ],
@@ -533,9 +548,27 @@ export default {
             events:[],
         }
     },
+    computed:{
+        selectlocationErrors () {
+            const errors = []
+            if (!this.$v. selectlocation.$dirty) return errors
+            !this.$v.selectlocation.required && errors.push('Location is required')
+            return errors
+        },
+        titleErrors () {
+            const errors = []
+            if (!this.$v. title.$dirty) return errors
+            !this.$v.title.required && errors.push('Keyword is required')
+            return errors
+        },
+    },
     methods:{
         search(){
-            this.$router.push('/search/job/'+this.title+'/'+this.selectlocation)
+            this.$v.$touch()
+            if (!this.$v.$invalid) {
+                this.$router.push('/search/job/'+this.title+'/'+this.selectlocation)
+            }
+
         },
         shortlist(id){
             const formData = new FormData();
