@@ -219,7 +219,7 @@
             </v-row>
         </v-container>
         <v-parallax
-            class="mt-15"
+            class="mt-15 hidden-sm-and-down"
             dark
             src="asset/img/others/howtoapply/how-applybg.png"
         >

@@ -9,6 +9,7 @@
                     <span  class="font-weight-light">Admin<span class="font-weight-black">Panel</span></span>
                 </v-toolbar-title>
                 <v-spacer></v-spacer>
+
                 <v-toolbar-items >
                     <v-menu  offset-y>
                         <template v-slot:activator="{ on, attrs }">
@@ -173,7 +174,6 @@
 </template>
 
 <script>
-    import User from "../../helper/User";
 
     export default {
         name: "navigationBar",
