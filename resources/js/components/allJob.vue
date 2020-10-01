@@ -307,6 +307,9 @@ name: "allJob",
             formData.append('location', this.selectLocation);
             axios.post('/api/job/filter?page=' + page,formData)
                 .then(res =>{
+                    if(this.usedCategory){
+                        this.usedCategory=!this.usedCategory;
+                    }
                     this.loading=false;
                     this.filteredJob=true;
                     this.jobs=res.data.job;

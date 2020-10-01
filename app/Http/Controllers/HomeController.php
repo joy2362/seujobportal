@@ -165,7 +165,7 @@ class HomeController extends Controller
                 ->where('location',$request->location)
                 ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
                 ->whereBetween('salary', [$salaryStart, $salaryEnd])
-                ->paginate(1);
+                ->paginate(10);
             return response()->json([ 'job'=> $job ]);
         }elseif (!$request->category && $request->location !="3"){
             $job=JobPost::where('verify','1')
@@ -173,7 +173,7 @@ class HomeController extends Controller
                 ->where('location',$request->location)
                 ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
                 ->whereBetween('salary', [$salaryStart, $salaryEnd])
-                ->paginate(1);
+                ->paginate(10);
             return response()->json([ 'job'=> $job ]);
         }elseif($request->location =="3" && $request->category){
             $job=JobPost::where('verify','1')
@@ -181,14 +181,14 @@ class HomeController extends Controller
                 ->where('category',$request->category)
                 ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
                 ->whereBetween('salary', [$salaryStart, $salaryEnd])
-                ->paginate(1);
+                ->paginate(10);
             return response()->json([ 'job'=> $job ]);
         }else{
             $job=JobPost::where('verify','1')
                 ->where('lastdate','>',now())
                 ->whereBetween('experience', [$exprienceStart, $exprienceEnd])
                 ->whereBetween('salary', [$salaryStart, $salaryEnd])
-                ->paginate(1);
+                ->paginate(10);
             return response()->json([ 'job'=> $job ]);
         }
 
