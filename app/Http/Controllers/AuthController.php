@@ -199,7 +199,7 @@ class AuthController extends Controller
         }
 
         $name=Str::random(10).".png";
-        $upload='asset/img/faculty';
+        $upload='asset/img/student';
         $img_name=$upload.'/'.$name;
         (new \Laravolt\Avatar\Avatar)->create($request->name)->setFontSize(72)->setDimension(250, 250)->save($img_name);
 

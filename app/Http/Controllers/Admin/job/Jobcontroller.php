@@ -38,7 +38,7 @@ class Jobcontroller extends Controller
     public function store(Request $request)
     {
         $validatedData = $request->validate([
-            'name' => 'required|unique:job_posts',
+            'name' => 'required',
             'jobDetails' => 'required|min:10',
             'requerments' => 'required|min:10',
             'benefit' => 'required|min:10',
