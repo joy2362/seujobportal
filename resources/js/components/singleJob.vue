@@ -11,7 +11,6 @@
                 cols="12"
             >
                 <v-card
-                    class=" blue-grey lighten-5"
                 >
                     <v-toolbar flat>
                         <v-toolbar-title>
@@ -25,113 +24,116 @@
                         </div>
                     </v-toolbar>
 
+                    <v-card-text>
+                        <v-row
+                            align="center"
+                            class="mx-0"
+                        >
+                            {{job.company}}
+                        </v-row>
+                    </v-card-text>
+
+                    <v-card-title>General Information</v-card-title>
 
                     <v-card-text>
                         <v-row
                             align="center"
                             class="mx-0"
                         >
-                            Posted By {{owner.name}}
+                            <v-col cols="12" md="6">
+                                Category {{category.name}}
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                <div class="my-4 " v-if="job.JobType==1">
+                                    Job Type part-time
+                                </div>
+                                <div class="my-4 " v-else>
+                                    Job Type full-time
+                                </div>
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                Experience {{job.experience}} year
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                Office Time {{job.dutyStart}} - {{job.dutyEnd}}
+                            </v-col>
+                            <v-col cols="12" md="6">
+                                Vacancy {{job.vacency}}
+                            </v-col>
                         </v-row>
-
-                        <div class="my-4 ">
-                            Company {{job.company}}
-                        </div>
-
-                        <div>Location {{job.address}}</div>
                     </v-card-text>
 
-                    <v-divider class="mx-4"></v-divider>
-
-
-                    <v-card-text>
-                        <v-row
-                            align="center"
-                            class="mx-0"
-                        >
-                            Category {{category.name}}
-                        </v-row>
-
-                        <div class="my-4 " v-if="job.JobType==1">
-                            Job Type part-time
-                        </div>
-                        <div class="my-4 " v-else>
-                            Job Type full-time
-                        </div>
-
-                        <div class="my-4 ">Experience {{job.experience}} year</div>
-                        <div class="my-4 ">Office Time {{job.dutyStart}} - {{job.dutyEnd}}</div>
-                        <div>Salary  {{job.salary}} BDT</div>
-                    </v-card-text>
-                    <v-divider class="mx-4"></v-divider>
-                    <v-card-text>
-                        <v-row
-                            align="center"
-                            class="mx-0"
-                        >
-                           Email {{job.email}}
-                        </v-row>
-
-                        <div class="mt-4 ">
-                            Phone {{job.phone}}
-                        </div>
-
-                    </v-card-text>
-
-                    <v-divider class="mx-4"></v-divider>
                     <v-card-title>Job Description</v-card-title>
-
                     <v-card-text>
                         <div class="tiptap-vuetify-editor__content" v-html="job.jobDetails"/>
-
                     </v-card-text>
+
                     <v-divider class="mx-4"></v-divider>
                     <v-card-title>Requerments</v-card-title>
-
                     <v-card-text>
                         <div class="tiptap-vuetify-editor__content" v-html="job.requerments"/>
-
                     </v-card-text>
+
                     <v-divider class="mx-4"></v-divider>
                     <v-card-title>Education</v-card-title>
-
                     <v-card-text>
                         <div class="tiptap-vuetify-editor__content" v-html="job.qualification"/>
-
                     </v-card-text>
+
                     <v-divider class="mx-4"></v-divider>
                     <v-card-title>Benifit</v-card-title>
-
                     <v-card-text>
                         <div class="tiptap-vuetify-editor__content" v-html="job.benefit"/>
+                    </v-card-text>
 
+                    <v-card-title>Location</v-card-title>
+                    <v-card-text>
+                        <v-row
+                            align="center"
+                            class="mx-0 ml-8"
+                        >
+                            {{job.address}}
+                        </v-row>
+                    </v-card-text>
+
+                    <v-card-title>Salary</v-card-title>
+                    <v-card-text>
+                        <v-row
+                            align="center"
+                            class="mx-0 ml-8"
+                        >
+                            {{job.salary}} BDT
+                        </v-row>
+                    </v-card-text>
+
+                    <v-card-title>Contact Information</v-card-title>
+                    <v-card-text>
+                        <v-row
+                            align="center"
+                            class="mx-0"
+                        >
+                            <v-col cols="12" md="8">
+                                Email {{job.email}}
+                            </v-col>
+                            <v-col cols="12" md="4">
+                                Phone {{job.phone}}
+                            </v-col>
+                        </v-row>
                     </v-card-text>
 
                     <v-card-text>
-                        <v-chip
-                            class="ma-2"
-                            v-if="job.location === '1'"
+                        <v-row
+                            align="center"
+                            class="mx-0"
                         >
-                            <v-icon left>mdi-map-marker</v-icon>
-                            Dhaka, Bangladesh
-                        </v-chip>
-
-                        <v-chip
-                            class="ma-2"
-                            v-if="job.location === '2'"
-                        >
-                            <v-icon left>mdi-map-marker</v-icon>
-                            Outside Dhaka
-                        </v-chip>
-                        <v-chip
-                            class="ma-2"
-                        >
-                            <v-icon left>mdi-calendar-check</v-icon>
-                            {{job.lastdate}}
-                        </v-chip>
-
+                            Application Deadline : {{job.lastdate}}
+                        </v-row>
                     </v-card-text>
-                    <v-card-actions>
+                    <v-card-actions class="fill-height mt-5 mb-5">
+                        <v-row
+                            align="center"
+                            justify="center"
+                        >
                         <v-btn
                             color="deep-purple lighten-2"
                             text
@@ -139,7 +141,9 @@
                         >
                             Apply now
                         </v-btn>
+                        </v-row>
                     </v-card-actions>
+
                 </v-card>
             </v-col>
         </v-row>
