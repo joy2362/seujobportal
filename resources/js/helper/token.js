@@ -2,9 +2,9 @@ class Token {
     isValid(token){
         const payload =this.payload(token);
         if(payload){
-            if (payload.iss === "http://testseu.herokuapp.com/api/auth/login"  ) {
+           // if (payload.iss === "http://testseu.herokuapp.com/api/auth/login"  ) {
                 return true
-            }
+           // }
         }
         return false;
     }
