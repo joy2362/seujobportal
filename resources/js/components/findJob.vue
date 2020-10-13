@@ -2,8 +2,6 @@
 <v-app>
     <topNavBar :user="user"></topNavBar>
     <v-container>
-            <v-row v-if="count<=0" align="center"
-                   justify="center">
                 <v-row v-if="count<=0" align="center"
                        justify="center">
                     <v-card
@@ -34,7 +32,6 @@
                         </v-list-item>
                     </v-card>
                 </v-row>
-            </v-row>
         <v-row v-else>
             <v-col
                 cols="12"

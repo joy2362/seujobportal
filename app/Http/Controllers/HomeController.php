@@ -208,14 +208,14 @@ class HomeController extends Controller
                 ->where('lastdate','>',now())
                 ->where('name' ,'like', '%' .$request->title . '%')
                 ->orderBy('vacency', 'desc')
-                ->paginate(10);
+                ->paginate(1);
         }else{
             $job = JobPost::where('verify','1')
                 ->where('lastdate','>',now())
                 ->where('location',$request->location)
                 ->where('name' ,'like', '%' .$request->title . '%')
                 ->orderBy('vacency', 'desc')
-                ->paginate(10);
+                ->paginate(1);
         }
 
         return response()->json([ 'job'=>  $job ]);
