@@ -18,4 +18,4 @@ There are several package include in this project
 - vuetify-loader
 
 Current progress Admin panel almost done.
-This project is currently live on http://seujobportal.herokuapp.com/
+This project is currently live on http://testseu.herokuapp.com/
