@@ -2,10 +2,8 @@
 <v-app>
     <topNavBar :user="user"></topNavBar>
     <v-container>
-
         <v-form>
         <v-row>
-
             <v-col cols="12" md="2">
                 <v-select
                     item-text="name"
@@ -45,11 +43,9 @@
                 >
                 </v-range-slider>
             </v-col>
-
             <v-col cols="12 " md="2">
                 <v-btn  color="primary" outlined @click="filtered">Filter</v-btn>
             </v-col>
-
         </v-row>
         </v-form>
 
@@ -86,7 +82,6 @@
                                 single-line
                             >
                                 Company:- {{row.company}}
-
                             </v-banner>
                             <v-list-item-subtitle
                             >

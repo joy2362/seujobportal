@@ -44,6 +44,7 @@
                         ></v-text-field>
 
                     </v-form>
+
                     </v-card-text>
                     <v-card-actions>
                         <v-btn  text small to="/forget">Forget password?</v-btn>

@@ -223,11 +223,13 @@ class HomeController extends Controller
 
 
     public function applyJob(Request $request){
+
         $applyJob=AppliedJob::where('email',$request->email)
             ->where('jobId',$request->id)->first();
         if($applyJob){
             return response()->json(['msg'=>'Already Added'],404);
         }
+
         $user=$this->UserSelect($request->email);
         $job = JobPost::where('id',$request->id)->first();
 
