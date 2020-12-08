@@ -17,5 +17,12 @@ There are several package include in this project
 - vuelidate
 - vuetify-loader
 
+Some Feature of This proect
+    -Add job post
+    -Add new Event
+    -Post query
+    -Add job or event to favourit list
+    Etc.
+
 Current progress Admin panel almost done.
-This project is currently live on http://seujobportal.herokuapp.com/
+This project is currently live on http://testseu.herokuapp.com/
